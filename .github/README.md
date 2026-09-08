@@ -18,11 +18,6 @@
 
 ## 🍁 About This Bot :
 
-</p>
-<p align='center'>
-    This repo will use to deploy for music playing bot of telegram
-</p>
-
 ````MARKDOWN
 # ✨ Features
 
@@ -69,6 +64,101 @@
 - Beautiful UI
 - Lightning Fast
 - Optimized Performance
+
+---
+## ♢ How to make your own :
+
+# 🚀 Installation
+```bash
+git clone https://github.com/USERNAME/Radha-Music
+
+cd Radha-Music
+
+pip install -r requirements.txt
+
+python3 -m Radha
+```
+---
+
+# ⚙ Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| API_ID | Telegram API ID |
+| API_HASH | Telegram API HASH |
+| BOT_TOKEN | Telegram Bot Token |
+| STRING_SESSION | Assistant String |
+| MONGO_DB_URI | Mongo Database |
+| OWNER_ID | Owner ID |
+| LOG_GROUP_ID | Logger Group |
+| SUPPORT_CHAT | Support Group |
+
+---
+
+# 🎵 Commands
+
+| Command | Description |
+|---------|-------------|
+| /play | Play Music |
+| /vplay | Play Video |
+| /pause | Pause |
+| /resume | Resume |
+| /skip | Skip Song |
+| /queue | Queue List |
+| /end | Stop Playback |
+| /lyrics | Lyrics |
+| /song | Download Song |
+| /ping | Ping |
+| /stats | Statistics |
+| /alive | Bot Status |
+
+---
+
+# 💎 Why Choose Radha Music?
+
+⭐ Crystal Clear Audio
+
+⭐ Fastest layback
+
+⭐ Elegant UI
+
+⭐ Video Streaming
+
+⭐ Playlist Support
+
+⭐ Queue Management
+
+⭐ Secure & Stable
+
+⭐ Open Source
+
+⭐ Easy Deployment
+
+⭐ Premium Experience
+
+---
+
+# 🌍 Deploy
+
+- VPS
+- Railway
+- Render
+- Docker
+- Local Machine
+
+---
+
+# 📊 Repository Stats
+
+⭐ Star the Repository
+
+🍴 Fork the Repository
+
+🐞 Report Bugs
+
+💡 Suggest Features
+
+❤️ Contribute
 
 ---
 ````
