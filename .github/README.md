@@ -23,6 +23,54 @@
     This repo will use to deploy for music playing bot of telegram
 </p>
 
+# ✨ Features
+
+### 🎵 Music
+
+- HQ Audio Streaming
+- Video Streaming
+- Live Stream
+- Queue System
+- Loop Playback
+- Playlist Support
+- Shuffle Queue
+- Volume Control
+- Seek Music
+- Auto Resume
+
+### 🎬 Videos
+
+- HD Video Playback
+- Stream from YouTube
+- Live Video Chat
+- Smooth Buffering
+
+### 🤖 Smart
+
+- Lyrics
+- Song Download
+- Artist Information
+- Auto Playlist
+- Recommendation System
+
+### 🛡 Security
+
+- Anti Spam
+- Anti Flood
+- Group Protection
+- Secure Environment
+- Fast Recovery
+
+### 💎 Premium
+
+- Premium Buttons
+- Premium Emojis
+- Beautiful UI
+- Lightning Fast
+- Optimized Performance
+
+---
+
 
 ## ♢ How to make your own :
 
