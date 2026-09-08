@@ -168,6 +168,6 @@ Bot also Supported with Channels. Just add bot and assistant to the Channel as A
 
 ### Credits : 
 
-- [Shashank Shukla](https://github.com/itzshukla)
-- [Telegram](https://t.me/SHASHANKDEVS)
+- [𝙼𝙰𝙳𝙰𝚁𝙰 𝙳𝙴𝙵𝙰𝚄𝙻𝚃𝙴𝚁𝚂](https://t.me/EGOIST_DESTROYER)
+- [𝙲𝙷𝙰𝙽𝙽𝙴𝙻](https://t.me/ALISA_X_SUPPORT)
 - Everyone In This Journey !
