@@ -23,6 +23,7 @@
     This repo will use to deploy for music playing bot of telegram
 </p>
 
+````MARKDOWN
 # ✨ Features
 
 ### 🎵 Music
@@ -70,7 +71,7 @@
 - Optimized Performance
 
 ---
-
+````
 
 ## ♢ How to make your own :
 
