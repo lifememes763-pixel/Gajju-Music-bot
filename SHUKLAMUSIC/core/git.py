@@ -1,16 +1,3 @@
-# -----------------------------------------------
-# 🔸 StrangerMusic Project
-# 🔹 Developed & Maintained by: Shashank Shukla (https://github.com/itzshukla)
-# 📅 Copyright © 2022 – All Rights Reserved
-#
-# 📖 License:
-# This source code is open for educational and non-commercial use ONLY.
-# You are required to retain this credit in all copies or substantial portions of this file.
-# Commercial use, redistribution, or removal of this notice is strictly prohibited
-# without prior written permission from the author.
-#
-# ❤️ Made with dedication and love by ItzShukla
-# -----------------------------------------------
 import asyncio
 import shlex
 from typing import Tuple
@@ -39,6 +26,9 @@ def install_req(cmd: str) -> Tuple[str, str, int, int]:
     return asyncio.get_event_loop().run_until_complete(install_requirements())
 
 def git():
+    LOGGER(__name__).info("Skipping Git update for Cloud Deployment...")
+    return  # 👈 Is line ki wajah se neeche ka code execute nahi hoga aur error nahi aayega
+
     REPO_LINK = config.UPSTREAM_REPO
     if config.GIT_TOKEN:
         GIT_USERNAME = REPO_LINK.split("com/")[1].split("/")[0]
@@ -78,3 +68,4 @@ def git():
             repo.git.reset("--hard", "FETCH_HEAD")
         install_req("pip3 install --no-cache-dir -r requirements.txt")
         LOGGER(__name__).info(f"Fetching updates from upstream repository...")
+        
