@@ -1,17 +1,3 @@
-# -----------------------------------------------
-# 🔸 StrangerMusic Project
-# 🔹 Developed & Maintained by: Shashank Shukla (https://github.com/itzshukla)
-# 📅 Copyright © 2022 – All Rights Reserved
-#
-# 📖 License:
-# This source code is open for educational and non-commercial use ONLY.
-# You are required to retain this credit in all copies or substantial portions of this file.
-# Commercial use, redistribution, or removal of this notice is strictly prohibited
-# without prior written permission from the author.
-#
-# ❤️ Made with dedication and love by ItzShukla
-# -----------------------------------------------
-
 import re
 from os import getenv
 from dotenv import load_dotenv
@@ -26,38 +12,41 @@ API_HASH = getenv("API_HASH")
 BOT_TOKEN = getenv("BOT_TOKEN")
 
 # Bot and owner info
-OWNER_USERNAME = getenv("OWNER_USERNAME", "SHIVANSHDEVS")
-BOT_USERNAME = getenv("BOT_USERNAME", "SapnaMusicRobot")
-BOT_NAME = getenv("BOT_NAME", "SAPNA")
-ASSUSERNAME = getenv("ASSUSERNAME", "KHWAAISH_HOON")
+OWNER_USERNAME = getenv("OWNER_USERNAME", "Alexfaizan302")
+BOT_USERNAME = getenv("BOT_USERNAME", "Alisa_music_alex_bot")
+BOT_NAME = getenv("BOT_NAME", "Alisa")
+ASSUSERNAME = getenv("ASSUSERNAME", "Aiused")
+
 
 # MongoDB
 MONGO_DB_URI = getenv("MONGO_DB_URI", None)
 
 # Limits and IDs
 DURATION_LIMIT_MIN = int(getenv("DURATION_LIMIT", 17000))
-LOGGER_ID = int(getenv("LOGGER_ID", -1002018556839))
-OWNER_ID = int(getenv("OWNER_ID", 6762113050))
+LOGGER_ID = int(getenv("LOGGER_ID", None))
+OWNER_ID = int(getenv("OWNER_ID", 8915827098))
 
 # Heroku
 HEROKU_APP_NAME = getenv("HEROKU_APP_NAME")
 HEROKU_API_KEY = getenv("HEROKU_API_KEY")
-DEEP_API = getenv("DEEP_API")
 
 # Git
-UPSTREAM_REPO = getenv("UPSTREAM_REPO", "https://github.com/itzshukla/STRANGER-MUSIC")
+UPSTREAM_REPO = getenv("UPSTREAM_REPO", None)
 UPSTREAM_BRANCH = getenv("UPSTREAM_BRANCH", "main")
 GIT_TOKEN = getenv("GIT_TOKEN", None)
 
 # Support
-SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "https://t.me/ITSZSHUKLA")
-SUPPORT_CHAT = getenv("SUPPORT_CHAT", "https://t.me/MASTIWITHFRIENDSXD")
+SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "https://t.me/Alisa_x_support")
+SUPPORT_CHAT = getenv("SUPPORT_CHAT", "https://t.me/+o4moGHFqCPU4ZTU1")
 
 # Assistant settings
 AUTO_LEAVING_ASSISTANT = getenv("AUTO_LEAVING_ASSISTANT", "True")
 AUTO_LEAVE_ASSISTANT_TIME = int(getenv("ASSISTANT_LEAVE_TIME", "9000"))
 
-# Song download limits
+
+# Server limits and configurations - These can be set based on your server configurations
+SERVER_PLAYLIST_LIMIT = int(getenv("SERVER_PLAYLIST_LIMIT", "3000"))
+PLAYLIST_FETCH_LIMIT = int(getenv("PLAYLIST_FETCH_LIMIT", "2500"))
 SONG_DOWNLOAD_DURATION = int(getenv("SONG_DOWNLOAD_DURATION", "9999999"))
 SONG_DOWNLOAD_DURATION_LIMIT = int(getenv("SONG_DOWNLOAD_DURATION_LIMIT", "9999999"))
 
@@ -89,38 +78,32 @@ votemode = {}
 autoclean = []
 confirmer = {}
 
-DEBUG_IGNORE_LOG = True
+# Debugging
+DEBUG_IGNORE_LOG = getenv("DEBUG_IGNORE_LOG", "False").lower() == "true"
 
-###### IMAGE URLS ######
+# Additional group/channel IDs
+LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", getenv("LOGGER_ID", "0")))
+SUPPORT_GROUP = getenv("SUPPORT_GROUP", SUPPORT_CHAT)
 
-START_IMG_URL = getenv("START_IMG_URL", "https://files.catbox.moe/ak96mx.jpg")
-PING_IMG_URL = getenv("PING_IMG_URL", "https://files.catbox.moe/ak96mx.jpg")
-PLAYLIST_IMG_URL = "https://files.catbox.moe/lrwbj6.jpg"
-STATS_IMG_URL = "https://files.catbox.moe/ak96mx.jpg"
-TELEGRAM_AUDIO_URL = "https://files.catbox.moe/aesldg.jpg"
-TELEGRAM_VIDEO_URL = "https://files.catbox.moe/aesldg.jpg"
-STREAM_IMG_URL = "https://files.catbox.moe/aesldg.jpg"
-SOUNCLOUD_IMG_URL = "https://files.catbox.moe/aesldg.jpg"
-YOUTUBE_IMG_URL = "https://files.catbox.moe/aesldg.jpg"
-SPOTIFY_ARTIST_IMG_URL = "https://files.catbox.moe/aesldg.jpg"
-SPOTIFY_ALBUM_IMG_URL = "https://files.catbox.moe/aesldg.jpg"
-SPOTIFY_PLAYLIST_IMG_URL = "https://files.catbox.moe/aesldg.jpg"
+# Image URLs
+SHASHANK_IMG = getenv("SHASHANK_IMG", "https://i.ibb.co/29QQH9t/x.jpg").split(",") if "," in getenv("SHASHANK_IMG", "") else [getenv("SHASHANK_IMG", "https://i.ibb.co/Jj8fKLbL/x.jpg")]
 
-
-SHASHANK_IMG = [
-    "https://files.catbox.moe/dw0as6.jpg",
-    "https://files.catbox.moe/t2m1pv.jpg",
-    "https://files.catbox.moe/lsbotb.jpg",
-    "https://files.catbox.moe/huuy1f.jpg",
-    "https://files.catbox.moe/7vfivr.jpg",
-    "https://files.catbox.moe/dqtuv2.jpg",
-    "https://files.catbox.moe/ac3tzn.jpg"
-]
+START_IMG_URL = getenv("START_IMG_URL", "https://i.ibb.co/Jj8fKLbL/x.jpg")
+PING_IMG_URL = getenv("PING_IMG_URL", "https://i.ibb.co/rRL0318r/x.jpg")
+PLAYLIST_IMG_URL = "https://i.ibb.co/rRL0318r/x.jpg"
+STATS_IMG_URL = "https://i.ibb.co/rRL0318r/x.jpg"
+TELEGRAM_AUDIO_URL = "https://i.ibb.co/rRL0318r/x.jpg"
+TELEGRAM_VIDEO_URL = "https://i.ibb.co/rRL0318r/x.jpg"
+STREAM_IMG_URL = "https://i.ibb.co/rRL0318r/x.jpg"
+SOUNCLOUD_IMG_URL = "https://i.ibb.co/rRL0318r/x.jpg"
+YOUTUBE_IMG_URL = "https://i.ibb.co/rRL0318r/x.jpg"
+SPOTIFY_ARTIST_IMG_URL = "https://i.ibb.co/rRL0318r/x.jpg"
+SPOTIFY_ALBUM_IMG_URL = "https://i.ibb.co/rRL0318r/x.jpg"
+SPOTIFY_PLAYLIST_IMG_URL = "https://i.ibb.co/rRL0318r/x.jpg"
 
 
 # Helper function
 def time_to_seconds(time: str) -> int:
-    """Convert time string (MM:SS) to total seconds."""
     return sum(int(x) * 60**i for i, x in enumerate(reversed(time.split(":"))))
 
 # Calculate total duration limit in seconds
@@ -128,7 +111,11 @@ DURATION_LIMIT = int(time_to_seconds(f"{DURATION_LIMIT_MIN}:00"))
 
 # Validate URLs
 if SUPPORT_CHANNEL and not re.match(r"(?:http|https)://", SUPPORT_CHANNEL):
-    raise SystemExit("[ERROR] - Your SUPPORT_CHANNEL url is invalid. It must start with https://")
+    raise SystemExit(
+        "[ERROR] - Your SUPPORT_CHANNEL url is invalid. It must start with https://"
+    )
 
 if SUPPORT_CHAT and not re.match(r"(?:http|https)://", SUPPORT_CHAT):
-    raise SystemExit("[ERROR] - Your SUPPORT_CHAT url is invalid. It must start with https://")
+    raise SystemExit(
+        "[ERROR] - Your SUPPORT_CHAT url is invalid. It must start with https://"
+    )
