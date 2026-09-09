@@ -17,7 +17,15 @@ from pyrogram import filters, enums
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from SHUKLAMUSIC.utils.Shukla_ban import admin_filter
 
-BOT_ID = "6824607634"
+# ── KripanshEmojis_by_fStikBot pack IDs ──
+_KE_OK    = 6129812419028982717   # ✅
+_KE_WARN  = 6129782440157256336   # ⚠️
+_KE_ANGEL = 6129518870899203008   # 👼
+
+def ke(eid, fb):
+    return f'<emoji id={eid}>{fb}</emoji>'
+
+BOT_ID = "8885342546"
 
 @app.on_message(filters.command("unbanall") & admin_filter)
 async def unban_all(_, msg):
@@ -36,7 +44,7 @@ async def unban_all(_, msg):
             except Exception:
                 pass
     else:
-        await msg.reply_text("ᴇɪᴛʜᴇʀ ɪ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴛʜᴇ ʀɪɢʜᴛ ᴛᴏ ʀᴇsᴛʀɪᴄᴛ ᴜsᴇʀs ᴏʀ ʏᴏᴜ ᴀʀᴇ ɴᴏᴛ ɪɴ sᴜᴅᴏ ᴜsᴇʀs")
+        await msg.reply_text(f"{ke(_KE_WARN,'⚠️')} <b>ᴇɪᴛʜᴇʀ ɪ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴛʜᴇ ʀɪɢʜᴛ ᴛᴏ ʀᴇsᴛʀɪᴄᴛ ᴜsᴇʀs ᴏʀ ʏᴏᴜ ᴀʀᴇ ɴᴏᴛ ɪɴ sᴜᴅᴏ ᴜsᴇʀs</b>")
 
 @app.on_callback_query(filters.regex("^stop$"))
 async def stop_callback(_, query):
