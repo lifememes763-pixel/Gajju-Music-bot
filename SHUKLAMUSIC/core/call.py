@@ -1,16 +1,3 @@
-# -----------------------------------------------
-# 🔸 StrangerMusic Project
-# 🔹 Developed & Maintained by: Shashank Shukla (https://github.com/itzshukla)
-# 📅 Copyright © 2022 – All Rights Reserved
-#
-# 📖 License:
-# This source code is open for educational and non-commercial use ONLY.
-# You are required to retain this credit in all copies or substantial portions of this file.
-# Commercial use, redistribution, or removal of this notice is strictly prohibited
-# without prior written permission from the author.
-#
-# ❤️ Made with dedication and love by ItzShukla
-# -----------------------------------------------
 import asyncio
 import os
 from datetime import datetime, timedelta
@@ -34,11 +21,13 @@ from SHUKLAMUSIC.utils.database import (
     remove_active_chat,
     remove_active_video_chat,
     set_loop,
+    get_autoplay, # <-- Multi-line import me bilkul sahi joda hai
 )
 from SHUKLAMUSIC.utils.exceptions import AssistantErr
 from SHUKLAMUSIC.utils.formatters import check_duration, seconds_to_min, speed_converter
 from SHUKLAMUSIC.utils.inline.play import stream_markup
 from SHUKLAMUSIC.utils.stream.autoclear import auto_clean
+from SHUKLAMUSIC.plugins.play.stream import send_queue_empty_msg
 from SHUKLAMUSIC.utils.thumbnails import get_thumb as gen_thumb
 from strings import get_string
 
@@ -100,9 +89,13 @@ class Call(PyTgCalls):
         video: bool,
         ffmpeg: str | None = None,
     ) -> types.MediaStream:
+        # Always pass -threads 0 so ffmpeg uses all available cores for
+        # decode/encode — reduces CPU bottleneck and streaming stutter.
+        base_flags = "-threads 0"
+        combined = f"{base_flags} {ffmpeg}" if ffmpeg else base_flags
         return types.MediaStream(
             media_path=source,
-            audio_parameters=types.AudioQuality.HIGH,
+            audio_parameters=types.AudioQuality.MEDIUM,
             video_parameters=types.VideoQuality.HD_720p,
             audio_flags=types.MediaStream.Flags.REQUIRED,
             video_flags=(
@@ -110,7 +103,7 @@ class Call(PyTgCalls):
                 if video
                 else types.MediaStream.Flags.IGNORE
             ),
-            ffmpeg_parameters=ffmpeg,
+            ffmpeg_parameters=combined,
         )
 
     async def _play_on_assistant(
@@ -284,6 +277,49 @@ class Call(PyTgCalls):
         assistant = await group_assistant(self, chat_id)
         language = await get_lang(chat_id)
         _ = get_string(language)
+
+        # ------------------- 🚀 CLEAN AUTO-JOIN & AUTO-APPROVE -------------------
+        userbot = getattr(assistant, "app", None) or getattr(assistant, "_app", None) or assistant
+        ASSISTANT_ID = 8708580286  # Aapki Assistant User ID
+
+        # Check: Assistant group me pehle se hai ya nahi
+        try:
+            await userbot.get_chat_member(chat_id, "me")
+        except Exception:
+            # Step 1: Main Bot direct Assistant ko group me Add karne ki koshish karega
+            try:
+                await app.add_chat_members(chat_id, ASSISTANT_ID)
+                await asyncio.sleep(0.5)
+            except Exception:
+                pass
+
+            # Step 2: Direct Pending Join Request Approve karein
+            try:
+                await app.approve_chat_join_request(chat_id, ASSISTANT_ID)
+                await asyncio.sleep(0.3)
+            except Exception:
+                pass
+
+            # Step 3: Agar abhi bhi group me nahi aaya, to FRESH Invite Link create karke Join karao
+            try:
+                await userbot.get_chat_member(chat_id, "me")
+            except Exception:
+                try:
+                    # create_chat_invite_link hamesha naya fresh link banata hai (No Expired Error)
+                    inv_obj = await app.create_chat_invite_link(chat_id)
+                    invitelink = inv_obj.invite_link
+                    
+                    if invitelink:
+                        await userbot.join_chat(invitelink)
+                        await asyncio.sleep(0.5)
+                        try:
+                            await app.approve_chat_join_request(chat_id, ASSISTANT_ID)
+                        except Exception:
+                            pass
+                except Exception:
+                    pass
+        # ----------------------------------------------------------------------
+
         stream = self._build_stream(link, video=bool(video))
         try:
             await self._play_on_assistant(assistant, chat_id, stream)
@@ -295,6 +331,7 @@ class Call(PyTgCalls):
             raise AssistantErr(_["call_10"])
         except Exception:
             raise AssistantErr(_["call_10"])
+
         await add_active_chat(chat_id)
         await music_on(chat_id)
         if video:
