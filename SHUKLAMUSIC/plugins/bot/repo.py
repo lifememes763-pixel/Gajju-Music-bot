@@ -1,96 +1,65 @@
-# -----------------------------------------------
-# 🔸 StrangerMusic Project
-# 🔹 Developed & Maintained by: Shashank Shukla (https://github.com/itzshukla)
-# 📅 Copyright © 2022 – All Rights Reserved
-#
-# 📖 License:
-# This source code is open for educational and non-commercial use ONLY.
-# You are required to retain this credit in all copies or substantial portions of this file.
-# Commercial use, redistribution, or removal of this notice is strictly prohibited
-# without prior written permission from the author.
-#
-# ❤️ Made with dedication and love by ItzShukla
-# -----------------------------------------------
-import httpx
 from pyrogram import filters
+from pyrogram.enums import ButtonStyle
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from SHUKLAMUSIC.utils.errors import capture_err 
 from SHUKLAMUSIC import app
 from config import BOT_USERNAME
+from SHUKLAMUSIC.utils.errors import capture_err
+import httpx
 
-# Caption Text
-start_txt = """<b>✨ ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ <u>sᴛʀᴀɴɢᴇʀ ʀᴇᴘᴏs</u></b>
+# ── emoji_2e47b_by_TgEmodziBot pack IDs ──
+_E_STAR   = 6073519257637884127   # 🌟
+_E_HEART  = 6071046056555058251   # ❤️
+_E_SPARK  = 6073301180673430006   # ✨
+_E_GLOW   = 6073456529640525999   # 🤩
+_E_FLOWER = 6073145973440253945   # 🌸
+_E_LOVE   = 6073518286975276048   # 💗
+_E_RIBBON = 6070857967052263096   # 🎀
+_E_ROSE   = 6073547170630341250   # 🌹
+_E_RIGHT  = 6073261718513913664   # ➡️
+_E_BOUQ   = 6073117703965511893   # 💐
 
-🚀 <b>ᴇᴀsʏ ᴅᴇᴘʟᴏʏ</b> –ᴏɴᴇ ᴄʟɪᴄᴋ ʜᴇʀᴏᴋᴜ ᴅᴇᴘʟᴏʏᴍᴇɴᴛ  
-🛡️ <b>ɴᴏ ʜᴇʀᴏᴋᴜ ᴏʀ ɪᴅ ʙᴀɴ ɪssᴜᴇs</b>  
-🔋 <b>ᴜɴʟɪᴍɪᴛᴇᴅ ᴅʏɴᴏs</b> – ʀᴜɴ 24/7 ʟᴀɢɢ-ғʀᴇᴇ  
-⚙️ <b>ғᴜʟʟʏ ғᴜɴᴄᴛɪᴏɴᴀʟ & ᴇʀʀᴏʀ-ғʀᴇᴇ</b>  
+def e(eid, fb):
+    return f'<emoji id={eid}>{fb}</emoji>'
 
-<i>ɴᴇᴇᴅ ʜᴇʟᴘ? sᴇɴᴅ sᴄʀᴇᴇɴsʜᴏᴛ ᴛᴏ ᴛʜᴇ sᴜᴘᴘᴏʀᴛ ɢʀᴏᴜᴘ!</i>"""
+start_txt = (
+    f"{e(_E_STAR,'🌟')} {e(_E_GLOW,'🤩')} <b>𝐀ʟɪsᴀ ᴍᴜsɪᴄ | ᴍᴀᴅᴀʀᴀ</b> {e(_E_GLOW,'🤩')} {e(_E_STAR,'🌟')}\n\n"
+    f"{e(_E_SPARK,'✨')} ʙᴀᴅᴀ ᴀᴀʏᴀ ʙᴏᴛ ᴋᴀ ʀᴇᴘᴏ ᴅᴇᴋʜɴᴇ,\n"
+    f"{e(_E_LOVE,'💗')} ᴘᴀʜʟᴇ ᴀᴘɴɪ ʟɪɢᴇ ᴋᴀ ʀᴇᴘᴏ sᴜᴅʜᴀʀ ᴊᴀᴀᴋᴇ !\n\n"
+    f"<pre>||{e(_E_RIGHT,'➡️')} ᴜᴩᴛɪᴍᴇ       :  𝟷ʜ:𝟹𝟺ᴍ:𝟻𝟺s\n"
+    f"{e(_E_RIGHT,'➡️')} sᴛᴏʀᴀɢᴇ      :  𝟸𝟽.𝟺%\n"
+    f"{e(_E_RIGHT,'➡️')} ᴄᴩᴜ ʟᴏᴀᴅ    :  𝟷𝟷.𝟸%\n"
+    f"{e(_E_RIGHT,'➡️')} ʀᴀᴍ ᴜsᴇ     :  𝟷𝟽.𝟻%||</pre>\n\n"
+    f"{e(_E_ROSE,'🌹')} ᴘᴏᴡєʀєᴅ ʙʏ» <a href=\"https://t.me/Alexfaizan302\">𝐀ʟɪsᴀ ⌯</a>\n"
+    f"{e(_E_BOUQ,'💐')} {e(_E_FLOWER,'🌸')} {e(_E_RIBBON,'🎀')} {e(_E_HEART,'❤️')}"
+)
 
-# Repo Command Handler
+
 @app.on_message(filters.command("repo"))
-async def repo_handler(_, msg):
+async def start(_, msg):
     buttons = [
-        [InlineKeyboardButton("➕ ᴀᴅᴅ ᴍᴇ ʙᴀʙʏ", url=f"https://t.me/{app.username}?startgroup=true")],
         [
-            InlineKeyboardButton("💬 sᴜᴘᴘᴏʀᴛ", url="https://t.me/MASTIWITHFRIENDSXD"),
-            InlineKeyboardButton("👤 ᴏᴡɴᴇʀ", url="https://t.me/SHASHANKDEVS"),
-        ],
-        [InlineKeyboardButton("🧾 ᴜᴘᴅᴀᴛᴇs", url="https://t.me/ITSZSHUKLA")],
-        [
-            InlineKeyboardButton("💥 ʙᴀɴᴀʟʟ", url="https://github.com/itzshukla/STRANGER-BANALL/fork"),
-            InlineKeyboardButton("🎧 ᴍᴜsɪᴄ V2", url="https://github.com/itzshukla/STRANGER-MUSIC/fork"),
-        ],
-        [
-            InlineKeyboardButton("🎶 ᴍᴜsɪᴄ V1", url="https://github.com/itzshukla/STRANGER-MUSIC2.0/fork"),
-            InlineKeyboardButton("💬 ᴄʜᴀᴛʙᴏᴛ", url="https://github.com/itzshukla/STRANGER-CHATBOT/fork"),
+            InlineKeyboardButton(
+                text="˹ηєᴛᴡᴏʀᴋ˼",
+                url="https://t.me/ALISA_X_SUPPORT",
+                style=ButtonStyle.PRIMARY,
+            ),
+            InlineKeyboardButton(
+                text="˹ϻʏ ʜᴏϻє˼",
+                url="https://t.me/+o4moGHFqCPU4ZTU1",
+                style=ButtonStyle.SUCCESS,
+            ),
         ],
         [
-            InlineKeyboardButton("🎯 sᴛʀɪɴɢ ɢᴇɴ", url="https://github.com/itzshukla/STRANGER-STRING-GEN/fork"),
-            InlineKeyboardButton("🛠️ ɢᴄ ᴍᴀɴᴀɢᴇʀ", url="https://github.com/itzshukla/STRANGER-ROBOT/fork"),
+            InlineKeyboardButton(
+                text="˹ ϻʏ ϻᴧsᴛєʀ ˼ 👑",
+                url="https://t.me/Alexfaizan302",
+                style=ButtonStyle.DANGER,
+            ),
         ],
-        [
-            InlineKeyboardButton("⚔️ sᴘᴀᴍ ʙᴏᴛs", url="https://github.com/itzshukla/STRANGER-SPAM-X/fork"),
-            InlineKeyboardButton("👾 ʙᴀɴᴀʟʟ 10", url="https://github.com/itzshukla/STRANGER-BANALL-BOTS/fork"),
-        ],
-        [
-            InlineKeyboardButton("🧪 sᴛʀɪɴɢ ʜᴀᴄᴋ", url="https://github.com/itzshukla/STRANGER-SESSION-HACK/fork"),
-            InlineKeyboardButton("🤖 ɪᴅ ᴜsᴇʀʙᴏᴛ", url="https://t.me/StrangerHosterbot"),
-        ],
-        [InlineKeyboardButton("👑 sᴜᴘᴇʀ ᴜsᴇʀʙᴏᴛ", url="https://github.com/itzshukla/STRANGER-OPUSERBOT2.0/fork")]
     ]
 
     await msg.reply_photo(
-        photo="https://files.catbox.moe/jxribw.jpg",
+        photo="https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg",
         caption=start_txt,
-        reply_markup=InlineKeyboardMarkup(buttons)
+        reply_markup=InlineKeyboardMarkup(buttons),
     )
-
-   
-# --------------
-
-
-@app.on_message(filters.command("repo", prefixes="#"))
-@capture_err
-async def repo(_, message):
-    async with httpx.AsyncClient() as client:
-        response = await client.get("https://api.github.com/repos/itzshukla/STRANGER-MUSIC/contributors")
-    
-    if response.status_code == 200:
-        users = response.json()
-        list_of_users = ""
-        count = 1
-        for user in users:
-            list_of_users += f"{count}. [{user['login']}]({user['html_url']})\n"
-            count += 1
-
-        text = f"""[𝖱𝖤𝖯𝖮 𝖫𝖨𝖭𝖪](https://github.com/itzshukla/STRANGER-MUSIC) | [UPDATES](https://t.me/ITSZSHUKLA)
-| 𝖢𝖮𝖭𝖳𝖱𝖨𝖡𝖴𝖳𝖮𝖱𝖲 |
-----------------
-{list_of_users}"""
-        await app.send_message(message.chat.id, text=text, disable_web_page_preview=True)
-    else:
-        await app.send_message(message.chat.id, text="Failed to fetch contributors.")
-
-
