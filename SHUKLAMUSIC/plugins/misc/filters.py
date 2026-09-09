@@ -25,6 +25,8 @@ from pyrogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMa
 @app.on_message(filters.command("filter") & admin_filter)
 @user_admin
 async def _filter(client, message):
+    if not message.from_user:
+        return
     
     chat_id = message.chat.id 
     if (
@@ -108,9 +110,11 @@ async def _filters(client, message):
 
 @app.on_message(filters.command('stopall') & admin_filter)
 async def stopall(client, message):
+    if not message.from_user:
+        return
     chat_id = message.chat.id
     chat_title = message.chat.title 
-    user = await client.get_chat_member(chat_id,message.from_user.id)
+    user = await client.get_chat_member(chat_id, message.from_user.id)
     if not user.status == ChatMemberStatus.OWNER :
         return await message.reply_text("Only Owner Can Use This!!") 
 
@@ -127,13 +131,15 @@ async def stopall(client, message):
 
 @app.on_callback_query(filters.regex("^custfilters_"))
 async def stopall_callback(client, callback_query: CallbackQuery):  
+    if not callback_query.from_user:
+        return
     chat_id = callback_query.message.chat.id 
     query_data = callback_query.data.split('_')[1]  
 
     user = await client.get_chat_member(chat_id, callback_query.from_user.id)
 
     if not user.status == ChatMemberStatus.OWNER :
-        return await callback_query.answer("Only Owner Can Use This!!") 
+        return await callback_query.answer("Only Owner Can Use This!!", show_alert=True) 
     
     if query_data == 'stopall':
         await stop_all_db(chat_id)
@@ -159,3 +165,4 @@ async def stop(client, message):
     
     await stop_db(chat_id, filter_name)
     await message.reply(f"I've stopped `{filter_name}`.")
+    
