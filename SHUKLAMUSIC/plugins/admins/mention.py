@@ -17,6 +17,16 @@ from SHUKLAMUSIC import app
 from pyrogram import filters
 from SHUKLAMUSIC.utils.Shukla_ban import admin_filter
 
+# ── KripanshEmojis_by_fStikBot pack IDs ──
+_KE_OK    = 6129812419028982717   # ✅
+_KE_WARN  = 6129782440157256336   # ⚠️
+_KE_CROWN = 6129705083501293112   # 👑
+_KE_FIRE  = 6129792056589031358   # 🔥
+_KE_BLOCK = 6129840374971112593   # 🚫
+
+def ke(eid, fb):
+    return f'<emoji id={eid}>{fb}</emoji>'
+
 SPAM_CHATS = []
 
 
@@ -24,7 +34,7 @@ SPAM_CHATS = []
 async def tag_all_users(_,message): 
     replied = message.reply_to_message  
     if len(message.command) < 2 and not replied:
-        await message.reply_text("**ʀᴇᴘʟʏ ᴛᴏ ᴀ ᴍᴇssᴀɢᴇ ᴏʀ ɢɪᴠᴇ sᴏᴍᴇ ᴛᴇxᴛ ᴛᴏ ᴛᴀɢ ᴀʟʟ**") 
+        await message.reply_text(f"{ke(_KE_CROWN,'👑')} <b>ʀᴇᴘʟʏ ᴛᴏ ᴀ ᴍᴇssᴀɢᴇ ᴏʀ ɢɪᴠᴇ sᴏᴍᴇ ᴛᴇxᴛ ᴛᴏ ᴛᴀɢ ᴀʟʟ</b>")
         return                  
     if replied:
         SPAM_CHATS.append(message.chat.id)      
@@ -73,8 +83,8 @@ async def cancelcmd(_, message):
             SPAM_CHATS.remove(chat_id)
         except Exception:
             pass   
-        return await message.reply_text("**ᴛᴀɢ ᴀʟʟ sᴜᴄᴄᴇssғᴜʟʟʏ sᴛᴏᴘᴘᴇᴅ!**")     
-                                     
-    else :
-        await message.reply_text("**ɴᴏ ᴘʀᴏᴄᴇss ᴏɴɢᴏɪɴɢ!**")  
+        return await message.reply_text(f"{ke(_KE_OK,'✅')} <b>ᴛᴀɢ ᴀʟʟ sᴜᴄᴄᴇssғᴜʟʟʏ sᴛᴏᴘᴘᴇᴅ!</b>")
+
+    else:
+        await message.reply_text(f"{ke(_KE_WARN,'⚠️')} <b>ɴᴏ ᴘʀᴏᴄᴇss ᴏɴɢᴏɪɴɢ!</b>")  
         return       
