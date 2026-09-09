@@ -1,30 +1,24 @@
-# -----------------------------------------------
-# 🔸 StrangerMusic Project
-# 🔹 Developed & Maintained by: Shashank Shukla (https://github.com/itzshukla)
-# 📅 Copyright © 2022 – All Rights Reserved
-#
-# 📖 License:
-# This source code is open for educational and non-commercial use ONLY.
-# You are required to retain this credit in all copies or substantial portions of this file.
-# Commercial use, redistribution, or removal of this notice is strictly prohibited
-# without prior written permission from the author.
-#
-# ❤️ Made with dedication and love by ItzShukla
-# -----------------------------------------------
-
 import sys
+
+# Optional uvloop
 if sys.platform != "win32":
-    import uvloop
-    uvloop.install()
+    try:
+        import uvloop
+        uvloop.install()
+        print("✓ uvloop enabled")
+    except ImportError:
+        print("⚠ uvloop not installed, using default asyncio loop")
 
 from pyrogram import Client, errors
-from pyrogram.enums import ChatMemberStatus, ParseMode
+from pyrogram.enums import ChatMemberStatus
 import config
 from ..logging import LOGGER
 
+
 class SHUKLA(Client):
     def __init__(self):
-        LOGGER(__name__).info(f"Starting Bot...")
+        LOGGER(__name__).info("Starting Bot...")
+
         super().__init__(
             name="SHUKLAMUSIC",
             api_id=config.API_ID,
@@ -36,34 +30,62 @@ class SHUKLA(Client):
 
     async def start(self):
         await super().start()
-        self.id = self.me.id
-        self.name = self.me.first_name + " " + (self.me.last_name or "")
-        self.username = self.me.username
-        self.mention = self.me.mention
+
+        me = await self.get_me()
+
+        self.id = me.id
+        self.name = f"{me.first_name} {me.last_name or ''}".strip()
+        self.username = me.username or "None"
+        self.mention = me.mention
 
         try:
             await self.send_message(
                 chat_id=config.LOGGER_ID,
-                text=f"<u><b>» {self.mention} ʙᴏᴛ sᴛᴀʀᴛᴇᴅ :</b><u>\n\nɪᴅ : <code>{self.id}</code>\nɴᴀᴍᴇ : {self.name}\nᴜsᴇʀɴᴀᴍᴇ : @{self.username}",
+                text=(
+                    f"<u><b>» {self.mention} ʙᴏᴛ sᴛᴀʀᴛᴇᴅ :</b></u>\n\n"
+                    f"ɪᴅ : <code>{self.id}</code>\n"
+                    f"ɴᴀᴍᴇ : {self.name}\n"
+                    f"ᴜsᴇʀɴᴀᴍᴇ : @{self.username}"
+                ),
             )
+
         except (errors.ChannelInvalid, errors.PeerIdInvalid):
             LOGGER(__name__).error(
-                "Bot has failed to access the log group/channel. Make sure that you have added your bot to your log group/channel."
+                "Bot cannot access LOGGER_ID. Add the bot to the log group/channel."
             )
-            exit()
+            raise SystemExit(1)
+
         except Exception as ex:
             LOGGER(__name__).error(
-                f"Bot has failed to access the log group/channel.\n  Reason : {type(ex).__name__}."
+                f"Failed to access LOGGER_ID: {type(ex).__name__}: {ex}"
             )
-            exit()
+            raise SystemExit(1)
 
-        a = await self.get_chat_member(config.LOGGER_ID, self.id)
-        if a.status != ChatMemberStatus.ADMINISTRATOR:
-            LOGGER(__name__).error(
-                "Please promote your bot as an admin in your log group/channel."
+        try:
+            member = await self.get_chat_member(
+                config.LOGGER_ID,
+                self.id
             )
-            exit()
-        LOGGER(__name__).info(f"Music Bot Started as {self.name}")
+
+            if member.status not in (
+                ChatMemberStatus.ADMINISTRATOR,
+                ChatMemberStatus.OWNER,
+            ):
+                LOGGER(__name__).error(
+                    "Promote the bot as admin in LOGGER_ID."
+                )
+                raise SystemExit(1)
+
+        except Exception as ex:
+            LOGGER(__name__).error(
+                f"Failed checking admin status: {type(ex).__name__}: {ex}"
+            )
+            raise SystemExit(1)
+
+        LOGGER(__name__).info(
+            f"Music Bot Started Successfully as {self.name}"
+        )
 
     async def stop(self):
+        LOGGER(__name__).info("Stopping Bot...")
         await super().stop()
