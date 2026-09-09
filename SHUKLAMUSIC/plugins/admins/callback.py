@@ -19,6 +19,7 @@ from SHUKLAMUSIC.core.call import SHUKLA
 from SHUKLAMUSIC.misc import SUDOERS, db
 from SHUKLAMUSIC.utils.database import (
     get_active_chats,
+    get_autoplay,
     get_lang,
     get_upvote_count,
     is_active_chat,
@@ -26,6 +27,7 @@ from SHUKLAMUSIC.utils.database import (
     is_nonadmin_chat,
     music_off,
     music_on,
+    set_autoplay,
     set_loop,
 )
 from pyrogram.errors import (
@@ -161,7 +163,20 @@ async def del_back_playlist(client, CallbackQuery, _):
                         return await CallbackQuery.answer(
                             _["admin_14"], show_alert=True
                         )
-    if command == "Pause":
+    if command == "Autoplay":
+        from SHUKLAMUSIC.utils.database import get_autoplay_owner, set_autoplay_owner
+        state = await get_autoplay(chat_id)
+        new_state = not state
+        await set_autoplay(chat_id, new_state)
+        if new_state:
+            await set_autoplay_owner(chat_id, CallbackQuery.from_user.id)
+            await CallbackQuery.answer(
+                "🌟 Autoplay ON — I'll keep playing related songs automatically!",
+                show_alert=True,
+            )
+        else:
+            await CallbackQuery.answer("⏹ Autoplay OFF for this chat.", show_alert=True)
+    elif command == "Pause":
         if not await is_music_playing(chat_id):
             return await CallbackQuery.answer(_["admin_1"], show_alert=True)
         await CallbackQuery.answer()
