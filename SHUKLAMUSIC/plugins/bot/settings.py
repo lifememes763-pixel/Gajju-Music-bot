@@ -1,15 +1,8 @@
+# -*- coding: utf-8 -*-
 # -----------------------------------------------
 # 🔸 StrangerMusic Project
 # 🔹 Developed & Maintained by: Shashank Shukla (https://github.com/itzshukla)
 # 📅 Copyright © 2022 – All Rights Reserved
-#
-# 📖 License:
-# This source code is open for educational and non-commercial use ONLY.
-# You are required to retain this credit in all copies or substantial portions of this file.
-# Commercial use, redistribution, or removal of this notice is strictly prohibited
-# without prior written permission from the author.
-#
-# ❤️ Made with dedication and love by ItzShukla
 # -----------------------------------------------
 from pyrogram import filters
 import asyncio
@@ -20,16 +13,21 @@ from pyrogram.types import (
     CallbackQuery,
     InlineKeyboardButton,
     InlineKeyboardMarkup,
+    InputMediaPhoto,
     Message,
 )
 
 from SHUKLAMUSIC import app
+# 👇 YE MISSING IMPORTS ADD KIYE HAIN (System Stats aur Served Users/Chats ke liye)
+from SHUKLAMUSIC.utils.sys import bot_sys_stats
 from SHUKLAMUSIC.utils.database import (
     add_nonadmin_chat,
     get_authuser,
     get_authuser_names,
     get_playmode,
     get_playtype,
+    get_served_chats,
+    get_served_users,
     get_upvote_count,
     is_nonadmin_chat,
     is_skipmode,
@@ -49,9 +47,8 @@ from SHUKLAMUSIC.utils.inline.settings import (
     vote_mode_markup,
 )
 from SHUKLAMUSIC.utils.inline.start import private_panel
-from config import BANNED_USERS, OWNER_ID
+from config import BANNED_USERS, OWNER_ID, START_IMG_URL, SUPPORT_CHAT
 import config
-
 
 @app.on_message(
     filters.command(["settings", "setting"]) & filters.group & ~BANNED_USERS
@@ -81,27 +78,67 @@ async def settings_cb(client, CallbackQuery, _):
         ),
         reply_markup=InlineKeyboardMarkup(buttons),
     )
-    
+
+
+# -----------------------------------------------
+# 🔸 WELCOME BACK HANDLER (Fixed NameError & Formatting)
+# -----------------------------------------------
 @app.on_callback_query(filters.regex("settingsback_helper") & ~BANNED_USERS)
 @languageCB
 async def settings_back_markup(client, CallbackQuery: CallbackQuery, _):
     try:
         await CallbackQuery.answer()
-    except:
+    except Exception:
         pass
+        
     if CallbackQuery.message.chat.type == ChatType.PRIVATE:
         await app.resolve_peer(OWNER_ID)
-        OWNER = OWNER_ID
         buttons = private_panel(_)
-        return await CallbackQuery.edit_message_text(
-            _["start_2"].format(CallbackQuery.from_user.mention, app.mention),
-            reply_markup=InlineKeyboardMarkup(buttons),
-        )
+        
+        try:
+            UP, CPU, RAM, DISK = await bot_sys_stats()
+            served_users = len(await get_served_users())
+            served_chats = len(await get_served_chats())
+            
+            welcome_text = _["start_2"].format(
+                CallbackQuery.from_user.mention, 
+                app.mention,                      
+                UP,                               
+                DISK,                             
+                CPU,                              
+                RAM,                              
+                served_users,                     
+                served_chats                      
+            )
+        except Exception:
+            welcome_text = _["start_2"].format(
+                CallbackQuery.from_user.mention,
+                app.mention,
+                "0", "0", "0", "0", "0", "0"
+            )
+
+        try:
+            return await CallbackQuery.edit_message_media(
+                media=InputMediaPhoto(
+                    media=START_IMG_URL,
+                    caption=welcome_text,
+                ),
+                reply_markup=InlineKeyboardMarkup(buttons),
+            )
+        except Exception:
+            try:
+                return await CallbackQuery.edit_message_text(
+                    welcome_text,
+                    reply_markup=InlineKeyboardMarkup(buttons),
+                )
+            except Exception:
+                pass
     else:
         buttons = setting_markup(_)
         return await CallbackQuery.edit_message_reply_markup(
             reply_markup=InlineKeyboardMarkup(buttons)
         )
+
 
 @app.on_callback_query(filters.regex("shiv_Shashank") & ~BANNED_USERS)
 @languageCB
@@ -451,3 +488,4 @@ async def vote_change(client, CallbackQuery, _):
         )
     except MessageNotModified:
         return
+        
