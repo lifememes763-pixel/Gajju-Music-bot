@@ -16,7 +16,24 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 import random
 import config
 import requests
-from SHUKLAMUSIC import app 
+from SHUKLAMUSIC import app
+
+# ── AttractivePack emoji IDs ──
+_AP_PINK   = 5208942800514596941   # 🩷
+_AP_LOVE   = 5220157149103023925   # 💖
+_AP_FLOWER = 5366458509892276868   # 🌸
+_AP_STAR   = 5413351005779672594   # ⭐
+_AP_BOW    = 5379869575338812919   # 🎀
+_AP_YELLOW = 5363897614167199267   # 💛
+_AP_LILAC  = 5366119022792294762   # 💜
+_AP_SPARK  = 5343528160535270636   # ⚡️
+
+def ap(eid, fb):
+    return f'<emoji id={eid}>{fb}</emoji>' 
+
+
+BUTTON = [[InlineKeyboardButton("ꜱᴜᴘᴘᴏʀᴛ", url=config.SUPPORT_CHAT)]]
+CUTIE = "https://64.media.tumblr.com/d701f53eb5681e87a957a547980371d2/tumblr_nbjmdrQyje1qa94xto1_500.gif"
 
 
 @app.on_message(filters.command("wish"))
@@ -25,21 +42,28 @@ async def wish(_, m):
         await m.reply("ᴀᴅᴅ ᴡɪꜱʜ ʙᴀʙʏ🥀!")
         return 
 
-    api = requests.get("https://nekos.best/api/v2/happy").json()
-    url = api["results"][0]['url']
     text = m.text.split(None, 1)[1]
     wish_count = random.randint(1, 100)
-    wish = f"✨ ʜᴇʏ! {m.from_user.first_name}! "
-    wish += f"✨ ʏᴏᴜʀ ᴡɪꜱʜ: {text} "
-    wish += f"✨ ᴘᴏꜱꜱɪʙʟᴇ ᴛᴏ: {wish_count}%"
+    
+    # Exact /cute command wala mention style
+    user_id = m.from_user.id if m.from_user else 0
+    user_name = m.from_user.first_name if m.from_user else "User"
+    mention = f"[{user_name}](tg://user?id={user_id})"
+    
+    wish_text = (
+        f"{ap(_AP_LOVE,'💖')} {ap(_AP_FLOWER,'🌸')} <b>ʜᴇʏ! {mention}!</b>\n\n"
+        f"{ap(_AP_PINK,'🩷')} <b>ʏᴏᴜʀ ᴡɪꜱʜ :</b> {text}\n"
+        f"{ap(_AP_STAR,'⭐')} <b>ᴘᴏꜱꜱɪʙʟᴇ ᴛᴏ :</b> <code>{wish_count}%</code> {ap(_AP_BOW,'🎀')}"
+    )
     
     await app.send_animation(
         chat_id=m.chat.id,
-        animation=url,
-        caption=wish,
-        reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("ꜱᴜᴘᴘᴏʀᴛ", url=config.SUPPORT_CHAT)]])
+        animation=CUTIE,
+        caption=wish_text,
+        reply_markup=InlineKeyboardMarkup(BUTTON)
     )
+
+
             
     
 BUTTON = [[InlineKeyboardButton("ꜱᴜᴘᴘᴏʀᴛ", url=config.SUPPORT_CHAT)]]
@@ -56,7 +80,11 @@ async def cute(_, message):
 
     mention = f"[{user_name}](tg://user?id={str(user_id)})"
     mm = random.randint(1, 100)
-    CUTE = f"🍑 {mention} {mm}% ᴄᴜᴛᴇ ʙᴀʙʏ🥀"
+    CUTE = (
+        f"{ap(_AP_LOVE,'💖')} {ap(_AP_PINK,'🩷')} {mention}\n\n"
+        f"{ap(_AP_FLOWER,'🌸')} <b>ᴄᴜᴛᴇɴᴇss ʟᴇᴠᴇʟ :</b> <code>{mm}%</code>\n"
+        f"{ap(_AP_BOW,'🎀')} <b>ᴄᴜᴛᴇ ʙᴀʙʏ</b> {ap(_AP_STAR,'⭐')}"
+    )
 
     await app.send_document(
         chat_id=message.chat.id,
