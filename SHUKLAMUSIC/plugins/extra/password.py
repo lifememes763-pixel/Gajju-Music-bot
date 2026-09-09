@@ -29,5 +29,5 @@ async def password(bot, update):
     limit = int(qw)
     random_value = "".join(random.sample(password, limit))
     txt = f"<b>Lɪᴍɪᴛ:</b> {str(limit)} \n<b>Pᴀꜱꜱᴡᴏʀᴅ: <code>{random_value}</code>"
-    btn = InlineKeyboardMarkup([[InlineKeyboardButton('𝗔𝗗𝗗 𝗠𝗘', url='https://t.me/SapnaMusicRobot?startgroup=true')]])
+    btn = InlineKeyboardMarkup([[InlineKeyboardButton('✙ ʌᴅᴅ ϻє ✙', url='https://t.me/Alisa_music_alex_bot?startgroup=true')]])
     await message.edit_text(text=txt, reply_markup=btn, parse_mode=enums.ParseMode.HTML)
