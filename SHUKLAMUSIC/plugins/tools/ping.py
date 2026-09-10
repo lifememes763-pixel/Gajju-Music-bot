@@ -29,14 +29,28 @@ import random
 @language
 async def ping_com(client, message: Message, _):
     start = datetime.now()
+
     response = await message.reply_photo(
         random.choice(SHASHANK_IMG),
         caption=_["ping_1"].format(app.mention),
     )
-    pytgping = await SHUKLA.ping()
+
     UP, CPU, RAM, DISK = await bot_sys_stats()
-    resp = (datetime.now() - start).microseconds / 1000
-    await response.edit_text(
-        _["ping_2"].format(resp, app.mention, UP, RAM, CPU, DISK, pytgping),
+
+    resp = (datetime.now() - start).total_seconds() * 1000
+
+    # PyTgCalls ping removed because it causes _binding error
+    pytgping = round(resp, 2)
+
+    await response.edit_caption(
+        _["ping_2"].format(
+            round(resp, 2),
+            app.mention,
+            UP,
+            RAM,
+            CPU,
+            DISK,
+            pytgping
+        ),
         reply_markup=supp_markup(_),
     )
