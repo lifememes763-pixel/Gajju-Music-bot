@@ -91,20 +91,20 @@ LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", getenv("LOGGER_ID", "0")))
 SUPPORT_GROUP = getenv("SUPPORT_GROUP", SUPPORT_CHAT)
 
 # Image URLs
-SHASHANK_IMG = getenv("SHASHANK_IMG", "https://i.ibb.co/29QQH9t/x.jpg").split(",") if "," in getenv("SHASHANK_IMG", "") else [getenv("SHASHANK_IMG", "https://i.ibb.co/Jj8fKLbL/x.jpg")]
+SHASHANK_IMG = getenv("SHASHANK_IMG", "https://i.ibb.co/yFHCgpRG/p5-Vg-N6-Au.jpg").split(",") if "," in getenv("SHASHANK_IMG", "") else [getenv("SHASHANK_IMG", "https://i.ibb.co/Jj8fKLbL/x.jpg")]
 
-START_IMG_URL = getenv("START_IMG_URL", "https://i.ibb.co/Jj8fKLbL/x.jpg")
-PING_IMG_URL = getenv("PING_IMG_URL", "https://i.ibb.co/rRL0318r/x.jpg")
-PLAYLIST_IMG_URL = "https://i.ibb.co/rRL0318r/x.jpg"
-STATS_IMG_URL = "https://i.ibb.co/rRL0318r/x.jpg"
-TELEGRAM_AUDIO_URL = "https://i.ibb.co/rRL0318r/x.jpg"
-TELEGRAM_VIDEO_URL = "https://i.ibb.co/rRL0318r/x.jpg"
-STREAM_IMG_URL = "https://i.ibb.co/rRL0318r/x.jpg"
-SOUNCLOUD_IMG_URL = "https://i.ibb.co/rRL0318r/x.jpg"
-YOUTUBE_IMG_URL = "https://i.ibb.co/rRL0318r/x.jpg"
-SPOTIFY_ARTIST_IMG_URL = "https://i.ibb.co/rRL0318r/x.jpg"
-SPOTIFY_ALBUM_IMG_URL = "https://i.ibb.co/rRL0318r/x.jpg"
-SPOTIFY_PLAYLIST_IMG_URL = "https://i.ibb.co/rRL0318r/x.jpg"
+START_IMG_URL = getenv("START_IMG_URL", "https://i.ibb.co/yFHCgpRG/p5-Vg-N6-Au.jpg")
+PING_IMG_URL = getenv("PING_IMG_URL", "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg")
+PLAYLIST_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
+STATS_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
+TELEGRAM_AUDIO_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
+TELEGRAM_VIDEO_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
+STREAM_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
+SOUNCLOUD_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
+YOUTUBE_IMG_URL = "hhttps://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
+SPOTIFY_ARTIST_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
+SPOTIFY_ALBUM_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
+SPOTIFY_PLAYLIST_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
 
 
 # Helper function
