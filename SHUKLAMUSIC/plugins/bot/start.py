@@ -141,7 +141,7 @@ async def start_pm(client, message: Message, _):
     
     # --- REACTION START ---
     try:
-        await message.react(emoji="🥰")
+        await message.react(emoji="💖")
     except Exception:
         pass
     # --- REACTION END ---
