@@ -174,8 +174,8 @@ queue_6 : "<b>🕚 ᴅᴜʀᴀᴛɪᴏɴ :</b> ᴜɴᴋɴᴏᴡɴ ᴅᴜʀᴀᴛ
 queue_7 : "\nᴄʟɪᴄᴋ ᴏɴ ʙᴜᴛᴛᴏɴ ʙᴇʟᴏᴡ ᴛᴏ ɢᴇᴛ ᴡʜᴏʟᴇ ǫᴜᴇᴜᴇᴅ ʟɪsᴛ."
 queue_8 : "<b>● {0} ᴘʟᴀʏᴇʀ</b>\n\n<b>● sᴛʀᴇᴀᴍɪɴɢ :</b> {1}\n\n<b>● sᴛʀᴇᴀᴍ ᴛʏᴘᴇ :</b> {2}\n<b>● ʀᴇǫᴜᴇsᴛᴇᴅ ʙʏ :</b> {3}\n{4}"
 
-stream_1: "<blockquote>🎵 <b>ɴᴏᴡ sᴛʀᴇᴀᴍɪɴɢ</b>\n━━━━━━────────━━━━━━\n📝 <b>ᴛɪᴛʟᴇ :</b> <a href=\"{0}\">{1}</a>\n🕐 <b>ᴅᴜʀᴀᴛɪᴏɴ :</b> {2} ᴍɪɴᴜᴛᴇs\n👤 <b>ʀᴇǫᴜᴇsᴛᴇᴅ :</b> {3}\n━━━━━━────────━━━━━━\n🌸 <b>𝐏σᴡ𝛜ʀ𝛜𝛅 𝐁𝛄 <a href=\"https://t.me/Alexfaizan302\">𝐀ʟɪsᴀ</a></b></blockquote>"
-stream_2: "<blockquote>📡 <b>ʟɪᴠᴇ sᴛʀᴇᴀᴍ</b>\n━━━━━━────────━━━━━━\n🔗 <b>ᴛʏᴘᴇ :</b> URL\n👤 <b>ʀᴇǫᴜᴇsᴛᴇᴅ :</b> {0}\n━━━━━━────────━━━━━━\n🌸 <b>𝐏σᴡ𝛜ʀ𝛜𝛅 𝐁𝛄 <a href=\"https://t.me/Alexfaizan302\">𝐀ʟɪsᴀ</a></b></blockquote>"
+stream_1: "<blockquote>🎵 <b>ɴᴏᴡ sᴛʀᴇᴀᴍɪɴɢ</b>\n━━━━━━────────━━━━━━\n📝 <b>ᴛɪᴛʟᴇ :</b> <a href=\"{0}\">{1}</a>\n🕐 <b>ᴅᴜʀᴀᴛɪᴏɴ :</b> {2} ᴍɪɴᴜᴛᴇs\n👤 <b>ʀᴇǫᴜᴇsᴛᴇᴅ :</b> {3}\n━━━━━━────────━━━━━━\n🌸 <b>𝐏σᴡ𝛜ʀ𝛜𝛅 𝐁𝛄 <a href=\"https://t.me/egoist_destroyer\">𝐀ʟɪsᴀ</a></b></blockquote>"
+stream_2: "<blockquote>📡 <b>ʟɪᴠᴇ sᴛʀᴇᴀᴍ</b>\n━━━━━━────────━━━━━━\n🔗 <b>ᴛʏᴘᴇ :</b> URL\n👤 <b>ʀᴇǫᴜᴇsᴛᴇᴅ :</b> {0}\n━━━━━━────────━━━━━━\n🌸 <b>𝐏σᴡ𝛜ʀ𝛜𝛅 𝐁𝛄 <a href=\"https://t.me/egoist_destroyer\">𝐀ʟɪsᴀ</a></b></blockquote>"
 
 CLOSE_BUTTON  : "ᴄʟσsє"
 BACK_BUTTON : "ʙᴧᴄᴋ"
