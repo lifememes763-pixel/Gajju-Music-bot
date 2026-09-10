@@ -1,4 +1,5 @@
 import re
+import os
 from os import getenv
 from dotenv import load_dotenv
 from pyrogram import filters
@@ -77,6 +78,10 @@ lyrical = {}
 votemode = {}
 autoclean = []
 confirmer = {}
+
+import os
+
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "")
 
 # Debugging
 DEBUG_IGNORE_LOG = getenv("DEBUG_IGNORE_LOG", "False").lower() == "true"
