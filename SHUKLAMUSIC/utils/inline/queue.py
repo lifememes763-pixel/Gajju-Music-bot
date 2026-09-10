@@ -12,6 +12,7 @@
 # ❤️ Made with dedication and love by ItzShukla
 # -----------------------------------------------
 from typing import Union
+from pyrogram.enums import ButtonStyle
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from SHUKLAMUSIC import app
 
@@ -28,10 +29,12 @@ def queue_markup(
             InlineKeyboardButton(
                 text=_["QU_B_1"],
                 callback_data=f"GetQueued {CPLAY}|{videoid}",
+                style=ButtonStyle.PRIMARY,
             ),
             InlineKeyboardButton(
                 text=_["CLOSE_BUTTON"],
                 callback_data="close",
+                style=ButtonStyle.DANGER,
             ),
         ]
     ]
@@ -40,16 +43,19 @@ def queue_markup(
             InlineKeyboardButton(
                 text=_["QU_B_2"].format(played, dur),
                 callback_data="GetTimer",
+                style=ButtonStyle.PRIMARY,
             )
         ],
         [
             InlineKeyboardButton(
                 text=_["QU_B_1"],
                 callback_data=f"GetQueued {CPLAY}|{videoid}",
+                style=ButtonStyle.PRIMARY,
             ),
             InlineKeyboardButton(
                 text=_["CLOSE_BUTTON"],
                 callback_data="close",
+                style=ButtonStyle.DANGER,
             ),
         ],
     ]
@@ -64,10 +70,12 @@ def queue_back_markup(_, CPLAY):
                 InlineKeyboardButton(
                     text=_["BACK_BUTTON"],
                     callback_data=f"queue_back_timer {CPLAY}",
+                    style=ButtonStyle.PRIMARY,
                 ),
                 InlineKeyboardButton(
                     text=_["CLOSE_BUTTON"],
                     callback_data="close",
+                    style=ButtonStyle.DANGER,
                 ),
             ]
         ]
@@ -78,18 +86,43 @@ def queue_back_markup(_, CPLAY):
 def aq_markup(_, chat_id):
     buttons = [
         [
-            InlineKeyboardButton(text=_["S_B_3"], url=f"https://t.me/{app.username}?startgroup=true",)
+            InlineKeyboardButton(
+                text=_["S_B_3"],
+                url=f"https://t.me/{app.username}?startgroup=true",
+                style=ButtonStyle.PRIMARY,
+            )
         ],
         [
-            InlineKeyboardButton(text="• ʀᴇsᴜᴍᴇ •", callback_data=f"ADMIN Resume|{chat_id}"),
-            InlineKeyboardButton(text="• ᴘᴀᴜsᴇ •", callback_data=f"ADMIN Pause|{chat_id}"),
+            InlineKeyboardButton(
+                text="˹ʀᴇѕᴜᴍᴇ˼",
+                callback_data=f"ADMIN Resume|{chat_id}",
+                style=ButtonStyle.SUCCESS,
+            ),
+            InlineKeyboardButton(
+                text="˹ᴘᴀᴜѕᴇ˼",
+                callback_data=f"ADMIN Pause|{chat_id}",
+                style=ButtonStyle.PRIMARY,
+            ),
         ],
         [
-            InlineKeyboardButton(text="• sᴋɪᴘ •", callback_data=f"ADMIN Skip|{chat_id}"),
-            InlineKeyboardButton(text="• sᴛᴏᴘ •", callback_data=f"ADMIN Stop|{chat_id}"),
+            InlineKeyboardButton(
+                text="˹ѕᴋɪᴘ˼",
+                callback_data=f"ADMIN Skip|{chat_id}",
+                style=ButtonStyle.SUCCESS,
+            ),
+            InlineKeyboardButton(
+                text="˹ѕᴛᴏᴘ˼",
+                callback_data=f"ADMIN Stop|{chat_id}",
+                style=ButtonStyle.DANGER,
+            ),
         ],
         [
-            InlineKeyboardButton(text=_["CLOSE_BUTTON"], callback_data="close")
+            InlineKeyboardButton(
+                text=_["CLOSE_BUTTON"],
+                callback_data="close",
+                style=ButtonStyle.DANGER,
+            )
         ],
     ]
     return buttons
+                
