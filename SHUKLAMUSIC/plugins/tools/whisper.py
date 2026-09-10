@@ -175,8 +175,8 @@ async def in_help():
     answers = [
         InlineQueryResultArticle(
             title="💒 Whisper",
-            description=f"@Alexmusic302_bot [USERNAME | ID] [TEXT]",
-            input_message_content=InputTextMessageContent(f"**📍Usage:**\n\n@Alexmusic302_bot (Target Username or ID) (Your Message).\n\n**Example:**\n@Alexmusic302_bot @username I Wanna Phuck You"),
+            description=f"@Alisa_music_alex_bot [USERNAME | ID] [TEXT]",
+            input_message_content=InputTextMessageContent(f"**📍Usage:**\n\n@Alisa_music_alex_bot (Target Username or ID) (Your Message).\n\n**Example:**\n@Alisa_music_alex_bot @username I Wanna Phuck You"),
             thumb_url="https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg",
             reply_markup=switch_btn
         )
