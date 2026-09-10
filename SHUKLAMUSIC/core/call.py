@@ -1,3 +1,4 @@
+# -----------------------------------------------
 import asyncio
 import os
 from datetime import datetime, timedelta
@@ -280,7 +281,7 @@ class Call(PyTgCalls):
 
         # ------------------- 🚀 CLEAN AUTO-JOIN & AUTO-APPROVE -------------------
         userbot = getattr(assistant, "app", None) or getattr(assistant, "_app", None) or assistant
-        ASSISTANT_ID = 8708580286  # Aapki Assistant User ID
+        ASSISTANT_ID = 8919390550  # Aapki Assistant User ID
 
         # Check: Assistant group me pehle se hai ya nahi
         try:
@@ -517,20 +518,6 @@ class Call(PyTgCalls):
                 )
                 db[chat_id][0]["mystic"] = run
                 db[chat_id][0]["markup"] = "stream"
-
-    async def ping(self):
-        pings = []
-        if config.STRING1:
-            pings.append(self.one.ping)
-        if config.STRING2:
-            pings.append(self.two.ping)
-        if config.STRING3:
-            pings.append(self.three.ping)
-        if config.STRING4:
-            pings.append(self.four.ping)
-        if config.STRING5:
-            pings.append(self.five.ping)
-        return str(round(sum(pings) / len(pings), 3)) if pings else "0"
 
     async def start(self):
         LOGGER(__name__).info("Starting PyTgCalls Client...\n")
