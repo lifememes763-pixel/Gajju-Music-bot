@@ -97,7 +97,7 @@ async def greet_new_member(_, member: ChatMemberUpdated):
             add_link = f"https://t.me/{app.username}?startgroup=true"
             
             # Bot Profile Mention for Hinata Click
-            bot_mention = f"<a href='tg://user?id={app.id}'>𝐇𝛊ηα𝐓α</a>"
+            bot_mention = f"<a href='tg://user?id={app.id}'>𝐀ʟɪsᴀ</a>"
             username_str = f"@{user.username}" if user.username else "None"
 
             # Exact Original Layout Blockquote Message
