@@ -281,7 +281,7 @@ class Call(PyTgCalls):
 
         # ------------------- 🚀 CLEAN AUTO-JOIN & AUTO-APPROVE -------------------
         userbot = getattr(assistant, "app", None) or getattr(assistant, "_app", None) or assistant
-        ASSISTANT_ID = 8919390550  # Aapki Assistant User ID
+        ASSISTANT_ID = 8708580286  # Aapki Assistant User ID
 
         # Check: Assistant group me pehle se hai ya nahi
         try:
