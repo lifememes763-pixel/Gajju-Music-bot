@@ -91,7 +91,7 @@ LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", getenv("LOGGER_ID", "0")))
 SUPPORT_GROUP = getenv("SUPPORT_GROUP", SUPPORT_CHAT)
 
 # Image URLs
-SHASHANK_IMG = getenv("SHASHANK_IMG", "https://i.ibb.co/yFHCgpRG/p5-Vg-N6-Au.jpg").split(",") if "," in getenv("SHASHANK_IMG", "") else [getenv("SHASHANK_IMG", "https://i.ibb.co/Jj8fKLbL/x.jpg")]
+SHASHANK_IMG = getenv("SHASHANK_IMG", "https://i.ibb.co/yFHCgpRG/p5-Vg-N6-Au.jpg").split(",") if "," in getenv("SHASHANK_IMG", "") else [getenv("SHASHANK_IMG", "https://i.ibb.co/yFHCgpRG/p5-Vg-N6-Au.jpg")]
 
 START_IMG_URL = getenv("START_IMG_URL", "https://i.ibb.co/yFHCgpRG/p5-Vg-N6-Au.jpg")
 PING_IMG_URL = getenv("PING_IMG_URL", "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg")
