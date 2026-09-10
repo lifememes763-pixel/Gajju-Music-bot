@@ -1,55 +1,51 @@
-# -----------------------------------------------
-# 🔸 StrangerMusic Project
-# 🔹 Developed & Maintained by: Shashank Shukla (https://github.com/itzshukla)
-# 📅 Copyright © 2022 – All Rights Reserved
-#
-# 📖 License:
-# This source code is open for educational and non-commercial use ONLY.
-# You are required to retain this credit in all copies or substantial portions of this file.
-# Commercial use, redistribution, or removal of this notice is strictly prohibited
-# without prior written permission from the author.
-#
-# ❤️ Made with dedication and love by ItzShukla
-# -----------------------------------------------
-from pyrogram import Client, filters
+from pyrogram import filters
 from pyrogram.types import Message
 from SHUKLAMUSIC import app
 from config import OWNER_ID
+import aiohttp
+import re
+from telethon import Button
 
 
+# ───────── VC START ─────────
 
 @app.on_message(filters.video_chat_started)
-async def brah(_, msg):
-       await msg.reply("ᴠᴏɪᴄᴇ ᴄʜᴀᴛ sᴛᴀʀᴛᴇᴅ")
-# vc off
+async def vc_started(_, message):
+    await message.reply_text("🎙️ ᴠᴏɪᴄᴇ ᴄʜᴀᴛ ɪs ʟɪᴠᴇ")
+
+
+# ───────── VC END ─────────
+
 @app.on_message(filters.video_chat_ended)
-async def brah2(_, msg):
-       await msg.reply("**ᴠᴏɪᴄᴇ ᴄʜᴀᴛ ᴇɴᴅᴇᴅ**")
+async def vc_ended(_, message):
+    await message.reply_text("🔕 ᴠᴏɪᴄᴇ ᴄʜᴀᴛ ᴄʟᴏsᴇᴅ")
 
-# invite members on vc
+
+# ───────── VC INVITE ─────────
+
 @app.on_message(filters.video_chat_members_invited)
-async def brah3(app :app, message:Message):
-           text = f"{message.from_user.mention} ɪɴᴠɪᴛᴇᴅ "
-           x = 0
-           for user in message.video_chat_members_invited.users:
-             try:
-               text += f"[{user.first_name}](tg://user?id={user.id}) "
-               x += 1
-             except Exception:
-               pass
-           try:
-             await message.reply(f"{text} 😉")
-           except:
-             pass
+async def vc_invited(_, message: Message):
+    invited = message.video_chat_members_invited.users
+
+    names = []
+    for user in invited:
+        try:
+            names.append(f"[{user.first_name}](tg://user?id={user.id})")
+        except Exception:
+            continue
+
+    if names:
+        text = f"📢 {message.from_user.mention} ɪɴᴠɪᴛᴇᴅ " + " ".join(names)
+        await message.reply_text(text)
 
 
-####
+# ───────── MATH ─────────
 
 @app.on_message(filters.command("math"))
-async def calculate_math(client, message: Message):
+async def calculate_math(_, message: Message):
     if len(message.command) < 2:
         return await message.reply_text(
-            "❌ Usage:\n`/math 2+2`",
+            "❌ ᴜsᴀɢᴇ: `/math 2+2`",
             quote=True
         )
 
@@ -57,48 +53,73 @@ async def calculate_math(client, message: Message):
 
     try:
         result = eval(expression)
-        response = f"✅ **Result:** `{result}`"
+        response = f"🧮 **Answer:** `{result}`"
     except Exception:
-        response = "❌ **Invalid expression**"
+        response = "❌ ɪɴᴠᴀʟɪᴅ ᴇxᴘʀᴇssɪᴏɴ"
 
     await message.reply_text(response, quote=True)
 
-###
-@app.on_message(filters.command("leavegroup")& filters.user(OWNER_ID))
+
+# ───────── LEAVE GROUP ─────────
+
+@app.on_message(filters.command("leavegroup") & filters.user(OWNER_ID))
 async def bot_leave(_, message):
-    chat_id = message.chat.id
-    text = f"sᴜᴄᴄᴇssғᴜʟʟʏ   ʟᴇғᴛ  !!."
-    await message.reply_text(text)
-    await app.leave_chat(chat_id=chat_id, delete=True)
+    await message.reply_text("👋 ʟᴇᴀᴠɪɴɢ ᴛʜɪs ᴄʜᴀᴛ...")
+    await app.leave_chat(message.chat.id)
 
 
-####
+# ───────── GOOGLE SEARCH ─────────
 
-
-@app.on_message(filters.command(["spg"], ["/", "!", "."]))
+@app.on_message(filters.command("spg", prefixes=["/", "!", "."]))
 async def search(event):
-    msg = await event.respond("Searching...")
-    async with aiohttp.ClientSession() as session:
-        start = 1
-        async with session.get(f"https://content-customsearch.googleapis.com/customsearch/v1?cx=ec8db9e1f9e41e65e&q={event.text.split()[1]}&key=AIzaSyAa8yy0GdcGPHdtD083HiGGx_S0vMPScDM&start={start}", headers={"x-referer": "https://explorer.apis.google.com"}) as r:
-            response = await r.json()
-            result = ""
+    if len(event.text.split()) < 2:
+        return await event.reply("❌ ɢɪᴠᴇ ᴀ sᴇᴀʀᴄ ᴛᴇʀᴍ")
 
-            if not response.get("items"):
-                return await msg.edit("No results found!")
-            for item in response["items"]:
-                title = item["title"]
-                link = item["link"]
-                if "/s" in item["link"]:
-                    link = item["link"].replace("/s", "")
-                elif re.search(r'\/\d', item["link"]):
-                    link = re.sub(r'\/\d', "", item["link"])
-                if "?" in link:
-                    link = link.split("?")[0]
-                if link in result:
-                    # remove duplicates
-                    continue
-                result += f"{title}\n{link}\n\n"
-            prev_and_next_btns = [Button.inline("▶️Next▶️", data=f"next {start+10} {event.text.split()[1]}")]
-            await msg.edit(result, link_preview=False, buttons=prev_and_next_btns)
-            await session.close()
+    query = event.text.split(None, 1)[1]
+    msg = await event.respond("🔎 sᴇᴀʀᴄɪɴɢ...")
+
+    async with aiohttp.ClientSession() as session:
+        url = "https://content-customsearch.googleapis.com/customsearch/v1"
+
+        params = {
+            "cx": "ec8db9e1f9e41e65e",
+            "q": query,
+            "key": config.GOOGLE_API_KEY,
+            "start": 1
+        }
+
+        async with session.get(
+            url,
+            params=params,
+            headers={
+                "x-referer": "https://explorer.apis.google.com"
+            }
+        ) as r:
+            response = await r.json()
+
+    items = response.get("items", [])
+
+    if not items:
+        return await msg.edit("🔍 ɴᴏ ʀᴇsᴜʟᴛs")
+
+    result = ""
+    seen = set()
+
+    for item in items:
+        title = item.get("title", "Untitled")
+        link = item.get("link")
+
+        if not link or link in seen:
+            continue
+
+        seen.add(link)
+
+        if "?" in link:
+            link = link.split("?")[0]
+
+        result += f"**{title}**\n{link}\n\n"
+
+    await msg.edit(
+        result or "🔍 ɴᴏ ʀᴇsᴜʟᴛs",
+        link_preview=False
+    )
