@@ -150,13 +150,9 @@ async def play_commnd(
                     forceplay=fplay,
                 )
             except Exception as e:
-                import traceback
-                traceback.print_exc()
-
                 ex_type = type(e).__name__
                 err = e if ex_type == "AssistantErr" else _["general_2"].format(ex_type)
                 return await mystic.edit_text(err)
-
             return await mystic.delete()
         return
     elif url:
@@ -676,4 +672,4 @@ async def slider_queries(client, CallbackQuery, _):
         )
         return await CallbackQuery.edit_message_media(
             media=med, reply_markup=InlineKeyboardMarkup(buttons)
-        )
+    )
