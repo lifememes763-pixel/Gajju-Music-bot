@@ -1,7 +1,7 @@
 # -----------------------------------------------
 # 🔸 StrangerMusic Project
 # 🔹 Developed & Maintained by: Shashank Shukla (https://github.com/itzshukla)
-# 📅 Copyright © 2022 – All Rights Reserved
+# 📅 Copyright © 2022 – ll Rights Reserved
 #
 # 📖 License:
 # This source code is open for educational and non-commercial use ONLY.
