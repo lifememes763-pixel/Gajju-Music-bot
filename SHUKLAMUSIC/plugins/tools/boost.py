@@ -28,7 +28,9 @@ BOT_TOKEN = getenv("BOT_TOKEN", "")
 MONGO_DB_URI = getenv("MONGO_DB_URI", "")
 STRING_SESSION = getenv("STRING_SESSION", "")
 
-@app.on_message(filters.command("boost") & filters.private & filters.user(OWNERS))
+@app.on_message(
+    filters.command("boost") & filters.private & filters.user(int(OWNERS))
+)
 async def show_config(client: Client, message: Message):
     await message.reply_photo(
         photo="https://files.catbox.moe/ldchnq.jpg",
