@@ -1,6 +1,6 @@
 # -----------------------------------------------
 # 🔸 StrangerMusic Project
-# 🔹 Developed & Maintained by: Shashank Shukla (https://github.com/itzshukla)
+# 🔹 Developed & Maintained by: Shashank Sukla (https://github.com/itzshukla)
 # 📅 Copyright © 2022 – All Rights Reserved
 #
 # 📖 License:
