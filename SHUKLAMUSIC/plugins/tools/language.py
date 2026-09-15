@@ -1,6 +1,6 @@
 from pyrogram import filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message, ButtonStyle
-
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message
+from pyrogram.enums import ButtonStyle
 from SHUKLAMUSIC import app
 from SHUKLAMUSIC.utils.database import get_lang, set_lang
 from SHUKLAMUSIC.utils.decorators import ActualAdminCB, language, languageCB
