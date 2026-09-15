@@ -174,44 +174,16 @@ def help_pannel(_, START: Union[bool, int] = None):
             ],
             [
                 InlineKeyboardButton(
-                    text="ᴄʜᴀᴛғɪɢʜᴛ",
-                    callback_data="help_callback hb16",
+                    text=f"ʟᴀɴɢ {current_lang.upper()}",
+                    callback_data="open_languages",
                     style=ButtonStyle.PRIMARY,
                     icon_custom_emoji_id=_E_FIGHT,
-                ),
-                InlineKeyboardButton(
-                    text="ɢɪᴛʜᴜʙ",
-                    callback_data="help_callback hb17",
-                    style=ButtonStyle.SUCCESS,
-                    icon_custom_emoji_id=_E_GITHUB,
                 ),
                 InlineKeyboardButton(
                     text="ᴄʜᴀᴛʙᴏᴛ",
                     callback_data="help_callback hb18",
                     style=ButtonStyle.DANGER,
                     icon_custom_emoji_id=_E_CHATBOT,
-                ),
-            ],
-            [
-                InlineKeyboardButton(
-                    text="🎮 ɢᴀᴍᴇs",
-                    callback_data="help_callback hb19",
-                    style=ButtonStyle.SUCCESS,
-                    icon_custom_emoji_id=_E_GAMES,
-                ),
-                InlineKeyboardButton(
-                    text="🔑 sᴛʀɪɴɢ ɢᴇɴ",
-                    callback_data="help_callback hb20",
-                    style=ButtonStyle.DANGER,
-                    icon_custom_emoji_id=_E_KEY,
-                ),
-            ],
-            [
-                InlineKeyboardButton(
-                    text="⚡ ǫᴜɪᴄᴋ ɢᴀᴍᴇs",
-                    callback_data="help_callback hb21",
-                    style=ButtonStyle.SUCCESS,
-                    icon_custom_emoji_id=_E_GAMES,
                 ),
             ],
             mark,
