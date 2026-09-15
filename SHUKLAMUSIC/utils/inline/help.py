@@ -174,7 +174,7 @@ def help_pannel(_, START: Union[bool, int] = None):
             ],
             [
                 InlineKeyboardButton(
-                    text=f"ʟᴀɴɢ {current_lang.upper()}",
+                    text=f"ʟᴀɴɢ",
                     callback_data="open_languages",
                     style=ButtonStyle.PRIMARY,
                     icon_custom_emoji_id=_E_FIGHT,
