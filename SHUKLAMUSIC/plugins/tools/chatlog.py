@@ -11,17 +11,14 @@
 #
 # ❤️ Made with dedication and love by ItzShukla
 # -----------------------------------------------
+
 import random
-from pyrogram import Client, filters
+from pyrogram import filters
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
-from config import LOGGER_ID as LOG_GROUP_ID
-from SHUKLAMUSIC import app 
+from pyrogram.enums import ButtonStyle
 from pyrogram.errors import RPCError
-from typing import Union, Optional
-from PIL import Image, ImageDraw, ImageFont
-import asyncio, os, aiohttp
-from pathlib import Path
-from pyrogram.enums import ParseMode
+from config import LOGGER_ID as LOG_GROUP_ID
+from SHUKLAMUSIC import app
 
 photo = [
     "https://i.ibb.co/bgzQ2YV1/v-Y9z-JCSF.jpg",
@@ -31,34 +28,121 @@ photo = [
     "https://i.ibb.co/bgzQ2YV1/v-Y9z-JCSF.jpg",
 ]
 
+
 @app.on_message(filters.new_chat_members, group=2)
-async def join_watcher(_, message):    
+async def join_watcher(_, message):
     chat = message.chat
-    link = await app.export_chat_invite_link(chat.id)
+
     for member in message.new_chat_members:
-        if member.id == app.id:
+        if member.id != app.id:
+            continue
+
+        try:
             count = await app.get_chat_members_count(chat.id)
-            msg = (
-                f"📝 ᴍᴜsɪᴄ ʙᴏᴛ ᴀᴅᴅᴇᴅ ɪɴ ᴀ ɴᴇᴡ ɢʀᴏᴜᴘ\n\n"
-                f"____________________________________\n\n"
-                f"📌 ᴄʜᴀᴛ ɴᴀᴍᴇ: {chat.title}\n"
-                f"🍂 ᴄʜᴀᴛ ɪᴅ: {chat.id}\n"
-                f"🔐 ᴄʜᴀᴛ ᴜsᴇʀɴᴀᴍᴇ: @{chat.username}\n"
-                f"🛰 ᴄʜᴀᴛ ʟɪɴᴋ: [ᴄʟɪᴄᴋ]({link})\n"
-                f"📈 ɢʀᴏᴜᴘ ᴍᴇᴍʙᴇʀs: {count}\n"
-                f"🤔 ᴀᴅᴅᴇᴅ ʙʏ: {message.from_user.mention}"
-            )
-            await app.send_photo(LOG_GROUP_ID, photo=random.choice(photo), caption=msg, reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton(f"sᴇᴇ ɢʀᴏᴜᴘ👀", url=f"{link}")]
-            ]))
+        except RPCError:
+            count = "Unavailable"
+
+        try:
+            link = await app.export_chat_invite_link(chat.id)
+        except RPCError:
+            link = None
+
+        chat_username = (
+            f"@{chat.username}"
+            if chat.username
+            else "𝐏ʀɪᴠᴀᴛᴇ 𝐆ʀᴏᴜᴘ"
+        )
+
+        chat_link = (
+            f'<a href="{link}">ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>'
+            if link
+            else "𝐔ɴᴀᴠᴀɪʟᴀʙʟᴇ"
+        )
+
+        added_by = (
+            message.from_user.mention
+            if message.from_user
+            else "𝐔ɴᴋɴᴏᴡɴ 𝐔sᴇʀ"
+        )
+
+        msg = (
+            "╭━━━〔 🌸 𝐀ʟɪsᴀ ✦ 𝐌ᴜsɪᴄ 〕━━━╮\n"
+            "┃\n"
+            "┃ 🎵 <b>𝐁ᴏᴛ 𝐀ᴅᴅᴇᴅ 𝐈ɴ 𝐍ᴇᴡ 𝐆ʀᴏᴜᴘ</b>\n"
+            "┃\n"
+            f"┃ 📌 <b>𝐂ʜᴀᴛ:</b> {chat.title}\n"
+            f"┃ 🆔 <b>𝐈ᴅ:</b> <code>{chat.id}</code>\n"
+            f"┃ 🔐 <b>𝐔sᴇʀɴᴀᴍᴇ:</b> {chat_username}\n"
+            f"┃ 🛰 <b>𝐋ɪɴᴋ:</b> {chat_link}\n"
+            f"┃ 👥 <b>𝐌ᴇᴍʙᴇʀs:</b> {count}\n"
+            f"┃ 👤 <b>𝐀ᴅᴅᴇᴅ 𝐁ʏ:</b> {added_by}\n"
+            "┃\n"
+            "╰━━━━━━━━━━━━━━━━━━━━━━╯"
+        )
+
+        buttons = []
+        if link:
+            buttons = [[
+                InlineKeyboardButton(
+                    "👀 ᴠɪᴇᴡ ɢʀᴏᴜᴘ",
+                    url=link,
+                    style=ButtonStyle.DANGER
+                )
+            ]]
+
+        await app.send_photo(
+            LOG_GROUP_ID,
+            photo=random.choice(photo),
+            caption=msg,
+            reply_markup=InlineKeyboardMarkup(buttons) if buttons else None,
+        )
+
 
 @app.on_message(filters.left_chat_member)
 async def on_left_chat_member(_, message: Message):
-    if (await app.get_me()).id == message.left_chat_member.id:
-        remove_by = message.from_user.mention if message.from_user else "𝐔ɴᴋɴᴏᴡɴ 𝐔sᴇʀ"
-        title = message.chat.title
-        username = f"@{message.chat.username}" if message.chat.username else "𝐏ʀɪᴠᴀᴛᴇ 𝐂ʜᴀᴛ"
+    try:
+        me = await app.get_me()
+
+        if message.left_chat_member.id != me.id:
+            return
+
+        remove_by = (
+            message.from_user.mention
+            if message.from_user
+            else "𝐔ɴᴋɴᴏᴡɴ 𝐔sᴇʀ"
+        )
+
+        title = message.chat.title or "𝐔ɴᴋɴᴏᴡɴ 𝐂ʜᴀᴛ"
+
+        username = (
+            f"@{message.chat.username}"
+            if message.chat.username
+            else "𝐏ʀɪᴠᴀᴛᴇ 𝐂ʜᴀᴛ"
+        )
+
         chat_id = message.chat.id
-        left = f"✫ <b><u>#𝐋ᴇғᴛ_𝐆ʀᴏᴜᴘ</u></b> ✫\n\n𝐂ʜᴀᴛ 𝐓ɪᴛʟᴇ : {title}\n\n𝐂ʜᴀᴛ 𝐈ᴅ : {chat_id}\n\n𝐑ᴇᴍᴏᴠᴇᴅ 𝐁ʏ : {remove_by}\n\n𝐁ᴏᴛ : @{app.username}"
-        await app.send_photo(LOG_GROUP_ID, photo=random.choice(photo), caption=left)
-        
+
+        left = (
+            "╭━━━〔 🚫 𝐀ʟɪsᴀ ✦ 𝐌ᴜsɪᴄ 〕━━━╮\n"
+            "┃\n"
+            "┃ <b>#𝐋ᴇғᴛ_𝐆ʀᴏᴜᴘ</b>\n"
+            "┃\n"
+            f"┃ 📌 <b>𝐂ʜᴀᴛ:</b> {title}\n"
+            f"┃ 🆔 <b>𝐈ᴅ:</b> <code>{chat_id}</code>\n"
+            f"┃ 🔐 <b>𝐔sᴇʀɴᴀᴍᴇ:</b> {username}\n"
+            f"┃ 👤 <b>𝐑ᴇᴍᴏᴠᴇᴅ 𝐁ʏ:</b> {remove_by}\n"
+            f"┃ 🤖 <b>𝐁ᴏᴛ:</b> @{app.username}\n"
+            "┃\n"
+            "╰━━━━━━━━━━━━━━━━━━━━━━╯"
+        )
+
+        await app.send_photo(
+            LOG_GROUP_ID,
+            photo=random.choice(photo),
+            caption=left,
+        )
+
+    except RPCError:
+        return
+    except Exception:
+        return
