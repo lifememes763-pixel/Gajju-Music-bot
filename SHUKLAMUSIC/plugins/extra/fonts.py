@@ -4,8 +4,6 @@
 # 📅 Copyright © 2022 – All Rights Reserved
 # -----------------------------------------------
 
-import html
-
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram.enums import ButtonStyle
@@ -14,8 +12,6 @@ from SHUKLAMUSIC.utils.Shukla_font import Fonts
 from SHUKLAMUSIC import app
 
 
-# Stores the ORIGINAL text for every generated font message.
-# Key = message_id, Value = original text.
 FONT_TEXTS = {}
 
 
@@ -82,7 +78,7 @@ def second_page_buttons():
         ],
         [
             InlineKeyboardButton("R҉a҉y҉s҉", callback_data="style+rays", style=ButtonStyle.PRIMARY),
-            InlineKeyboardButton("B҈i҈r҈d҈s҈", callback_data="style+birds", style=ButtonStyle.PRIMARY),
+            InlineKeyboardButton("B҈i҈r҈d҈s҉", callback_data="style+birds", style=ButtonStyle.PRIMARY),
             InlineKeyboardButton("S̸l̸a̸s̸h̸", callback_data="style+slash", style=ButtonStyle.PRIMARY),
         ],
         [
@@ -151,31 +147,25 @@ async def style_buttons(client, message):
 
     if len(parts) < 2 or not parts[1].strip():
         return await message.reply_text(
-            "❌ <b>Use:</b> <code>/font your text</code>",
-            parse_mode="html",
+            "❌ Use: /font your text"
         )
 
     original_text = parts[1].strip()
 
     try:
         sent = await message.reply_text(
-            f"<code>{html.escape(original_text)}</code>",
+            original_text,
             reply_markup=InlineKeyboardMarkup(first_page_buttons()),
-            parse_mode="html",
         )
 
-        # IMPORTANT:
-        # Save the original text against the generated message ID.
-        # Callback will always use this original text.
         FONT_TEXTS[sent.id] = original_text
-
-        return sent
 
     except Exception:
         return await message.reply_text(
-            "❌ <b>Font message send nahi ho saka.</b>",
-            parse_mode="html",
+            "❌ Font message send nahi ho saka."
         )
+
+    return sent
 
 
 @app.on_callback_query(filters.regex(r"^nxt(?:\+0)?$"))
@@ -187,8 +177,7 @@ async def nxt(client, query):
             await query.message.edit_reply_markup(
                 InlineKeyboardMarkup(second_page_buttons())
             )
-
-        elif query.data == "nxt+0":
+        else:
             await query.message.edit_reply_markup(
                 InlineKeyboardMarkup(first_page_buttons())
             )
@@ -214,23 +203,18 @@ async def style(client, query):
             show_alert=True,
         )
 
-    # Answer FIRST so Telegram button spinner stops immediately.
     await query.answer()
 
     message_id = query.message.id
-
-    # NEVER take query.message.text as the original text.
-    # It may already be transformed by a previous button.
     original_text = FONT_TEXTS.get(message_id)
 
     if not original_text:
         return await query.answer(
-            "❌ Original text is no longer available. Use /font again.",
+            "❌ Original text not found. Use /font again.",
             show_alert=True,
         )
 
     try:
-        # Always transform the ORIGINAL text.
         new_text = font_func(original_text)
 
         if not new_text:
@@ -240,9 +224,8 @@ async def style(client, query):
             )
 
         await query.message.edit_text(
-            f"<code>{html.escape(new_text)}</code>",
+            new_text,
             reply_markup=query.message.reply_markup,
-            parse_mode="html",
         )
 
     except Exception:
@@ -261,6 +244,7 @@ async def close_font(client, query):
         FONT_TEXTS.pop(query.message.id, None)
         await query.answer()
         await query.message.delete()
+
     except Exception:
         try:
             await query.answer(
