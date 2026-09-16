@@ -191,7 +191,7 @@ async def greet_new_member(_, member: ChatMemberUpdated):
                 photo=welcomeimg,
                 caption=(
                     "<blockquote>"
-                    "╭━━━〔 🌸 𝐀ʟɪsᴀ ✦ 𝐌ᴜsɪᴄ 〕━━━╮\n"
+                    "╭━━━〔 <emoji id=5348511817247257109>🌸</emoji> 𝐀ʟɪsᴀ ✦ 𝐌ᴜsɪᴄ 〕━━━╮\n"
                     "┃\n"
                     "┃ 🎉 <b>ɴᴇᴡ ᴍᴇᴍʙᴇʀ ᴡᴇʟᴄᴏᴍᴇ!</b>\n"
                     "┃\n"
