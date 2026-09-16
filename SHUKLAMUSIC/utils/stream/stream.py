@@ -29,6 +29,13 @@ from SHUKLAMUSIC.utils.pastebin import SHUKLABin
 from SHUKLAMUSIC.utils.stream.queue import put_queue, put_queue_index
 
 
+# =========================================================
+# 🎵 FIXED STREAM IMAGE
+# =========================================================
+
+STREAM_IMAGE = "https://i.ibb.co/hxvZNPv0/K5-Ui-PTBR.jpg"
+
+
 async def stream(
     _,
     mystic,
@@ -48,6 +55,10 @@ async def stream(
     if forceplay:
         await SHUKLA.force_stop_stream(chat_id)
 
+    # =========================================================
+    # PLAYLIST
+    # =========================================================
+
     if streamtype == "playlist":
         msg = f"{_['play_19']}\n\n"
         count = 0
@@ -63,7 +74,10 @@ async def stream(
                     duration_sec,
                     thumbnail,
                     vidid,
-                ) = await YouTube.details(search, False if spotify else True)
+                ) = await YouTube.details(
+                    search,
+                    False if spotify else True,
+                )
             except:
                 continue
 
@@ -88,6 +102,7 @@ async def stream(
 
                 position = len(db.get(chat_id)) - 1
                 count += 1
+
                 msg += f"{count}. {title[:70]}\n"
                 msg += f"{_['play_20']} {position}\n\n"
 
@@ -129,9 +144,14 @@ async def stream(
 
                 button = stream_markup(_, chat_id)
 
-                run = await app.send_message(
-                    original_chat_id,
-                    text=_["stream_1"].format(
+                # =================================================
+                # 🎵 FIRST PLAY - FIXED PHOTO
+                # =================================================
+
+                run = await app.send_photo(
+                    chat_id=original_chat_id,
+                    photo=STREAM_IMAGE,
+                    caption=_["stream_1"].format(
                         f"https://t.me/{app.username}?start=info_{vidid}",
                         title[:23],
                         duration_min,
@@ -146,29 +166,37 @@ async def stream(
         if count == 0:
             return
 
+        link = await SHUKLABin(msg)
+
+        lines = msg.count("\n")
+
+        if lines >= 17:
+            car = os.linesep.join(
+                msg.split(os.linesep)[:17]
+            )
         else:
-            link = await SHUKLABin(msg)
+            car = msg
 
-            lines = msg.count("\n")
+        carbon = await Carbon.generate(
+            car,
+            randint(100, 10000000),
+        )
 
-            if lines >= 17:
-                car = os.linesep.join(msg.split(os.linesep)[:17])
-            else:
-                car = msg
+        upl = close_markup(_)
 
-            carbon = await Carbon.generate(
-                car,
-                randint(100, 10000000),
-            )
+        return await app.send_photo(
+            original_chat_id,
+            photo=carbon,
+            caption=_["play_21"].format(
+                position,
+                link,
+            ),
+            reply_markup=upl,
+        )
 
-            upl = close_markup(_)
-
-            return await app.send_photo(
-                original_chat_id,
-                photo=carbon,
-                caption=_["play_21"].format(position, link),
-                reply_markup=upl,
-            )
+    # =========================================================
+    # YOUTUBE
+    # =========================================================
 
     elif streamtype == "youtube":
         link = result["link"]
@@ -241,9 +269,14 @@ async def stream(
 
             button = stream_markup(_, chat_id)
 
-            run = await app.send_message(
-                original_chat_id,
-                text=_["stream_1"].format(
+            # =================================================
+            # 🎵 FIRST PLAY - FIXED PHOTO
+            # =================================================
+
+            run = await app.send_photo(
+                chat_id=original_chat_id,
+                photo=STREAM_IMAGE,
+                caption=_["stream_1"].format(
                     f"https://t.me/{app.username}?start=info_{vidid}",
                     title[:23],
                     duration_min,
@@ -254,6 +287,10 @@ async def stream(
 
             db[chat_id][0]["mystic"] = run
             db[chat_id][0]["markup"] = "stream"
+
+    # =========================================================
+    # SOUNDCLOUD
+    # =========================================================
 
     elif streamtype == "soundcloud":
         file_path = result["filepath"]
@@ -313,9 +350,14 @@ async def stream(
 
             button = stream_markup(_, chat_id)
 
-            run = await app.send_message(
-                original_chat_id,
-                text=_["stream_1"].format(
+            # =================================================
+            # 🎵 FIRST PLAY - FIXED PHOTO
+            # =================================================
+
+            run = await app.send_photo(
+                chat_id=original_chat_id,
+                photo=STREAM_IMAGE,
+                caption=_["stream_1"].format(
                     config.SUPPORT_CHAT,
                     title[:23],
                     duration_min,
@@ -326,6 +368,10 @@ async def stream(
 
             db[chat_id][0]["mystic"] = run
             db[chat_id][0]["markup"] = "tg"
+
+    # =========================================================
+    # TELEGRAM
+    # =========================================================
 
     elif streamtype == "telegram":
         file_path = result["path"]
@@ -390,9 +436,14 @@ async def stream(
 
             button = stream_markup(_, chat_id)
 
-            run = await app.send_message(
-                original_chat_id,
-                text=_["stream_1"].format(
+            # =================================================
+            # 🎵 FIRST PLAY - FIXED PHOTO
+            # =================================================
+
+            run = await app.send_photo(
+                chat_id=original_chat_id,
+                photo=STREAM_IMAGE,
+                caption=_["stream_1"].format(
                     link,
                     title[:23],
                     duration_min,
@@ -403,6 +454,10 @@ async def stream(
 
             db[chat_id][0]["mystic"] = run
             db[chat_id][0]["markup"] = "tg"
+
+    # =========================================================
+    # LIVE
+    # =========================================================
 
     elif streamtype == "live":
         link = result["link"]
@@ -469,9 +524,14 @@ async def stream(
 
             button = stream_markup(_, chat_id)
 
-            run = await app.send_message(
-                original_chat_id,
-                text=_["stream_1"].format(
+            # =================================================
+            # 🎵 FIRST PLAY - FIXED PHOTO
+            # =================================================
+
+            run = await app.send_photo(
+                chat_id=original_chat_id,
+                photo=STREAM_IMAGE,
+                caption=_["stream_1"].format(
                     f"https://t.me/{app.username}?start=info_{vidid}",
                     title[:23],
                     duration_min,
@@ -482,6 +542,10 @@ async def stream(
 
             db[chat_id][0]["mystic"] = run
             db[chat_id][0]["markup"] = "tg"
+
+    # =========================================================
+    # INDEX / M3U8
+    # =========================================================
 
     elif streamtype == "index":
         link = result
@@ -537,6 +601,10 @@ async def stream(
             )
 
             button = stream_markup(_, chat_id)
+
+            # =================================================
+            # INDEX USES STREAM_2 — UNCHANGED
+            # =================================================
 
             run = await app.send_message(
                 original_chat_id,
