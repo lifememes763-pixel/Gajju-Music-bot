@@ -1,7 +1,7 @@
 # ---------------------------------------------------------------
 # 🔸 StrangerMusic Project
 # 🔹 Developed & Maintained by: Shashank Shukla
-# 📅 Copyright © 2025 – All Rights Reserved
+# 📅 Copyright © 2025 – All Rights Reerved
 # ---------------------------------------------------------------
 
 import asyncio
