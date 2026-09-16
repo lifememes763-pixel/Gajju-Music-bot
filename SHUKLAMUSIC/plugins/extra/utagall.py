@@ -170,7 +170,7 @@ async def atag(_, message: Message):
 
 # ===================== CANCEL =====================
 
-@app.on_message(filters.command("cancel") & filters.group)
+@app.on_message(filters.command("ucancel") & filters.group)
 async def cancel_spam(_, message: Message):
     user_id = message.from_user.id if message.from_user else None
     if not await is_admin(message.chat.id, user_id):
