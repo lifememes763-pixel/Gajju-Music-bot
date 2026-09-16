@@ -125,3 +125,16 @@ HELP_15 = """<b><u>sᴘᴇᴇᴅ ᴄᴏᴍᴍᴀɴᴅs :</u></b> [ᴀᴅᴍɪɴ 
 • /speed or /playback : ᴀᴅᴊᴜsᴛs ᴀᴜᴅɪᴏ sᴘᴇᴇᴅ ɪɴ ɢʀᴏᴜᴩs.  
 • /cspeed or /cplayback : ᴀᴅᴊᴜsᴛs ᴀᴜᴅɪᴏ sᴘᴇᴇᴅ ɪɴ ᴄʜᴀɴɴᴇʟs.
 """
+
+HELP_16 = """<b><u>𝐂ʜ𝛂ɴɢє 𝐋𝛂ɴɢυ𝛂ɢє :</u></b>
+
+• /lang : 𝐂ʜ𝛂ɴɢє 𝐓ʜє 𝐁σᴛ 𝐋𝛂ɴɢυ𝛂ɢє 𝐓σ 𝐘συʀ 𝐏ʀєғєʀʀєᴅ 𝐋𝛂ɴɢυ𝛂ɢє ғσʀ 𝐀 𝐌σʀє 𝐏єʀѕσɴ𝛂ℓɪzєᴅ 𝐄xρєʀɪєɴᴄє.
+"""
+
+HELP_17 = """<b><u>ᴄʜᴀᴛʙᴏᴛ :</u></b>
+
+A simple auto-reply chatbot that learns from your group, powered entirely by MongoDB. No external AI API is used.
+
+• <code>/chatbot on</code> — enable auto-replies in this chat
+• <code>/chatbot off</code> — disable auto-replies in this chat
+"""
