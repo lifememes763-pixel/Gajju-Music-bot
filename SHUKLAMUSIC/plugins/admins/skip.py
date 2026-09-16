@@ -1,6 +1,6 @@
 # -----------------------------------------------
 # 🔸 StrangerMusic Project
-# 🔹 Developed & Maintained by: Shashank Shukla (https://github.com/itzshukla)
+# 🔹 Developed & Maintained by: Shashank Shukla
 # 📅 Copyright © 2022 – All Rights Reserved
 # -----------------------------------------------
 
@@ -18,15 +18,20 @@ from SHUKLAMUSIC.utils.stream.autoclear import auto_clean
 from config import BANNED_USERS
 
 
+STREAM_IMAGE = "https://i.ibb.co/hxvZNPv0/K5-Ui-PTBR.jpg"
+
+
 @app.on_message(
-    filters.command(["skip", "cskip", "next", "cnext"]) &
-    filters.group &
-    ~BANNED_USERS
+    filters.command(["skip", "cskip", "next", "cnext"])
+    & filters.group
+    & ~BANNED_USERS
 )
 @AdminRightsCheck
 async def skip(cli, message: Message, _, chat_id):
+
     if not len(message.command) < 2:
         loop = await get_loop(chat_id)
+
         if loop != 0:
             return await message.reply_text(_["admin_8"])
 
@@ -45,10 +50,13 @@ async def skip(cli, message: Message, _, chat_id):
                     if 1 <= state <= count:
                         for x in range(state):
                             popped = None
+
                             try:
                                 popped = check.pop(0)
                             except Exception:
-                                return await message.reply_text(_["admin_12"])
+                                return await message.reply_text(
+                                    _["admin_12"]
+                                )
 
                             if popped:
                                 await auto_clean(popped)
@@ -71,11 +79,17 @@ async def skip(cli, message: Message, _, chat_id):
                             _["admin_11"].format(count)
                         )
                 else:
-                    return await message.reply_text(_["admin_10"])
+                    return await message.reply_text(
+                        _["admin_10"]
+                    )
             else:
-                return await message.reply_text(_["queue_2"])
+                return await message.reply_text(
+                    _["queue_2"]
+                )
         else:
-            return await message.reply_text(_["admin_9"])
+            return await message.reply_text(
+                _["admin_9"]
+            )
 
     else:
         check = db.get(chat_id)
@@ -156,13 +170,15 @@ async def skip(cli, message: Message, _, chat_id):
                 image=image,
             )
         except Exception:
-            return await message.reply_text(_["call_6"])
+            return await message.reply_text(
+                _["call_6"]
+            )
 
         button = stream_markup(_, chat_id)
 
-        # Thumbnail removed from stream_1
-        run = await message.reply_text(
-            _["stream_1"].format(
+        run = await message.reply_photo(
+            photo=STREAM_IMAGE,
+            caption=_["stream_1"].format(
                 f"https://t.me/{app.username}?start=info_{videoid}",
                 title[:23],
                 check[0]["dur"],
@@ -191,7 +207,9 @@ async def skip(cli, message: Message, _, chat_id):
                 video=status,
             )
         except Exception:
-            return await mystic.edit_text(_["call_6"])
+            return await mystic.edit_text(
+                _["call_6"]
+            )
 
         try:
             image = await YouTube.thumbnail(videoid, True)
@@ -206,13 +224,15 @@ async def skip(cli, message: Message, _, chat_id):
                 image=image,
             )
         except Exception:
-            return await mystic.edit_text(_["call_6"])
+            return await mystic.edit_text(
+                _["call_6"]
+            )
 
         button = stream_markup(_, chat_id)
 
-        # Thumbnail removed from stream_1
-        run = await message.reply_text(
-            _["stream_1"].format(
+        run = await message.reply_photo(
+            photo=STREAM_IMAGE,
+            caption=_["stream_1"].format(
                 f"https://t.me/{app.username}?start=info_{videoid}",
                 title[:23],
                 check[0]["dur"],
@@ -224,7 +244,10 @@ async def skip(cli, message: Message, _, chat_id):
         db[chat_id][0]["mystic"] = run
         db[chat_id][0]["markup"] = "stream"
 
-        await mystic.delete()
+        try:
+            await mystic.delete()
+        except Exception:
+            pass
 
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     # INDEX STREAM
@@ -237,7 +260,9 @@ async def skip(cli, message: Message, _, chat_id):
                 video=status,
             )
         except Exception:
-            return await message.reply_text(_["call_6"])
+            return await message.reply_text(
+                _["call_6"]
+            )
 
         button = stream_markup(_, chat_id)
 
@@ -254,6 +279,7 @@ async def skip(cli, message: Message, _, chat_id):
     # TELEGRAM / SOUNDCLOUD / YOUTUBE
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     else:
+
         if videoid == "telegram":
             image = None
 
@@ -262,7 +288,10 @@ async def skip(cli, message: Message, _, chat_id):
 
         else:
             try:
-                image = await YouTube.thumbnail(videoid, True)
+                image = await YouTube.thumbnail(
+                    videoid,
+                    True,
+                )
             except Exception:
                 image = None
 
@@ -274,7 +303,9 @@ async def skip(cli, message: Message, _, chat_id):
                 image=image,
             )
         except Exception:
-            return await message.reply_text(_["call_6"])
+            return await message.reply_text(
+                _["call_6"]
+            )
 
         # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         # TELEGRAM
@@ -283,11 +314,7 @@ async def skip(cli, message: Message, _, chat_id):
             button = stream_markup(_, chat_id)
 
             run = await message.reply_photo(
-                photo=(
-                    config.TELEGRAM_AUDIO_URL
-                    if str(streamtype) == "audio"
-                    else config.TELEGRAM_VIDEO_URL
-                ),
+                photo=STREAM_IMAGE,
                 caption=_["stream_1"].format(
                     config.SUPPORT_CHAT,
                     title[:23],
@@ -307,11 +334,7 @@ async def skip(cli, message: Message, _, chat_id):
             button = stream_markup(_, chat_id)
 
             run = await message.reply_photo(
-                photo=(
-                    config.SOUNCLOUD_IMG_URL
-                    if str(streamtype) == "audio"
-                    else config.TELEGRAM_VIDEO_URL
-                ),
+                photo=STREAM_IMAGE,
                 caption=_["stream_1"].format(
                     config.SUPPORT_CHAT,
                     title[:23],
@@ -330,9 +353,9 @@ async def skip(cli, message: Message, _, chat_id):
         else:
             button = stream_markup(_, chat_id)
 
-            # Thumbnail removed from stream_1
-            run = await message.reply_text(
-                _["stream_1"].format(
+            run = await message.reply_photo(
+                photo=STREAM_IMAGE,
+                caption=_["stream_1"].format(
                     f"https://t.me/{app.username}?start=info_{videoid}",
                     title[:23],
                     check[0]["dur"],
