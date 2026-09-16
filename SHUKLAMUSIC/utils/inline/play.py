@@ -81,6 +81,7 @@ def stream_markup_timer(_, chat_id, played, dur):
             InlineKeyboardButton(text="II", callback_data=f"ADMIN Resume|{chat_id}", icon_custom_emoji_id=5409222721869459068, style=ButtonStyle.SUCCESS),
             InlineKeyboardButton(text="▷", callback_data=f"ADMIN Pause|{chat_id}", icon_custom_emoji_id=5409042015415448331, style=ButtonStyle.PRIMARY),
             InlineKeyboardButton(text="‣‣", callback_data=f"ADMIN Skip|{chat_id}", icon_custom_emoji_id=5409249767295301824, style=ButtonStyle.SUCCESS),
+            InlineKeyboardButton(text="▢", callback_data=f"ADMIN Stop|{chat_id}", style=ButtonStyle.DANGER),
         ],
         [
             InlineKeyboardButton(
@@ -107,7 +108,8 @@ def stream_markup(_, chat_id):
         [
             InlineKeyboardButton(text="II", callback_data=f"ADMIN Resume|{chat_id}", icon_custom_emoji_id=5409222721869459068, style=ButtonStyle.SUCCESS),
             InlineKeyboardButton(text="▷", callback_data=f"ADMIN Pause|{chat_id}", icon_custom_emoji_id=5409042015415448331, style=ButtonStyle.PRIMARY),
-            InlineKeyboardButton(text="‣‣", callback_data=f"ADMIN Skip|{chat_id}", icon_custom_emoji_id=5409249767295301824, style=ButtonStyle.SUCCESS),        
+            InlineKeyboardButton(text="‣‣", callback_data=f"ADMIN Skip|{chat_id}", icon_custom_emoji_id=5409249767295301824, style=ButtonStyle.SUCCESS), 
+            InlineKeyboardButton(text="▢", callback_data=f"ADMIN Stop|{chat_id}", style=ButtonStyle.DANGER),
         ],
         [
             InlineKeyboardButton(
