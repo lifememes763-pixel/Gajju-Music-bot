@@ -175,13 +175,13 @@ def help_pannel(_, START: Union[bool, int] = None):
             [
                 InlineKeyboardButton(
                     text=f"ʟᴀɴɢ",
-                    callback_data="open_languages",
+                    callback_data="help_callback hb16",
                     style=ButtonStyle.PRIMARY,
                     icon_custom_emoji_id=_E_FIGHT,
                 ),
                 InlineKeyboardButton(
                     text="ᴄʜᴀᴛʙᴏᴛ",
-                    callback_data="help_callback hb18",
+                    callback_data="help_callback hb17",
                     style=ButtonStyle.DANGER,
                     icon_custom_emoji_id=_E_CHATBOT,
                 ),
