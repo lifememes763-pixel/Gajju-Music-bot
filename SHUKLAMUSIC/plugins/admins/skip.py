@@ -1,167 +1,285 @@
+# -----------------------------------------------
+# 🔸 StrangerMusic Project
+# 🔹 Developed & Maintained by: Shashank Shukla
+# 📅 Copyright © 2022 – All Rights Reserved
+# -----------------------------------------------
+
 from pyrogram import filters
-from pyrogram.types import InlineKeyboardMarkup,Message
+from pyrogram.types import InlineKeyboardMarkup, Message
+
 import config
-from SHUKLAMUSIC import YouTube,app
+from SHUKLAMUSIC import YouTube, app
 from SHUKLAMUSIC.core.call import SHUKLA
 from SHUKLAMUSIC.misc import db
 from SHUKLAMUSIC.utils.database import get_loop
 from SHUKLAMUSIC.utils.decorators import AdminRightsCheck
-from SHUKLAMUSIC.utils.inline import close_markup,stream_markup
+from SHUKLAMUSIC.utils.inline import close_markup, stream_markup
 from SHUKLAMUSIC.utils.stream.autoclear import auto_clean
 from config import BANNED_USERS
 
-@app.on_message(filters.command(["skip","cskip","next","cnext"])&filters.group&~BANNED_USERS)
+
+@app.on_message(
+    filters.command(["skip", "cskip", "next", "cnext"])
+    & filters.group
+    & ~BANNED_USERS
+)
 @AdminRightsCheck
-async def skip(cli,message:Message,_,chat_id):
-    if len(message.command)>1:
-        loop=await get_loop(chat_id)
-        if loop!=0:
+async def skip(cli, message: Message, _, chat_id):
+
+    if len(message.command) >= 2:
+        loop = await get_loop(chat_id)
+        if loop != 0:
             return await message.reply_text(_["admin_8"])
-        state=message.text.split(None,1)[1].strip()
+
+        state = message.text.split(None, 1)[1].strip()
+
         if not state.isnumeric():
             return await message.reply_text(_["admin_9"])
-        state=int(state)
-        check=db.get(chat_id)
+
+        state = int(state)
+        check = db.get(chat_id)
+
         if not check:
             return await message.reply_text(_["queue_2"])
-        count=len(check)
-        if count<=2:
+
+        count = len(check)
+
+        if count <= 2:
             return await message.reply_text(_["admin_10"])
-        count-=1
-        if not 1<=state<=count:
+
+        count -= 1
+
+        if not 1 <= state <= count:
             return await message.reply_text(_["admin_11"].format(count))
+
         for _x in range(state):
+            popped = None
             try:
-                popped=check.pop(0)
+                popped = check.pop(0)
             except Exception:
                 return await message.reply_text(_["admin_12"])
+
             if popped:
                 await auto_clean(popped)
+
             if not check:
                 try:
                     await message.reply_text(
-                        _["admin_6"].format(message.from_user.mention,message.chat.title),
-                        reply_markup=close_markup(_)
+                        text=_["admin_6"].format(
+                            message.from_user.mention,
+                            message.chat.title,
+                        ),
+                        reply_markup=close_markup(_),
                     )
                     await SHUKLA.stop_stream(chat_id)
                 except Exception:
                     pass
                 return
+
     else:
-        check=db.get(chat_id)
+        check = db.get(chat_id)
+        popped = None
+
         try:
-            popped=check.pop(0)
+            popped = check.pop(0)
+
             if popped:
                 await auto_clean(popped)
+
             if not check:
                 await message.reply_text(
-                    _["admin_6"].format(message.from_user.mention,message.chat.title),
-                    reply_markup=close_markup(_)
+                    text=_["admin_6"].format(
+                        message.from_user.mention,
+                        message.chat.title,
+                    ),
+                    reply_markup=close_markup(_),
                 )
                 try:
-                    await SHUKLA.stop_stream(chat_id)
+                    return await SHUKLA.stop_stream(chat_id)
                 except Exception:
-                    pass
-                return
+                    return
+
         except Exception:
             try:
                 await message.reply_text(
-                    _["admin_6"].format(message.from_user.mention,message.chat.title),
-                    reply_markup=close_markup(_)
+                    text=_["admin_6"].format(
+                        message.from_user.mention,
+                        message.chat.title,
+                    ),
+                    reply_markup=close_markup(_),
                 )
-                await SHUKLA.stop_stream(chat_id)
+                return await SHUKLA.stop_stream(chat_id)
             except Exception:
-                pass
-            return
+                return
 
-    queued=check[0]["file"]
-    title=check[0]["title"].title()
-    user=check[0]["by"]
-    streamtype=check[0]["streamtype"]
-    videoid=check[0]["vidid"]
-    status=True if str(streamtype)=="video" else None
-    db[chat_id][0]["played"]=0
+    queued = check[0]["file"]
+    title = check[0]["title"].title()
+    user = check[0]["by"]
+    streamtype = check[0]["streamtype"]
+    videoid = check[0]["vidid"]
 
-    exis=check[0].get("old_dur")
+    status = True if str(streamtype) == "video" else None
+
+    db[chat_id][0]["played"] = 0
+
+    exis = check[0].get("old_dur")
     if exis:
-        db[chat_id][0]["dur"]=exis
-        db[chat_id][0]["seconds"]=check[0]["old_second"]
-        db[chat_id][0]["speed_path"]=None
-        db[chat_id][0]["speed"]=1.0
+        db[chat_id][0]["dur"] = exis
+        db[chat_id][0]["seconds"] = check[0]["old_second"]
+        db[chat_id][0]["speed_path"] = None
+        db[chat_id][0]["speed"] = 1.0
 
+    # LIVE STREAM
     if "live_" in queued:
-        n,link=await YouTube.video(videoid,True)
-        if n==0:
-            return await message.reply_text(_["admin_7"].format(title))
+        n, link = await YouTube.video(videoid, True)
+
+        if n == 0:
+            return await message.reply_text(
+                _["admin_7"].format(title)
+            )
+
         try:
-            await SHUKLA.skip_stream(chat_id,link,video=status)
+            await SHUKLA.skip_stream(
+                chat_id,
+                link,
+                video=status,
+            )
         except Exception:
             return await message.reply_text(_["call_6"])
-        button=stream_markup(_,chat_id)
-        run=await message.reply_text(
+
+        button = stream_markup(_, chat_id)
+
+        run = await message.reply_text(
             _["stream_1"].format(
                 f"https://t.me/{app.username}?start=info_{videoid}",
-                title[:23],check[0]["dur"],user
+                title[:23],
+                check[0]["dur"],
+                user,
             ),
-            reply_markup=InlineKeyboardMarkup(button)
+            reply_markup=InlineKeyboardMarkup(button),
         )
-        db[chat_id][0]["mystic"]=run
-        db[chat_id][0]["markup"]="tg"
 
+        db[chat_id][0]["mystic"] = run
+        db[chat_id][0]["markup"] = "tg"
+
+    # YOUTUBE VIDEO
     elif "vid_" in queued:
-        mystic=await message.reply_text(_["call_7"])
+        mystic = await message.reply_text(_["call_7"])
+
         try:
-            file_path,direct=await YouTube.download(
-                videoid,mystic,videoid=True,video=status
+            file_path, direct = await YouTube.download(
+                videoid,
+                mystic,
+                videoid=True,
+                video=status,
             )
         except Exception:
             return await mystic.edit_text(_["call_6"])
+
         try:
-            await SHUKLA.skip_stream(chat_id,file_path,video=status)
+            await SHUKLA.skip_stream(
+                chat_id,
+                file_path,
+                video=status,
+            )
         except Exception:
             return await mystic.edit_text(_["call_6"])
-        button=stream_markup(_,chat_id)
-        run=await message.reply_text(
+
+        button = stream_markup(_, chat_id)
+
+        run = await message.reply_text(
             _["stream_1"].format(
                 f"https://t.me/{app.username}?start=info_{videoid}",
-                title[:23],check[0]["dur"],user
+                title[:23],
+                check[0]["dur"],
+                user,
             ),
-            reply_markup=InlineKeyboardMarkup(button)
+            reply_markup=InlineKeyboardMarkup(button),
         )
-        db[chat_id][0]["mystic"]=run
-        db[chat_id][0]["markup"]="stream"
+
+        db[chat_id][0]["mystic"] = run
+        db[chat_id][0]["markup"] = "stream"
+
         try:
             await mystic.delete()
         except Exception:
             pass
 
+    # INDEX STREAM
     elif "index_" in queued:
         try:
-            await SHUKLA.skip_stream(chat_id,videoid,video=status)
+            await SHUKLA.skip_stream(
+                chat_id,
+                videoid,
+                video=status,
+            )
         except Exception:
             return await message.reply_text(_["call_6"])
-        button=stream_markup(_,chat_id)
-        run=await message.reply_text(
-            _["stream_2"].format(user),
-            reply_markup=InlineKeyboardMarkup(button)
-        )
-        db[chat_id][0]["mystic"]=run
-        db[chat_id][0]["markup"]="tg"
 
+        button = stream_markup(_, chat_id)
+
+        run = await message.reply_text(
+            _["stream_2"].format(user),
+            reply_markup=InlineKeyboardMarkup(button),
+        )
+
+        db[chat_id][0]["mystic"] = run
+        db[chat_id][0]["markup"] = "tg"
+
+    # TELEGRAM / SOUNDCLOUD / YOUTUBE
     else:
         try:
-            await SHUKLA.skip_stream(chat_id,queued,video=status)
+            await SHUKLA.skip_stream(
+                chat_id,
+                queued,
+                video=status,
+            )
         except Exception:
             return await message.reply_text(_["call_6"])
 
-        button=stream_markup(_,chat_id)
-        link=config.SUPPORT_CHAT if videoid in ("telegram","soundcloud") else f"https://t.me/{app.username}?start=info_{videoid}"
+        button = stream_markup(_, chat_id)
 
-        run=await message.reply_text(
-            _["stream_1"].format(
-                link,title[:23],check[0]["dur"],user
-            ),
-            reply_markup=InlineKeyboardMarkup(button)
-        )
-        db[chat_id][0]["mystic"]=run
-        db[chat_id][0]["markup"]="tg" if videoid in ("telegram","soundcloud") else "stream"
+        # TELEGRAM
+        if videoid == "telegram":
+            run = await message.reply_text(
+                _["stream_1"].format(
+                    config.SUPPORT_CHAT,
+                    title[:23],
+                    check[0]["dur"],
+                    user,
+                ),
+                reply_markup=InlineKeyboardMarkup(button),
+            )
+
+            db[chat_id][0]["mystic"] = run
+            db[chat_id][0]["markup"] = "tg"
+
+        # SOUNDCLOUD
+        elif videoid == "soundcloud":
+            run = await message.reply_text(
+                _["stream_1"].format(
+                    config.SUPPORT_CHAT,
+                    title[:23],
+                    check[0]["dur"],
+                    user,
+                ),
+                reply_markup=InlineKeyboardMarkup(button),
+            )
+
+            db[chat_id][0]["mystic"] = run
+            db[chat_id][0]["markup"] = "tg"
+
+        # YOUTUBE
+        else:
+            run = await message.reply_text(
+                _["stream_1"].format(
+                    f"https://t.me/{app.username}?start=info_{videoid}",
+                    title[:23],
+                    check[0]["dur"],
+                    user,
+                ),
+                reply_markup=InlineKeyboardMarkup(button),
+            )
+
+            db[chat_id][0]["mystic"] = run
+            db[chat_id][0]["markup"] = "stream"
