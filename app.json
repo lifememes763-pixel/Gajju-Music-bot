@@ -1,12 +1,12 @@
 {
-  "name": "Stranger Music",
+  "name": "Mahi X Music",
   "description": "A Telegram Music Player Bot, written in Python with Pyrogram and Py-Tgcalls.",
-  "logo": "https://telegra.ph/file/b61227af05544deb76a34.jpg",
+  "logo": "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg",
   "keywords": [
     "python3",
     "telegram",
     "bot",
-    "StrangerMusic",
+    "MahiXMusic",
     "MusicBot",
     "telegram-bot",
     "pyrogram"
@@ -14,16 +14,16 @@
   "env": {
     "API_ID": {
       "description": "Get this value from https://my.telegram.org",
-      "value": "29308061",
+      "value": "30392327",
       "required": true
     },
     "API_HASH": {
       "description": "Get this value from https://my.telegram.org",
-      "value": "462de3dfc98fd938ef9c6ee31a72d099",
+      "value": "d28c0736351ac08046d5c734825e444f",
       "required": true
     },
     "BOT_TOKEN": {
-      "description": "A Bot's token from Botfather",
+      "description": "8965231242:AAEXPnmXuMJ5lUn3P_4r-JJKUhekxW9qQJ4",
       "value": "",
       "required": true
     },
@@ -34,11 +34,11 @@
     },
     "OWNER_ID": {
       "description": "The user id of user whom you would like to add as OWNER.",
-      "value": "6762113050",
+      "value": "5556392536",
       "required": true
     },
     "STRING_SESSION": {
-      "description": "A Pyrogram v2 String Session from @StringSesssionGeneratorRobot on Telegram.",
+      "description": "BQHPwAcAQM7vn1x34JrIgg2f55WNfYVNt3G4pP7J4NvrZnJPXPSGTY5KeNB4YvGg1vruVzT3GJZa2TSeDZy9Fc1H3S3C0AaQTHfNA4H7-pcUwKyOwLr1rJCh1Sdqy_QIrqxbF0Ro10sMbOF1OhtU6MffdBblF96oms2hT2f0wHOgC9L0fRxCq-YUv-1Yx6hqE6Kptez1moubtlJFsCcuIR9VSICz3BmG-mwwmjWa2kWVZsCRjNgoxR1EeuLgnJFgSfaVQXUFZhBnj5txQkK5akWFgY_QvG-sQUT2i6Eb00-ES6_qojTQMdE5DSIh0_lQBhplheE2O_U_QrLYsB_dW63hNVGOwQAAAAGCJkQ_AA.",
       "value": "",
       "required": true
     },
@@ -54,7 +54,7 @@
     },
     "LOGGER_ID": {
       "description": "Your Log Group ID, add your bot and promote as an admin with full rights!. Channel ki id mat daal dena bsdk.",
-      "value": "-1002018556839",
+      "value": "-1004358885523",
       "required": true
     },
     "API_URL": {
@@ -64,7 +64,7 @@
     },
     "API_KEY": {
       "description": "Get this API Key from @SHRUTIAPIBOT",
-      "value": "",
+      "value": "ShrutiBotsl1kl00shbEkj7i1GLZ7a",
       "required": true
     }
   },
