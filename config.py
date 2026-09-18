@@ -94,18 +94,17 @@ SUPPORT_GROUP = getenv("SUPPORT_GROUP", SUPPORT_CHAT)
 SHASHANK_IMG = getenv("SHASHANK_IMG", "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg").split(",") if "," in getenv("SHASHANK_IMG", "") else [getenv("SHASHANK_IMG", "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg")]
 
 START_IMG_URL = getenv("START_IMG_URL", "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg")
-PING_IMG_URL = getenv("PING_IMG_URL", "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg")
-PLAYLIST_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
-STATS_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
-TELEGRAM_AUDIO_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
-TELEGRAM_VIDEO_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
-STREAM_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
-SOUNCLOUD_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
-YOUTUBE_IMG_URL = "hhttps://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
-SPOTIFY_ARTIST_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
-SPOTIFY_ALBUM_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
-SPOTIFY_PLAYLIST_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
-
+PING_IMG_URL = getenv("PING_IMG_URL", "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg")
+PLAYLIST_IMG_URL = "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+STATS_IMG_URL = "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+TELEGRAM_AUDIO_URL = "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+TELEGRAM_VIDEO_URL = "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+STREAM_IMG_URL = "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+SOUNCLOUD_IMG_URL = "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+YOUTUBE_IMG_URL = "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+SPOTIFY_ARTIST_IMG_URL = "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+SPOTIFY_ALBUM_IMG_URL = "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+SPOTIFY_PLAYLIST_IMG_URL = "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
 
 # Helper function
 def time_to_seconds(time: str) -> int:
