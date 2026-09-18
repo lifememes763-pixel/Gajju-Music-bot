@@ -20,7 +20,7 @@ ASSUSERNAME = getenv("ASSUSERNAME", "MahiMusicAssistant")
 
 
 # MongoDB
-MONGO_DB_URI = getenv("MONGO_DB_URI", None)
+MONGO_DB_URI = getenv("MONGO_DB_URI = "mongodb+srv://uffmahi18_db_user:YOUR_NEW_PASSWORD@mahixmusic.daquxqp.mongodb.net/?appName=MahiXMusic")
 
 # Limits and IDs
 DURATION_LIMIT_MIN = int(getenv("DURATION_LIMIT", 17000))
