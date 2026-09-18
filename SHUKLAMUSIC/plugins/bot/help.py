@@ -28,9 +28,9 @@ from SHUKLAMUSIC.utils.stuffs.helper import Helper
 
 # 🖼️ Code ke andar hi SHASHANK_IMG ki list bana di gayi hai
 SHASHANK_IMG = [
-    "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg",
-    "https://i.ibb.co/yFHCgpRG/p5-Vg-N6-Au.jpg",
-    "https://i.ibb.co/bgzQ2YV1/v-Y9z-JCSF.jpg",
+    "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg",
+"https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg",
+"https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg",
 ]
 
 
