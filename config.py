@@ -81,7 +81,7 @@ confirmer = {}
 
 import os
 
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "")
+GOOGLE_API_KEY = os.getenv("AQ.Ab8RN6Jl1A4lJ-b5VsNCGdp2qvStPbh42FPQulhx_Qzp_DAJdw", "")
 
 # Debugging
 DEBUG_IGNORE_LOG = getenv("DEBUG_IGNORE_LOG", "False").lower() == "true"
@@ -91,9 +91,9 @@ LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", getenv("LOGGER_ID", "0")))
 SUPPORT_GROUP = getenv("SUPPORT_GROUP", SUPPORT_CHAT)
 
 # Image URLs
-SHASHANK_IMG = getenv("SHASHANK_IMG", "https://i.ibb.co/yFHCgpRG/p5-Vg-N6-Au.jpg").split(",") if "," in getenv("SHASHANK_IMG", "") else [getenv("SHASHANK_IMG", "https://i.ibb.co/yFHCgpRG/p5-Vg-N6-Au.jpg")]
+SHASHANK_IMG = getenv("SHASHANK_IMG", "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg").split(",") if "," in getenv("SHASHANK_IMG", "") else [getenv("SHASHANK_IMG", "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg")]
 
-START_IMG_URL = getenv("START_IMG_URL", "https://i.ibb.co/yFHCgpRG/p5-Vg-N6-Au.jpg")
+START_IMG_URL = getenv("START_IMG_URL", "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg")
 PING_IMG_URL = getenv("PING_IMG_URL", "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg")
 PLAYLIST_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
 STATS_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
