@@ -1,14 +1,14 @@
 <h2 align="center">
-    ─「 𝐀ʟɪsᴀ 𝘅 𝐌ᴜsɪᴄ 」─
+    ─「 ᴍᴀʜɪ ꭙ ᴍᴜꜱɪᴄ 」─
 
 </h2>
 
-[![Typing SVG](https://readme-typing-svg.herokuapp.com/?lines=ㅤ+𝚆𝙴𝙻𝙲𝙾𝙼𝙴+𝚃𝙾+𝙰𝙻𝙸𝚂𝙰+𝙼𝚄𝚂𝙸𝙲+𝚁𝙴𝙿𝙾+;ㅤ+𝚃𝙷𝙸𝚂+𝙸𝚂+𝙰+𝙰𝙳𝚅𝙰𝙽𝙲𝙴+𝙼𝚄𝚂𝙸𝙲+𝙱𝙾𝚃;𝙿𝙾𝚆𝙴𝚁𝙴𝙳+𝙱𝚈+☞+𝙼𝙰𝙳𝙰𝚁𝙰+𝙳𝙴𝙵𝙰𝚄𝙻𝚃𝙴𝚁𝚂)](https://github.com/ankan2444-gif/Alisa-music.git)
+[![Typing SVG](https://readme-typing-svg.herokuapp.com/?lines=ㅤ+𝙒𝙀𝙇𝘾𝙊𝙈𝙀+𝙏𝙊+𝙈𝘼𝙃𝙄+𝙓+𝙈𝙐𝙎𝙄𝘾;ㅤ+𝙏𝙃𝙄𝙎+𝙄𝙎+𝘼𝙉+𝘼𝘿𝙑𝘼𝙉𝘾𝙀𝘿+𝙈𝙐𝙎𝙄𝘾+𝘽𝙊𝙏;𝙋𝙊𝙒𝙀𝙍𝙀𝘿+𝘽𝙔+☞+𝙈𝘼𝙃𝙄)](https://github.com/uffmahi18-tech/Mahi_X_Music))
 
 
 
 <p align="center">
-  <img src="https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg">
+  <img src="https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg">
 </p>
 
 
@@ -166,8 +166,8 @@ python3 -m Alisa
 ### Channel Support
 Bot also Supported with Channels. Just add bot and assistant to the Channel as Admin. </details>
 
-### Credits : 
+### Credits :
 
-- [𝙼𝙰𝙳𝙰𝚁𝙰 𝙳𝙴𝙵𝙰𝚄𝙻𝚃𝙴𝚁𝚂](https://t.me/EGOIST_DESTROYER)
-- [𝙲𝙷𝙰𝙽𝙽𝙴𝙻](https://t.me/ALISA_X_SUPPORT)
+- [𝙼𝙰𝙷𝙸](https://t.me/ll_Uff_Mahi_ll)
+- [𝙲𝙷𝙰𝙽𝙽𝙴𝙻](https://t.me/UffMahiXNetwork)
 - Everyone In This Journey !
