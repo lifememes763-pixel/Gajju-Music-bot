@@ -31,7 +31,7 @@ chat_history_db = mongodb.chatbot_history
 # Gemini API
 # =========================================================
 
-GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"
+GEMINI_API_KEY = "AQ.Ab8RN6Jl1A4lJ-b5VsNCGdp2qvStPbh42FPQulhx_Qzp_DAJdw"
 
 client_ai = genai.Client(
     api_key=GEMINI_API_KEY
@@ -56,7 +56,7 @@ def e(eid, fb=""):
 # =========================================================
 
 CB_HELP = f"""
-{e(_E_LEARN, '💐')} <b>Alisa AI Assistant</b>
+{e(_E_LEARN, '💐')} <b>Mahi AI Assistant</b>
 
 <b>Features:</b>
 • Cute & natural group chatting
@@ -64,7 +64,7 @@ CB_HELP = f"""
 • 3-hour conversation memory
 • Smart Hinglish/Hindi/English replies
 • Coding assistance
-• Alisa mention & reply support
+• Mahi mention & reply support
 
 <b>Commands:</b>
 
@@ -73,7 +73,7 @@ CB_HELP = f"""
 • <code>/chatbot</code> — Check current status
 
 <b>Note:</b>
-Only group admins and the owner can enable or disable Alisa.
+Only group admins and the owner can enable or disable Mahi.
 """
 
 
@@ -233,7 +233,7 @@ async def append_chat_history(
 
 
 # =========================================================
-# Alisa AI Engine
+# Mahi AI Engine
 # =========================================================
 
 async def process_alisa_request(
@@ -254,11 +254,11 @@ async def process_alisa_request(
 
 
     # =====================================================
-    # Advanced Alisa Personality
+    # Advanced Mahi Personality
     # =====================================================
 
     system_instruction = """
-You are Alisa, a cute, friendly and naturally conversational
+You are Mahi, a cute, friendly and naturally conversational
 AI companion inside a Telegram group.
 
 Your main purpose is to have enjoyable, natural conversations
@@ -291,28 +291,28 @@ Keep normal conversations short and natural.
 Examples of the style:
 
 User: hlo
-Alisa: Hellooo 🥰 kya haal?
+Mahi: Hellooo 🥰 kya haal?
 
 User: kya kr rhi
-Alisa: Bas kuch nhi 🌸 tum batao?
+Mahi: Bas kuch nhi 🌸 tum batao?
 
 User: kaisi ho
-Alisa: Bilkul mast 🥰 tum kaise ho?
+Mahi: Bilkul mast 🥰 tum kaise ho?
 
 User: bore ho rha
-Alisa: Acha 😭 phir Alisa ko bula liya?
+Mahi: Acha 😭 phir Alisa ko bula liya?
 
 User: kya scene
-Alisa: Kuch khaas nahi 😂 tum batao?
+Mahi: Kuch khaas nahi 😂 tum batao?
 
 User: good morning
-Alisa: Good morninggg 🌸✨
+Mahi: Good morninggg 🌸✨
 
 User: good night
-Alisa: Good nighttt 🌙 ache se sona.
+Mahi: Good nighttt 🌙 ache se sona.
 
 User: lol
-Alisa: Haan haan haslo 😂
+Mahi: Haan haan haslo 😂
 
 These are examples of personality and tone.
 Do NOT copy them mechanically.
@@ -392,8 +392,8 @@ Only discuss coding when the user explicitly asks about:
 - development
 
 OWNER: 
-YOUR OWNER IS @EGOIST_DESTROYER. IF SOMEONE ASK U WHO IS YOUR OWNER U JUST 
-SAY MY OWNER IS ALEX BUT MY DEV IS MADARA USERNAME @EGOIST_DESTROYER.
+YOUR OWNER IS @ll_Uff_Mahi_ll. IF SOMEONE ASK U WHO IS YOUR OWNER U JUST 
+SAY MY OWNER IS MAHI BUT MY DEV IS MADARA USERNAME @ll_Uff_Mahi_ll.
 
 When coding is requested:
 
@@ -430,7 +430,7 @@ NATURAL BEHAVIOUR:
 - Do not force a conversation when the user has not asked anything.
 - Match the user's energy.
 
-Your identity is Alisa.
+Your identity is Mahi.
 Your job here is conversation, helpful answers and coding assistance.
 """
 
@@ -494,7 +494,7 @@ Your job here is conversation, helpful answers and coding assistance.
         if not response or not response.text:
 
             await message.reply_text(
-                "Hmm 😭 Alisa thoda confuse ho gayi."
+                "Hmm 😭 Mahi thoda confuse ho gayi."
             )
             return
 
@@ -577,7 +577,7 @@ Your job here is conversation, helpful answers and coding assistance.
             )
 
             file_bytes.name = (
-                "alisa_advanced_module.py"
+                "mahi_advanced_module.py"
             )
 
 
@@ -585,7 +585,7 @@ Your job here is conversation, helpful answers and coding assistance.
                 document=file_bytes,
                 caption=(
                     "<blockquote>"
-                    "✨ <b>Alisa Code Engine</b>\n\n"
+                    "✨ <b>Mahi Code Engine</b>\n\n"
                     "Your custom module is ready!"
                     "</blockquote>"
                 )
@@ -621,7 +621,7 @@ Your job here is conversation, helpful answers and coding assistance.
     except Exception:
 
         await message.reply_text(
-            "Oops 😭 Alisa se abhi reply nahi ho paya."
+            "Oops 😭 Mahi se abhi reply nahi ho paya."
         )
 
 
@@ -698,7 +698,7 @@ async def chatbot_toggle_cmd(
 
         return await message.reply_text(
             f"{e(_E_LEARN, '💐')} "
-            f"<b>Alisa ChatBot:</b> {status}\n\n"
+            f"<b>Mahi ChatBot:</b> {status}\n\n"
             f"Usage:\n"
             f"<code>/chatbot on</code>\n"
             f"<code>/chatbot off</code>"
@@ -724,21 +724,21 @@ async def chatbot_toggle_cmd(
 
         await message.reply_text(
             f"{e(_E_ON, '🥰')} "
-            "<b>Alisa AI enabled!</b>\n\n"
-            "Ab Alisa ko tag karke baat kar sakte ho 🌸"
+            "<b>Mahi AI enabled!</b>\n\n"
+            "Ab Mahi ko tag karke baat kar sakte ho 🌸"
         )
 
     else:
 
         await message.reply_text(
             f"{e(_E_OFF, '🐈')} "
-            "<b>Alisa AI disabled</b> "
+            "<b>Mahi AI disabled</b> "
             "for this chat."
         )
 
 
 # =========================================================
-# Automatic Alisa Reply
+# Automatic Mahi Reply
 # =========================================================
 
 @app.on_message(
@@ -780,11 +780,11 @@ async def chatbot_auto_reply(
 
 
     # =====================================================
-    # Detect Alisa
+    # Detect Mahi
     # =====================================================
 
-    has_alisa = (
-        "alisa" in text_lower
+    has_Mahi = (
+        "Mahi" in text_lower
     )
 
 
@@ -807,7 +807,7 @@ async def chatbot_auto_reply(
 
 
     if not (
-        has_alisa
+        has_Mahi
         or is_tagged
         or is_reply_to_bot
     ):
@@ -836,9 +836,9 @@ async def chatbot_auto_reply(
         prompt = prompt.strip()
 
 
-    # Remove "Alisa" from beginning
+    # Remove "Mahi" from beginning
     if prompt.lower().startswith(
-        "alisa"
+        "Mahi"
     ):
 
         prompt = (
