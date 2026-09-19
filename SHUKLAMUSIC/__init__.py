@@ -19,6 +19,17 @@ from SHUKLAMUSIC.core.userbot import Userbot
 from SHUKLAMUSIC.misc import dbb, heroku
 from .logging import LOGGER
 
+# sab buttons ka style hatao (default look)
+from pyrogram.types import InlineKeyboardButton as _IKB
+
+_old_init = _IKB.__init__
+
+def _no_style_init(self, *args, **kwargs):
+    kwargs.pop("style", None)
+    _old_init(self, *args, **kwargs)
+
+_IKB.__init__ = _no_style_init
+
 dirr()
 git()
 dbb()
