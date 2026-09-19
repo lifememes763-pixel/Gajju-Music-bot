@@ -175,7 +175,7 @@ queue_7 : "\nᴄʟɪᴄᴋ ᴏɴ ʙᴜᴛᴛᴏɴ ʙᴇʟᴏᴡ ᴛᴏ ɢᴇᴛ 
 queue_8 : "<b>● {0} ᴘʟᴀʏᴇʀ</b>\n\n<b>● sᴛʀᴇᴀᴍɪɴɢ :</b> {1}\n\n<b>● sᴛʀᴇᴀᴍ ᴛʏᴘᴇ :</b> {2}\n<b>● ʀᴇǫᴜᴇsᴛᴇᴅ ʙʏ :</b> {3}\n{4}"
 
 stream_1: "<blockquote><emoji id=6064547603532488691>🎀</emoji><b>𝑺𝒕𝒂𝒓𝒕𝒆𝒅 𝑺𝒕𝒓𝒆𝒂𝒎𝒊𝒏𝒈</b>\n\n<emoji id=6066776592774866103>🩶</emoji><b>𝑻𝒊𝒕𝒍𝒆:</b> <a href=\"{0}\">{1}</a>\n<emoji id=6134429345663424973>🪐</emoji><b>𝑫𝒖𝒓𝒂𝒕𝒊𝒐𝒏:</b> {2} ϻɪηᴜᴛєs\n<emoji id=5089179239488423331>🎧</emoji><b>𝑹𝒆𝒒𝒖𝒆𝒔𝒕𝒆𝒅 𝒃𝒚:</b> {3}</blockquote>"
-stream_2: "<blockquote>🎙 <b>ʟɪᴠᴇ ᴘʟᴀʏɪɴɢ</b>\n━━━━━━━━━━━━\n🔗 <b>ᴜʀʟ :</b> ʟɪᴠᴇ sᴛʀᴇᴀᴍ\n🙋 <b>ʙʏ :</b> {0}\n━━━━━━━━━━━━\n🌸 <b>𝐏σᴡ𝛜ʀ𝛜𝛅 𝐁𝛄 <a href=\"https://t.me/Alexfaizan302\">𝐀ʟɪsᴀ</a></b></blockquote>"
+stream_2: "<blockquote>🎙 <b>ʟɪᴠᴇ ᴘʟᴀʏɪɴɢ</b>\n━━━━━━━━━━━━\n🔗 <b>ᴜʀʟ :</b> ʟɪᴠᴇ sᴛʀᴇᴀᴍ\n🙋 <b>ʙʏ :</b> {0}\n━━━━━━━━━━━━\n🌸 <b>𝐏σᴡ𝛜ʀ𝛜𝛅 𝐁𝛄 <a href=\"https://t.me/ll_Uff_Mahi_ll\">𝐌ᴀʜɪ</a></b></blockquote>"
 
 CLOSE_BUTTON  : "ᴄʟσsє"
 BACK_BUTTON : "ʙᴧᴄᴋ"
