@@ -21,11 +21,11 @@ from config import LOGGER_ID as LOG_GROUP_ID
 from SHUKLAMUSIC import app
 
 photo = [
-    "https://i.ibb.co/bgzQ2YV1/v-Y9z-JCSF.jpg",
-    "https://i.ibb.co/bgzQ2YV1/v-Y9z-JCSF.jpg",
-    "https://i.ibb.co/bgzQ2YV1/v-Y9z-JCSF.jpg",
-    "https://i.ibb.co/bgzQ2YV1/v-Y9z-JCSF.jpg",
-    "https://i.ibb.co/bgzQ2YV1/v-Y9z-JCSF.jpg",
+    "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg",
+"https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg",
+"https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg",
+"https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg",
+"https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg",
 ]
 
 
@@ -66,7 +66,7 @@ async def join_watcher(_, message):
         )
 
         msg = (
-            "╭━━━〔 🌸 𝐀ʟɪsᴀ ✦ 𝐌ᴜsɪᴄ 〕━━━╮\n"
+            "╭━━━〔 🌸 𝐌ᴀʜɪ ✦ 𝐌ᴜsɪᴄ 〕━━━╮\n"
             "┃\n"
             "┃ 🎵 <b>𝐁ᴏᴛ 𝐀ᴅᴅᴇᴅ 𝐈ɴ 𝐍ᴇᴡ 𝐆ʀᴏᴜᴘ</b>\n"
             "┃\n"
@@ -123,7 +123,7 @@ async def on_left_chat_member(_, message: Message):
         chat_id = message.chat.id
 
         left = (
-            "╭━━━〔 🚫 𝐀ʟɪsᴀ ✦ 𝐌ᴜsɪᴄ 〕━━━╮\n"
+            "╭━━━〔 🚫 𝐌ᴀʜɪ ✦ 𝐌ᴜsɪᴄ 〕━━━╮\n"
             "┃\n"
             "┃ <b>#𝐋ᴇғᴛ_𝐆ʀᴏᴜᴘ</b>\n"
             "┃\n"
