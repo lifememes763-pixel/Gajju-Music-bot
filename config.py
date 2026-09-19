@@ -13,9 +13,9 @@ API_HASH = getenv("API_HASH")
 BOT_TOKEN = getenv("BOT_TOKEN")
 
 # Bot and owner info
-OWNER_USERNAME = getenv("OWNER_USERNAME", "Alexfaizan302")
-BOT_USERNAME = getenv("BOT_USERNAME", "Alisa_music_alex_bot")
-BOT_NAME = getenv("BOT_NAME", "Alisa")
+OWNER_USERNAME = getenv("OWNER_USERNAME", "")
+BOT_USERNAME = getenv("BOT_USERNAME", "")
+BOT_NAME = getenv("BOT_NAME", "")
 ASSUSERNAME = getenv("ASSUSERNAME", "Aiused")
 
 
@@ -25,7 +25,7 @@ MONGO_DB_URI = getenv("MONGO_DB_URI", None)
 # Limits and IDs
 DURATION_LIMIT_MIN = int(getenv("DURATION_LIMIT", 17000))
 LOGGER_ID = int(getenv("LOGGER_ID", None))
-OWNER_ID = int(getenv("OWNER_ID", 8915827098))
+OWNER_ID = int(getenv("OWNER_ID", "0"))
 
 # Heroku
 HEROKU_APP_NAME = getenv("HEROKU_APP_NAME")
@@ -37,9 +37,8 @@ UPSTREAM_BRANCH = getenv("UPSTREAM_BRANCH", "main")
 GIT_TOKEN = getenv("GIT_TOKEN", None)
 
 # Support
-SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "https://t.me/Alisa_x_support")
-SUPPORT_CHAT = getenv("SUPPORT_CHAT", "https://t.me/+o4moGHFqCPU4ZTU1")
-
+SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "")
+SUPPORT_CHAT = getenv("SUPPORT_CHAT", "")
 # Assistant settings
 AUTO_LEAVING_ASSISTANT = getenv("AUTO_LEAVING_ASSISTANT", "True")
 AUTO_LEAVE_ASSISTANT_TIME = int(getenv("ASSISTANT_LEAVE_TIME", "9000"))
@@ -91,20 +90,35 @@ LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", getenv("LOGGER_ID", "0")))
 SUPPORT_GROUP = getenv("SUPPORT_GROUP", SUPPORT_CHAT)
 
 # Image URLs
-SHASHANK_IMG = getenv("SHASHANK_IMG", "https://i.ibb.co/yFHCgpRG/p5-Vg-N6-Au.jpg").split(",") if "," in getenv("SHASHANK_IMG", "") else [getenv("SHASHANK_IMG", "https://i.ibb.co/yFHCgpRG/p5-Vg-N6-Au.jpg")]
+SHASHANK_IMG = getenv(
+    "SHASHANK_IMG",
+    "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+).split(",") if "," in getenv(
+    "SHASHANK_IMG",
+    "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+) else [getenv(
+    "SHASHANK_IMG",
+    "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+)]
 
-START_IMG_URL = getenv("START_IMG_URL", "https://i.ibb.co/yFHCgpRG/p5-Vg-N6-Au.jpg")
-PING_IMG_URL = getenv("PING_IMG_URL", "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg")
-PLAYLIST_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
-STATS_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
-TELEGRAM_AUDIO_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
-TELEGRAM_VIDEO_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
-STREAM_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
-SOUNCLOUD_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
-YOUTUBE_IMG_URL = "hhttps://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
-SPOTIFY_ARTIST_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
-SPOTIFY_ALBUM_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
-SPOTIFY_PLAYLIST_IMG_URL = "https://i.ibb.co/bRFNr2Qy/g-Ps-ZKm-Ma.jpg"
+START_IMG_URL = getenv(
+    "START_IMG_URL",
+    "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+)
+PING_IMG_URL = getenv(
+    "PING_IMG_URL",
+    "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+)
+PLAYLIST_IMG_URL = "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+STATS_IMG_URL = "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+TELEGRAM_AUDIO_URL = "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+TELEGRAM_VIDEO_URL = "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+STREAM_IMG_URL = "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+SOUNCLOUD_IMG_URL = "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+YOUTUBE_IMG_URL = "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+SPOTIFY_ARTIST_IMG_URL = "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+SPOTIFY_ALBUM_IMG_URL = "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
+SPOTIFY_PLAYLIST_IMG_URL = "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg"
 
 
 # Helper function
