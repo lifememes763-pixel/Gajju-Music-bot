@@ -124,4 +124,20 @@ if SUPPORT_CHAT and not re.match(r"(?:http|https)://", SUPPORT_CHAT):
     raise SystemExit(
         "[ERROR] - Your SUPPORT_CHAT url is invalid. It must start with https://"
 )
+
+# TEMP DEBUG - kaam ho jaye to hata dena
+try:
+    from urllib.parse import urlparse, unquote
+    _raw = MONGO_DB_URI or ""
+    _p = urlparse(_raw)
+    print(
+        "MONGO DEBUG -> user:", repr(unquote(_p.username or "")),
+        "| host:", _p.hostname,
+        "| password length:", len(unquote(_p.password or "")),
+        "| has < or >:", ("<" in _raw or ">" in _raw),
+        "| has space/quote:", any(c in _raw for c in " \"'\n"),
+        flush=True,
+    )
+except Exception as e:
+    print("MONGO DEBUG error:", e, flush=True)
     
