@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # -----------------------------------------------
-# 🔸 StrangerMusic Project — Alisa AI Companion
+# 🔸 StrangerMusic Project — Mahi AI Companion
 # 🔹 Gemini Powered Group Chat, Memory & Coding
 # 🔹 3-Hour Sliding Conversation History
 # -----------------------------------------------
@@ -68,8 +68,8 @@ CB_HELP = f"""
 
 <b>Commands:</b>
 
-• <code>/chatbot on</code> — Enable Alisa AI
-• <code>/chatbot off</code> — Disable Alisa AI
+• <code>/chatbot on</code> — Enable Mahi AI
+• <code>/chatbot off</code> — Disable Mahi AI
 • <code>/chatbot</code> — Check current status
 
 <b>Note:</b>
@@ -236,7 +236,7 @@ async def append_chat_history(
 # Mahi AI Engine
 # =========================================================
 
-async def process_alisa_request(
+async def process_mahi_request(
     client,
     message: Message,
     prompt: str
@@ -291,25 +291,25 @@ Keep normal conversations short and natural.
 Examples of the style:
 
 User: hlo
-Mahi: Hellooo 🥰 kya haal?
+Mahi: Hellooo ji🥰 kya haal?
 
 User: kya kr rhi
-Mahi: Bas kuch nhi 🌸 tum batao?
+Mahi: Bas kuch nhi 🌸 aap batao?
 
 User: kaisi ho
-Mahi: Bilkul mast 🥰 tum kaise ho?
+Mahi: Bilkul mast 🥰 aap kaise ho?
 
 User: bore ho rha
-Mahi: Acha 😭 phir Alisa ko bula liya?
+Mahi: Acha ji 😭 phir Mahi ko bula liya?
 
 User: kya scene
 Mahi: Kuch khaas nahi 😂 tum batao?
 
 User: good morning
-Mahi: Good morninggg 🌸✨
+Mahi: Gull molling ji🌸✨
 
 User: good night
-Mahi: Good nighttt 🌙 ache se sona.
+Mahi: Good nighttt ji🌙 ache se sona kuchupuuchu.
 
 User: lol
 Mahi: Haan haan haslo 😂
@@ -393,7 +393,7 @@ Only discuss coding when the user explicitly asks about:
 
 OWNER: 
 YOUR OWNER IS @ll_Uff_Mahi_ll. IF SOMEONE ASK U WHO IS YOUR OWNER U JUST 
-SAY MY OWNER IS MAHI BUT MY DEV IS MADARA USERNAME @ll_Uff_Mahi_ll.
+SAY MY OWNER IS MAHI BUT MY DEV IS UFFMAHI USERNAME @ll_Uff_Mahi_ll.
 
 When coding is requested:
 
@@ -783,8 +783,8 @@ async def chatbot_auto_reply(
     # Detect Mahi
     # =====================================================
 
-    has_Mahi = (
-        "Mahi" in text_lower
+    has_mahi = (
+        "mahi" in text_lower
     )
 
 
@@ -807,7 +807,7 @@ async def chatbot_auto_reply(
 
 
     if not (
-        has_Mahi
+        has_mahi
         or is_tagged
         or is_reply_to_bot
     ):
@@ -838,11 +838,11 @@ async def chatbot_auto_reply(
 
     # Remove "Mahi" from beginning
     if prompt.lower().startswith(
-        "Mahi"
+        "mahi"
     ):
 
         prompt = (
-            prompt[5:]
+            prompt[4:]
             .strip()
         )
 
@@ -856,7 +856,7 @@ async def chatbot_auto_reply(
     # Process
     # =====================================================
 
-    await process_alisa_request(
+    await process_mahi_request(
         client,
         message,
         prompt
