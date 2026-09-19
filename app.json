@@ -14,12 +14,12 @@
   "env": {
     "API_ID": {
       "description": "Get this value from https://my.telegram.org",
-      "value": "29308061",
+      "value": "30392327",
       "required": true
     },
     "API_HASH": {
       "description": "Get this value from https://my.telegram.org",
-      "value": "462de3dfc98fd938ef9c6ee31a72d099",
+      "value": "d28c0736351ac08046d5c734825e444f",
       "required": true
     },
     "BOT_TOKEN": {
@@ -29,12 +29,12 @@
     },
     "MONGO_DB_URI": {
       "description": "Get a mongodb url from https://cloud.mongodb.com.",
-      "value": "mongodb+srv://SHASHANK:STRANGER@shashank.uj7lold.mongodb.net/?retryWrites=true&w=majority",
+      "value": "mongodb+srv://<db_username>:MQvXaT070oq3lWoe@mahixmusic.daquxqp.mongodb.net/?appName=MahiXMusic",
       "required": true
     },
     "OWNER_ID": {
       "description": "The user id of user whom you would like to add as OWNER.",
-      "value": "6762113050",
+      "value": "5556392536",
       "required": true
     },
     "STRING_SESSION": {
@@ -54,7 +54,7 @@
     },
     "LOGGER_ID": {
       "description": "Your Log Group ID, add your bot and promote as an admin with full rights!. Channel ki id mat daal dena bsdk.",
-      "value": "-1002018556839",
+      "value": "-1004358885523",
       "required": true
     },
     "API_URL": {
