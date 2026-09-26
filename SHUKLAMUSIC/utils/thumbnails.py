@@ -16,8 +16,7 @@ import re
 import aiofiles
 import aiohttp
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
-import asyncio
-import yt_dlp
+from py_yt import VideosSearch
 from config import YOUTUBE_IMG_URL
 
 # Constants
