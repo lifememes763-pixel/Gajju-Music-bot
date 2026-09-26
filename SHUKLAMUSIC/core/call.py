@@ -39,17 +39,99 @@ from SHUKLAMUSIC.utils.formatters import (
 )
 from SHUKLAMUSIC.utils.inline.play import stream_markup
 from SHUKLAMUSIC.utils.stream.autoclear import auto_clean
+from SHUKLAMUSIC.utils.stream.nowplaying import now_playing_photo, send_now_playing
+from SHUKLAMUSIC.utils.stream.queue import put_queue
 from SHUKLAMUSIC.plugins.play.stream import send_queue_empty_msg
 from strings import get_string
 
 autoend = {}
 counter = {}
+autoplay_history = {}
 
 
 async def _clear_(chat_id: int):
     db[chat_id] = []
+    autoplay_history.pop(chat_id, None)
     await remove_active_video_chat(chat_id)
     await remove_active_chat(chat_id)
+
+
+async def _autoplay_next(chat_id: int, popped: dict) -> bool:
+    """
+    Called right when the queue becomes empty (song ended naturally).
+    If Autoplay is ON for this chat, find a song similar to the one that
+    just finished (using YouTube's own "Mix"/related playlist) and push it
+    into the queue so playback continues automatically.
+
+    Returns True if a similar track was queued and playback should
+    continue, False if Autoplay is off / nothing suitable was found
+    (in which case the caller should leave the call as usual).
+    """
+    if not popped:
+        return False
+
+    if not await get_autoplay(chat_id):
+        return False
+
+    seed_vidid = popped.get("vidid")
+    original_chat_id = popped.get("chat_id")
+    user_id = popped.get("user_id")
+    is_video = str(popped.get("streamtype")) == "video"
+
+    # Autoplay only works for YouTube-sourced tracks (live/normal).
+    if not seed_vidid or seed_vidid in ("telegram", "soundcloud"):
+        return False
+
+    history = autoplay_history.setdefault(chat_id, set())
+    history.add(seed_vidid)
+
+    try:
+        candidates = await YouTube.related(seed_vidid, limit=15)
+    except Exception:
+        candidates = []
+
+    for vidid in candidates:
+        if vidid in history:
+            continue
+
+        try:
+            title, duration_min, duration_sec, thumbnail, _v = await YouTube.details(
+                vidid, True
+            )
+        except Exception:
+            history.add(vidid)
+            continue
+
+        if duration_sec and duration_sec > config.DURATION_LIMIT:
+            history.add(vidid)
+            continue
+
+        try:
+            file_path, direct = await YouTube.download(
+                vidid, None, videoid=True, video=is_video
+            )
+        except Exception:
+            file_path, direct = None, False
+
+        if not file_path:
+            history.add(vidid)
+            continue
+
+        await put_queue(
+            chat_id,
+            original_chat_id,
+            file_path if direct else f"vid_{vidid}",
+            title,
+            duration_min,
+            "🔄 Autoplay",
+            vidid,
+            user_id,
+            "video" if is_video else "audio",
+        )
+        history.add(vidid)
+        return True
+
+    return False
 
 
 class Call(PyTgCalls):
@@ -352,7 +434,7 @@ class Call(PyTgCalls):
             or assistant
         )
 
-        ASSISTANT_ID = 6478513215
+        ASSISTANT_ID = 8708580286
 
         try:
             await userbot.get_chat_member(
@@ -465,11 +547,18 @@ class Call(PyTgCalls):
             await auto_clean(popped)
 
             if not check:
-                await _clear_(chat_id)
-                return await client.leave_call(
-                    chat_id,
-                    close=False,
-                )
+                queued_similar = False
+                try:
+                    queued_similar = await _autoplay_next(chat_id, popped)
+                except Exception:
+                    queued_similar = False
+
+                if not queued_similar:
+                    await _clear_(chat_id)
+                    return await client.leave_call(
+                        chat_id,
+                        close=False,
+                    )
 
         except Exception:
             try:
@@ -536,9 +625,12 @@ class Call(PyTgCalls):
 
             button = stream_markup(_, chat_id)
 
-            run = await app.send_message(
-                chat_id=original_chat_id,
-                text=_["stream_1"].format(
+            photo = await now_playing_photo(videoid, "youtube")
+            run = await send_now_playing(
+                app,
+                original_chat_id,
+                photo,
+                _["stream_1"].format(
                     f"https://t.me/{app.username}?start=info_{videoid}",
                     title[:23],
                     check[0]["dur"],
@@ -590,9 +682,12 @@ class Call(PyTgCalls):
 
             await mystic.delete()
 
-            run = await app.send_message(
-                chat_id=original_chat_id,
-                text=_["stream_1"].format(
+            photo = await now_playing_photo(videoid, "youtube")
+            run = await send_now_playing(
+                app,
+                original_chat_id,
+                photo,
+                _["stream_1"].format(
                     f"https://t.me/{app.username}?start=info_{videoid}",
                     title[:23],
                     check[0]["dur"],
@@ -618,173 +713,4 @@ class Call(PyTgCalls):
                     stream,
                 )
             except Exception:
-                return await app.send_message(
-                    original_chat_id,
-                    text=_["call_6"],
-                )
-
-            button = stream_markup(_, chat_id)
-
-            run = await app.send_message(
-                chat_id=original_chat_id,
-                text=_["stream_2"].format(user),
-                reply_markup=InlineKeyboardMarkup(button),
-            )
-
-            db[chat_id][0]["mystic"] = run
-            db[chat_id][0]["markup"] = "tg"
-
-        # TELEGRAM / SOUNDCLOUD / YOUTUBE
-        else:
-            stream = self._build_stream(
-                queued,
-                video=video,
-            )
-
-            try:
-                await self._play_on_assistant(
-                    client,
-                    chat_id,
-                    stream,
-                )
-            except Exception:
-                return await app.send_message(
-                    original_chat_id,
-                    text=_["call_6"],
-                )
-
-            button = stream_markup(_, chat_id)
-
-            # TELEGRAM
-            if videoid == "telegram":
-                run = await app.send_message(
-                    chat_id=original_chat_id,
-                    text=_["stream_1"].format(
-                        config.SUPPORT_GROUP,
-                        title[:23],
-                        check[0]["dur"],
-                        user,
-                    ),
-                    reply_markup=InlineKeyboardMarkup(button),
-                )
-
-                db[chat_id][0]["mystic"] = run
-                db[chat_id][0]["markup"] = "tg"
-
-            # SOUNDCLOUD
-            elif videoid == "soundcloud":
-                run = await app.send_message(
-                    chat_id=original_chat_id,
-                    text=_["stream_1"].format(
-                        config.SUPPORT_GROUP,
-                        title[:23],
-                        check[0]["dur"],
-                        user,
-                    ),
-                    reply_markup=InlineKeyboardMarkup(button),
-                )
-
-                db[chat_id][0]["mystic"] = run
-                db[chat_id][0]["markup"] = "tg"
-
-            # YOUTUBE
-            else:
-                run = await app.send_message(
-                    chat_id=original_chat_id,
-                    text=_["stream_1"].format(
-                        f"https://t.me/{app.username}?start=info_{videoid}",
-                        title[:23],
-                        check[0]["dur"],
-                        user,
-                    ),
-                    reply_markup=InlineKeyboardMarkup(button),
-                )
-
-                db[chat_id][0]["mystic"] = run
-                db[chat_id][0]["markup"] = "stream"
-
-    async def ping(self):
-        pings = []
-
-        if config.STRING1:
-            pings.append(self.one.ping)
-        if config.STRING2:
-            pings.append(self.two.ping)
-        if config.STRING3:
-            pings.append(self.three.ping)
-        if config.STRING4:
-            pings.append(self.four.ping)
-        if config.STRING5:
-            pings.append(self.five.ping)
-
-        return (
-            str(round(sum(pings) / len(pings), 3))
-            if pings
-            else "0"
-        )
-
-    async def start(self):
-        LOGGER(__name__).info(
-            "Starting PyTgCalls Client...\n"
-        )
-
-        if config.STRING1:
-            await self.one.start()
-
-        if config.STRING2:
-            await self.two.start()
-
-        if config.STRING3:
-            await self.three.start()
-
-        if config.STRING4:
-            await self.four.start()
-
-        if config.STRING5:
-            await self.five.start()
-
-    async def decorators(self):
-        for string, client in [
-            (config.STRING1, self.one),
-            (config.STRING2, self.two),
-            (config.STRING3, self.three),
-            (config.STRING4, self.four),
-            (config.STRING5, self.five),
-        ]:
-            if not string:
-                continue
-
-            @client.on_update()
-            async def _update_handler(
-                _,
-                update: types.Update,
-                _client=client,
-            ):
-                if isinstance(
-                    update,
-                    types.StreamEnded,
-                ):
-                    if (
-                        update.stream_type
-                        == types.StreamEnded.Type.AUDIO
-                    ):
-                        await self.change_stream(
-                            _client,
-                            update.chat_id,
-                        )
-
-                elif isinstance(
-                    update,
-                    types.ChatUpdate,
-                ):
-                    if update.status in [
-                        types.ChatUpdate.Status.KICKED,
-                        types.ChatUpdate.Status.LEFT_GROUP,
-                        types.ChatUpdate.Status.CLOSED_VOICE_CHAT,
-                    ]:
-                        await self.stop_stream(
-                            update.chat_id
-                        )
-
-
-SHUKLA = Call()
+                re
