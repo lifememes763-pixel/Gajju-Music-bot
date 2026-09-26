@@ -15,7 +15,6 @@ from SHUKLAMUSIC.utils.database import get_loop
 from SHUKLAMUSIC.utils.decorators import AdminRightsCheck
 from SHUKLAMUSIC.utils.inline import close_markup, stream_markup
 from SHUKLAMUSIC.utils.stream.autoclear import auto_clean
-from SHUKLAMUSIC.utils.stream.nowplaying import now_playing_photo, send_now_playing
 from config import BANNED_USERS
 
 
@@ -150,11 +149,7 @@ async def skip(cli, message: Message, _, chat_id):
 
         button = stream_markup(_, chat_id)
 
-        photo = await now_playing_photo(videoid, "youtube")
-        run = await send_now_playing(
-            app,
-            message.chat.id,
-            photo,
+        run = await message.reply_text(
             _["stream_1"].format(
                 f"https://t.me/{app.username}?start=info_{videoid}",
                 title[:23],
@@ -192,11 +187,7 @@ async def skip(cli, message: Message, _, chat_id):
 
         button = stream_markup(_, chat_id)
 
-        photo = await now_playing_photo(videoid, "youtube")
-        run = await send_now_playing(
-            app,
-            message.chat.id,
-            photo,
+        run = await message.reply_text(
             _["stream_1"].format(
                 f"https://t.me/{app.username}?start=info_{videoid}",
                 title[:23],
@@ -227,11 +218,7 @@ async def skip(cli, message: Message, _, chat_id):
 
         button = stream_markup(_, chat_id)
 
-        photo = await now_playing_photo(videoid, "index")
-        run = await send_now_playing(
-            app,
-            message.chat.id,
-            photo,
+        run = await message.reply_text(
             _["stream_2"].format(user),
             reply_markup=InlineKeyboardMarkup(button),
         )
@@ -254,11 +241,7 @@ async def skip(cli, message: Message, _, chat_id):
 
         # TELEGRAM
         if videoid == "telegram":
-            photo = await now_playing_photo(videoid, "telegram", is_video=(status is True))
-            run = await send_now_playing(
-                app,
-                message.chat.id,
-                photo,
+            run = await message.reply_text(
                 _["stream_1"].format(
                     config.SUPPORT_CHAT,
                     title[:23],
@@ -273,11 +256,7 @@ async def skip(cli, message: Message, _, chat_id):
 
         # SOUNDCLOUD
         elif videoid == "soundcloud":
-            photo = await now_playing_photo(videoid, "soundcloud", is_video=(status is True))
-            run = await send_now_playing(
-                app,
-                message.chat.id,
-                photo,
+            run = await message.reply_text(
                 _["stream_1"].format(
                     config.SUPPORT_CHAT,
                     title[:23],
@@ -292,11 +271,7 @@ async def skip(cli, message: Message, _, chat_id):
 
         # YOUTUBE
         else:
-            photo = await now_playing_photo(videoid, "youtube")
-            run = await send_now_playing(
-                app,
-                message.chat.id,
-                photo,
+            run = await message.reply_text(
                 _["stream_1"].format(
                     f"https://t.me/{app.username}?start=info_{videoid}",
                     title[:23],
@@ -308,4 +283,4 @@ async def skip(cli, message: Message, _, chat_id):
 
             db[chat_id][0]["mystic"] = run
             db[chat_id][0]["markup"] = "stream"
-    
+            
