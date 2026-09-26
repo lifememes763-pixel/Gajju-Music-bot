@@ -10,7 +10,7 @@ import aiohttp
 
 API_URL = os.environ.get("SHRUTI_API_URL", "https://api.shrutibots.site")
 
-API_KEY = os.environ.get("SHRUTI_API_KEY", "ShrutiBotsyPBSWX6y1XBXv3dxTLDn") ## Get This API KEY FROM TELEGRAM BOT USERNAME: @SHRUTIAPIBOT 
+API_KEY = os.environ.get("SHRUTI_API_KEY", "ShrutiBotsl1kl00shbEkj7i1GLZ7a") ## Get This API KEY FROM TELEGRAM BOT USERNAME: @SHRUTIAPIBOT 
 
 DOWNLOAD_DIR = "downloads"
 
@@ -252,45 +252,6 @@ class YouTubeAPI:
         thumbnail = result[query_type]["thumbnails"][0]["url"].split("?")[0]
         return title, duration_min, thumbnail, vidid
 
-    async def related(self, videoid: str, limit: int = 15):
-        """
-        Return a list of video ids that YouTube considers similar/related to
-        the given video, using YouTube's own auto-generated "Mix" playlist
-        (the same "RD<video_id>" playlist YouTube uses for its autoplay).
-        Used to power the bot's own Autoplay feature.
-        """
-        link = f"{self.base}{videoid}&list=RD{videoid}"
-
-        def _extract():
-            opts = {
-                "quiet": True,
-                "no_warnings": True,
-                "extract_flat": True,
-                "skip_download": True,
-                "playlistend": limit + 5,
-                "socket_timeout": 10,
-            }
-            with yt_dlp.YoutubeDL(opts) as ydl:
-                return ydl.extract_info(link, download=False)
-
-        loop = asyncio.get_event_loop()
-        try:
-            info = await loop.run_in_executor(None, _extract)
-        except Exception:
-            return []
-
-        entries = (info or {}).get("entries") or []
-        ids = []
-        for entry in entries:
-            if not entry:
-                continue
-            vid = entry.get("id")
-            if vid and vid != videoid and vid not in ids:
-                ids.append(vid)
-            if len(ids) >= limit:
-                break
-        return ids
-
     async def download(
         self,
         link: str,
@@ -317,4 +278,4 @@ class YouTubeAPI:
 
 
 YouTube = YouTubeAPI()
-                          
+        
