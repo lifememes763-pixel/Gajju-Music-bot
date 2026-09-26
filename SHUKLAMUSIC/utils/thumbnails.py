@@ -16,7 +16,8 @@ import re
 import aiofiles
 import aiohttp
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
-from py_yt import VideosSearch
+import asyncio
+import yt_dlp
 from config import YOUTUBE_IMG_URL
 
 # Constants
@@ -63,25 +64,41 @@ async def get_thumb(videoid: str) -> str:
         return cache_path
 
     # YouTube video data fetch — using yt-dlp directly for accurate metadata
-        # YouTube video data fetch — using the same search lookup (py_yt) that
-    # the rest of the bot already uses successfully. Raw yt-dlp calls get
-    # blocked by YouTube on most cloud hosts (Railway etc.) without cookies,
-    # which is why this used to fall back to "Unsupported Title".
+    def _fetch_yt_info():
+        opts = {
+            "quiet": True,
+            "no_warnings": True,
+            "skip_download": True,
+            "noplaylist": True,
+        }
+        with yt_dlp.YoutubeDL(opts) as ydl:
+            return ydl.extract_info(
+                f"https://www.youtube.com/watch?v={videoid}", download=False
+            ) or {}
+
+    loop = asyncio.get_event_loop()
     try:
-        results = VideosSearch(f"https://www.youtube.com/watch?v={videoid}", limit=1)
-        data = (await results.next())["result"]
-        if not data:
+        info = await loop.run_in_executor(None, _fetch_yt_info)
+        if not info:
             raise ValueError("No info returned")
-        info = data[0]
         raw_title = info.get("title") or "Unsupported Title"
         title = re.sub(r"\W+", " ", raw_title).title()
-        thumbs = info.get("thumbnails") or []
-        thumbnail = thumbs[0]["url"].split("?")[0] if thumbs else YOUTUBE_IMG_URL
-        duration = info.get("duration") or None
-        vc = info.get("viewCount") or {}
-        views = vc.get("short") or vc.get("text") or "Unknown Views"
+        thumbnail = info.get("thumbnail") or YOUTUBE_IMG_URL
+        dur_sec = int(info.get("duration") or 0)
+        m, s = divmod(dur_sec, 60)
+        duration = f"{m}:{s:02d}" if dur_sec else None
+        vc = int(info.get("view_count") or 0)
+        if vc >= 1_000_000_000:
+            views = f"{vc / 1_000_000_000:.1f}B views"
+        elif vc >= 1_000_000:
+            views = f"{vc / 1_000_000:.1f}M views"
+        elif vc >= 1_000:
+            views = f"{vc / 1_000:.1f}K views"
+        else:
+            views = f"{vc} views" if vc else "Unknown Views"
     except Exception:
         title, thumbnail, duration, views = "Unsupported Title", YOUTUBE_IMG_URL, None, "Unknown Views"
+
     is_live = not duration or str(duration).strip().lower() in {"", "live", "live now"}
     duration_text = "Live" if is_live else duration or "Unknown Mins"
 
@@ -152,3 +169,4 @@ async def get_thumb(videoid: str) -> str:
 
     bg.save(cache_path)
     return cache_path
+    
