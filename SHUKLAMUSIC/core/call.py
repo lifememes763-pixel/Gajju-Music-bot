@@ -711,4 +711,80 @@ class Call(PyTgCalls):
         if config.STRING2:
             pings.append(self.two.ping)
         if config.STRING3:
-            pings.app
+            pings.append(self.three.ping)
+        if config.STRING4:
+            pings.append(self.four.ping)
+        if config.STRING5:
+            pings.append(self.five.ping)
+
+        return (
+            str(round(sum(pings) / len(pings), 3))
+            if pings
+            else "0"
+        )
+
+    async def start(self):
+        LOGGER(__name__).info(
+            "Starting PyTgCalls Client...\n"
+        )
+
+        if config.STRING1:
+            await self.one.start()
+
+        if config.STRING2:
+            await self.two.start()
+
+        if config.STRING3:
+            await self.three.start()
+
+        if config.STRING4:
+            await self.four.start()
+
+        if config.STRING5:
+            await self.five.start()
+
+    async def decorators(self):
+        for string, client in [
+            (config.STRING1, self.one),
+            (config.STRING2, self.two),
+            (config.STRING3, self.three),
+            (config.STRING4, self.four),
+            (config.STRING5, self.five),
+        ]:
+            if not string:
+                continue
+
+            @client.on_update()
+            async def _update_handler(
+                _,
+                update: types.Update,
+                _client=client,
+            ):
+                if isinstance(
+                    update,
+                    types.StreamEnded,
+                ):
+                    if (
+                        update.stream_type
+                        == types.StreamEnded.Type.AUDIO
+                    ):
+                        await self.change_stream(
+                            _client,
+                            update.chat_id,
+                        )
+
+                elif isinstance(
+                    update,
+                    types.ChatUpdate,
+                ):
+                    if update.status in [
+                        types.ChatUpdate.Status.KICKED,
+                        types.ChatUpdate.Status.LEFT_GROUP,
+                        types.ChatUpdate.Status.CLOSED_VOICE_CHAT,
+                    ]:
+                        await self.stop_stream(
+                            update.chat_id
+                        )
+
+
+SHUKLA = Call()
