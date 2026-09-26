@@ -275,6 +275,7 @@ async def del_back_playlist(client, CallbackQuery, _):
             img = await get_thumb(videoid)
             run = await CallbackQuery.message.reply_photo(
                 photo=img,
+                has_spoiler=True,
                 caption=_["stream_1"].format(
                     f"https://t.me/{app.username}?start=info_{videoid}",
                     title[:23],
@@ -311,6 +312,7 @@ async def del_back_playlist(client, CallbackQuery, _):
             img = await get_thumb(videoid)
             run = await CallbackQuery.message.reply_photo(
                 photo=img,
+                has_spoiler=True,
                 caption=_["stream_1"].format(
                     f"https://t.me/{app.username}?start=info_{videoid}",
                     title[:23],
@@ -331,6 +333,7 @@ async def del_back_playlist(client, CallbackQuery, _):
             button = stream_markup(_, chat_id)
             run = await CallbackQuery.message.reply_photo(
                 photo=STREAM_IMG_URL,
+                has_spoiler=True,
                 caption=_["stream_2"].format(user),
                 reply_markup=InlineKeyboardMarkup(button),
             )
@@ -357,6 +360,7 @@ async def del_back_playlist(client, CallbackQuery, _):
                     photo=TELEGRAM_AUDIO_URL
                     if str(streamtype) == "audio"
                     else TELEGRAM_VIDEO_URL,
+                    has_spoiler=True,
                     caption=_["stream_1"].format(
                         config.SUPPORT_CHAT, title[:23], duration, user
                     ),
@@ -370,6 +374,7 @@ async def del_back_playlist(client, CallbackQuery, _):
                     photo=SOUNCLOUD_IMG_URL
                     if str(streamtype) == "audio"
                     else TELEGRAM_VIDEO_URL,
+                    has_spoiler=True,
                     caption=_["stream_1"].format(
                         config.SUPPORT_CHAT, title[:23], duration, user
                     ),
@@ -382,6 +387,7 @@ async def del_back_playlist(client, CallbackQuery, _):
                 img = await get_thumb(videoid)
                 run = await CallbackQuery.message.reply_photo(
                     photo=img,
+                    has_spoiler=True,
                     caption=_["stream_1"].format(
                         f"https://t.me/{app.username}?start=info_{videoid}",
                         title[:23],
@@ -440,3 +446,4 @@ async def markup_timer():
 
 
 asyncio.create_task(markup_timer())
+        
