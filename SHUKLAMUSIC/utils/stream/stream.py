@@ -11,6 +11,7 @@ from SHUKLAMUSIC.utils.exceptions import AssistantErr
 from SHUKLAMUSIC.utils.inline import aq_markup, close_markup, stream_markup
 from SHUKLAMUSIC.utils.pastebin import SHUKLABin
 from SHUKLAMUSIC.utils.stream.queue import put_queue, put_queue_index
+from SHUKLAMUSIC.utils.thumbnails import get_thumb
 
 
 async def stream(
@@ -105,10 +106,13 @@ async def stream(
                 )
 
                 button = stream_markup(_, chat_id)
+                img = await get_thumb(vidid)
 
-                run = await app.send_message(
+                run = await app.send_photo(
                     original_chat_id,
-                    _["stream_1"].format(
+                    photo=img,
+                    has_spoiler=True,
+                    caption=_["stream_1"].format(
                         f"https://t.me/{app.username}?start=info_{vidid}",
                         title[:23],
                         duration_min,
@@ -203,10 +207,13 @@ async def stream(
             )
 
             button = stream_markup(_, chat_id)
+            img = await get_thumb(vidid)
 
-            run = await app.send_message(
+            run = await app.send_photo(
                 original_chat_id,
-                _["stream_1"].format(
+                photo=img,
+                has_spoiler=True,
+                caption=_["stream_1"].format(
                     f"https://t.me/{app.username}?start=info_{vidid}",
                     title[:23],
                     duration_min,
@@ -273,9 +280,11 @@ async def stream(
 
             button = stream_markup(_, chat_id)
 
-            run = await app.send_message(
+            run = await app.send_photo(
                 original_chat_id,
-                _["stream_1"].format(
+                photo=config.SOUNCLOUD_IMG_URL,
+                has_spoiler=True,
+                caption=_["stream_1"].format(
                     config.SUPPORT_CHAT,
                     title[:23],
                     duration_min,
@@ -347,9 +356,11 @@ async def stream(
 
             button = stream_markup(_, chat_id)
 
-            run = await app.send_message(
+            run = await app.send_photo(
                 original_chat_id,
-                _["stream_1"].format(
+                photo=config.TELEGRAM_VIDEO_URL if video else config.TELEGRAM_AUDIO_URL,
+                has_spoiler=True,
+                caption=_["stream_1"].format(
                     link,
                     title[:23],
                     duration_min,
@@ -422,10 +433,13 @@ async def stream(
             )
 
             button = stream_markup(_, chat_id)
+            img = await get_thumb(vidid)
 
-            run = await app.send_message(
+            run = await app.send_photo(
                 original_chat_id,
-                _["stream_1"].format(
+                photo=img,
+                has_spoiler=True,
+                caption=_["stream_1"].format(
                     f"https://t.me/{app.username}?start=info_{vidid}",
                     title[:23],
                     duration_min,
