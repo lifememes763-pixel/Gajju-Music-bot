@@ -30,6 +30,9 @@ from SHUKLAMUSIC.utils.database import (
     remove_active_video_chat,
     set_loop,
     get_autoplay,
+    add_autoplay_history,
+    get_autoplay_history,
+    clear_autoplay_history,
 )
 from SHUKLAMUSIC.utils.exceptions import AssistantErr
 from SHUKLAMUSIC.utils.formatters import (
@@ -39,6 +42,8 @@ from SHUKLAMUSIC.utils.formatters import (
 )
 from SHUKLAMUSIC.utils.inline.play import stream_markup
 from SHUKLAMUSIC.utils.stream.autoclear import auto_clean
+from SHUKLAMUSIC.utils.stream.queue import put_queue
+from SHUKLAMUSIC.utils.thumbnails import get_thumb
 from SHUKLAMUSIC.plugins.play.stream import send_queue_empty_msg
 from strings import get_string
 
@@ -465,6 +470,86 @@ class Call(PyTgCalls):
             await auto_clean(popped)
 
             if not check:
+                # ---- AUTOPLAY: queue khatam ho gayi ----
+                seed_vidid = popped.get("vidid") if popped else None
+                is_youtube_seed = bool(
+                    seed_vidid
+                    and seed_vidid not in ("telegram", "soundcloud")
+                    and len(str(seed_vidid)) <= 20
+                )
+
+                if is_youtube_seed and await get_autoplay(chat_id):
+                    found = None
+                    try:
+                        history = await get_autoplay_history(chat_id)
+                        found = await YouTube.related(seed_vidid, history)
+                    except Exception:
+                        found = None
+
+                    if found:
+                        rel_vidid, rel_title = found
+                        file_path = None
+                        try:
+                            file_path, direct = await YouTube.download(
+                                rel_vidid, None, videoid=True,
+                            )
+                        except Exception:
+                            file_path = None
+
+                        if file_path:
+                            original_chat_id = popped.get("chat_id", chat_id)
+                            language = await get_lang(chat_id)
+                            _ = get_string(language)
+
+                            db[chat_id] = []
+                            await put_queue(
+                                chat_id,
+                                original_chat_id,
+                                file_path if direct else f"vid_{rel_vidid}",
+                                rel_title,
+                                "Autoplay",
+                                "🎧 Autoplay",
+                                rel_vidid,
+                                0,
+                                "audio",
+                            )
+
+                            stream = self._build_stream(file_path, video=False)
+                            try:
+                                await self._play_on_assistant(
+                                    client, chat_id, stream
+                                )
+                            except Exception:
+                                await clear_autoplay_history(chat_id)
+                                await _clear_(chat_id)
+                                return await client.leave_call(
+                                    chat_id, close=False
+                                )
+
+                            await add_autoplay_history(chat_id, rel_vidid)
+
+                            button = stream_markup(_, chat_id)
+                            img = await get_thumb(rel_vidid)
+
+                            run = await app.send_photo(
+                                original_chat_id,
+                                photo=img,
+                                has_spoiler=True,
+                                caption=_["stream_1"].format(
+                                    f"https://t.me/{app.username}?start=info_{rel_vidid}",
+                                    rel_title[:23],
+                                    "Autoplay",
+                                    "🎧 Autoplay",
+                                ),
+                                reply_markup=InlineKeyboardMarkup(button),
+                            )
+
+                            db[chat_id][0]["mystic"] = run
+                            db[chat_id][0]["markup"] = "stream"
+                            return
+
+                # Autoplay band hai, ya related gaana nahi mila -> normal exit
+                await clear_autoplay_history(chat_id)
                 await _clear_(chat_id)
                 return await client.leave_call(
                     chat_id,
@@ -590,16 +675,28 @@ class Call(PyTgCalls):
 
             await mystic.delete()
 
-            run = await app.send_message(
-                chat_id=original_chat_id,
-                text=_["stream_1"].format(
-                    f"https://t.me/{app.username}?start=info_{videoid}",
-                    title[:23],
-                    check[0]["dur"],
-                    user,
-                ),
-                reply_markup=InlineKeyboardMarkup(button),
+            caption = _["stream_1"].format(
+                f"https://t.me/{app.username}?start=info_{videoid}",
+                title[:23],
+                check[0]["dur"],
+                user,
             )
+
+            try:
+                img = await get_thumb(videoid)
+                run = await app.send_photo(
+                    original_chat_id,
+                    photo=img,
+                    has_spoiler=True,
+                    caption=caption,
+                    reply_markup=InlineKeyboardMarkup(button),
+                )
+            except Exception:
+                run = await app.send_message(
+                    chat_id=original_chat_id,
+                    text=caption,
+                    reply_markup=InlineKeyboardMarkup(button),
+                )
 
             db[chat_id][0]["mystic"] = run
             db[chat_id][0]["markup"] = "stream"
