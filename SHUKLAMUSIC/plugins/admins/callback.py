@@ -272,7 +272,7 @@ async def del_back_playlist(client, CallbackQuery, _):
             except:
                 return await CallbackQuery.message.reply_text(_["call_6"])
             button = stream_markup(_, chat_id)
-            img = await get_thumb(videoid)
+            img = await get_thumb(videoid, fallback_title=title, fallback_thumbnail=image)
             run = await CallbackQuery.message.reply_photo(
                 photo=img,
                 has_spoiler=True,
@@ -309,7 +309,7 @@ async def del_back_playlist(client, CallbackQuery, _):
             except:
                 return await mystic.edit_text(_["call_6"])
             button = stream_markup(_, chat_id)
-            img = await get_thumb(videoid)
+            img = await get_thumb(videoid, fallback_title=title, fallback_thumbnail=image)
             run = await CallbackQuery.message.reply_photo(
                 photo=img,
                 has_spoiler=True,
@@ -384,7 +384,7 @@ async def del_back_playlist(client, CallbackQuery, _):
                 db[chat_id][0]["markup"] = "tg"
             else:
                 button = stream_markup(_, chat_id)
-                img = await get_thumb(videoid)
+                img = await get_thumb(videoid, fallback_title=title, fallback_thumbnail=image)
                 run = await CallbackQuery.message.reply_photo(
                     photo=img,
                     has_spoiler=True,
@@ -446,4 +446,4 @@ async def markup_timer():
 
 
 asyncio.create_task(markup_timer())
-        
+
