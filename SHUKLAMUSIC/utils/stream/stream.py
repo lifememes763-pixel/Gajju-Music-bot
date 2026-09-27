@@ -106,7 +106,7 @@ async def stream(
                 )
 
                 button = stream_markup(_, chat_id)
-                img = await get_thumb(vidid)
+                img = await get_thumb(vidid, fallback_title=title, fallback_thumbnail=thumbnail)
 
                 run = await app.send_photo(
                     original_chat_id,
@@ -207,7 +207,7 @@ async def stream(
             )
 
             button = stream_markup(_, chat_id)
-            img = await get_thumb(vidid)
+            img = await get_thumb(vidid, fallback_title=title, fallback_thumbnail=result.get("thumb"))
 
             run = await app.send_photo(
                 original_chat_id,
@@ -433,7 +433,7 @@ async def stream(
             )
 
             button = stream_markup(_, chat_id)
-            img = await get_thumb(vidid)
+            img = await get_thumb(vidid, fallback_title=title, fallback_thumbnail=result.get("thumb"))
 
             run = await app.send_photo(
                 original_chat_id,
@@ -516,4 +516,5 @@ async def stream(
                 await mystic.delete()
             except Exception:
                 pass
-            
+
+        
