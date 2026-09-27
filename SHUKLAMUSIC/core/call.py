@@ -497,12 +497,20 @@ class Call(PyTgCalls):
                             file_path = None
 
                         rel_duration_min = "Unknown"
+                        rel_thumb = None
                         try:
-                            _, rel_duration_min, _, _, _ = await YouTube.details(
+                            (
+                                _det_title,
+                                rel_duration_min,
+                                _,
+                                rel_thumb,
+                                _,
+                            ) = await YouTube.details(
                                 rel_vidid, videoid=True,
                             )
                         except Exception:
                             rel_duration_min = "Unknown"
+                            rel_thumb = None
 
                         if file_path:
                             original_chat_id = popped.get("chat_id", chat_id)
@@ -537,7 +545,11 @@ class Call(PyTgCalls):
                             await add_autoplay_history(chat_id, rel_vidid)
 
                             button = stream_markup(_, chat_id)
-                            img = await get_thumb(rel_vidid)
+                            img = await get_thumb(
+                                rel_vidid,
+                                fallback_title=rel_title,
+                                fallback_thumbnail=rel_thumb,
+                            )
 
                             run = await app.send_photo(
                                 original_chat_id,
