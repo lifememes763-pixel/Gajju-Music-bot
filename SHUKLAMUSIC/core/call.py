@@ -806,16 +806,28 @@ class Call(PyTgCalls):
 
             # YOUTUBE
             else:
-                run = await app.send_message(
-                    chat_id=original_chat_id,
-                    text=_["stream_1"].format(
-                        f"https://t.me/{app.username}?start=info_{videoid}",
-                        title[:23],
-                        check[0]["dur"],
-                        user,
-                    ),
-                    reply_markup=InlineKeyboardMarkup(button),
+                caption = _["stream_1"].format(
+                    f"https://t.me/{app.username}?start=info_{videoid}",
+                    title[:23],
+                    check[0]["dur"],
+                    user,
                 )
+
+                try:
+                    img = await get_thumb(videoid)
+                    run = await app.send_photo(
+                        original_chat_id,
+                        photo=img,
+                        has_spoiler=True,
+                        caption=caption,
+                        reply_markup=InlineKeyboardMarkup(button),
+                    )
+                except Exception:
+                    run = await app.send_message(
+                        chat_id=original_chat_id,
+                        text=caption,
+                        reply_markup=InlineKeyboardMarkup(button),
+                    )
 
                 db[chat_id][0]["mystic"] = run
                 db[chat_id][0]["markup"] = "stream"
