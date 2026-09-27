@@ -116,57 +116,69 @@ async def get_thumb(videoid: str) -> str:
     if not os.path.exists(thumb_path) or os.path.getsize(thumb_path) == 0:
         return YOUTUBE_IMG_URL
 
-    # Create base image
-    base = Image.open(thumb_path).resize((1280, 720)).convert("RGBA")
-    bg = ImageEnhance.Brightness(base.filter(ImageFilter.BoxBlur(10))).enhance(0.6)
-
-    # Frosted glass panel
-    panel_area = bg.crop((PANEL_X, PANEL_Y, PANEL_X + PANEL_W, PANEL_Y + PANEL_H))
-    overlay = Image.new("RGBA", (PANEL_W, PANEL_H), (255, 255, 255, TRANSPARENCY))
-    frosted = Image.alpha_composite(panel_area, overlay)
-    mask = Image.new("L", (PANEL_W, PANEL_H), 0)
-    ImageDraw.Draw(mask).rounded_rectangle((0, 0, PANEL_W, PANEL_H), 50, fill=255)
-    bg.paste(frosted, (PANEL_X, PANEL_Y), mask)
-
-    # Draw details
-    draw = ImageDraw.Draw(bg)
+    # Everything below is "nice to have" styling. If ANY of it fails
+    # (missing font, corrupt image, PIL error, etc.) we must NOT crash —
+    # we fall back to the plain downloaded thumbnail so a photo still
+    # gets sent instead of nothing showing up at all.
     try:
-        title_font = ImageFont.truetype("SHUKLAMUSIC/assets/assets/font2.ttf", 32)
-        regular_font = ImageFont.truetype("SHUKLAMUSIC/assets/assets/font.ttf", 18)
-    except OSError:
-        title_font = regular_font = ImageFont.load_default()
+        # Create base image
+        base = Image.open(thumb_path).resize((1280, 720)).convert("RGBA")
+        bg = ImageEnhance.Brightness(base.filter(ImageFilter.BoxBlur(10))).enhance(0.6)
 
-    thumb = base.resize((THUMB_W, THUMB_H))
-    tmask = Image.new("L", thumb.size, 0)
-    ImageDraw.Draw(tmask).rounded_rectangle((0, 0, THUMB_W, THUMB_H), 20, fill=255)
-    bg.paste(thumb, (THUMB_X, THUMB_Y), tmask)
+        # Frosted glass panel
+        panel_area = bg.crop((PANEL_X, PANEL_Y, PANEL_X + PANEL_W, PANEL_Y + PANEL_H))
+        overlay = Image.new("RGBA", (PANEL_W, PANEL_H), (255, 255, 255, TRANSPARENCY))
+        frosted = Image.alpha_composite(panel_area, overlay)
+        mask = Image.new("L", (PANEL_W, PANEL_H), 0)
+        ImageDraw.Draw(mask).rounded_rectangle((0, 0, PANEL_W, PANEL_H), 50, fill=255)
+        bg.paste(frosted, (PANEL_X, PANEL_Y), mask)
 
-    draw.text((TITLE_X, TITLE_Y), trim_to_width(title, title_font, MAX_TITLE_WIDTH), fill="black", font=title_font)
-    draw.text((META_X, META_Y), f"YouTube | {views}", fill="black", font=regular_font)
+        # Draw details
+        draw = ImageDraw.Draw(bg)
+        try:
+            title_font = ImageFont.truetype("SHUKLAMUSIC/assets/assets/font2.ttf", 32)
+            regular_font = ImageFont.truetype("SHUKLAMUSIC/assets/assets/font.ttf", 18)
+        except OSError:
+            title_font = regular_font = ImageFont.load_default()
 
-    # Progress bar
-    draw.line([(BAR_X, BAR_Y), (BAR_X + BAR_RED_LEN, BAR_Y)], fill="red", width=6)
-    draw.line([(BAR_X + BAR_RED_LEN, BAR_Y), (BAR_X + BAR_TOTAL_LEN, BAR_Y)], fill="gray", width=5)
-    draw.ellipse([(BAR_X + BAR_RED_LEN - 7, BAR_Y - 7), (BAR_X + BAR_RED_LEN + 7, BAR_Y + 7)], fill="red")
+        thumb = base.resize((THUMB_W, THUMB_H))
+        tmask = Image.new("L", thumb.size, 0)
+        ImageDraw.Draw(tmask).rounded_rectangle((0, 0, THUMB_W, THUMB_H), 20, fill=255)
+        bg.paste(thumb, (THUMB_X, THUMB_Y), tmask)
 
-    draw.text((BAR_X, BAR_Y + 15), "00:00", fill="black", font=regular_font)
-    end_text = "Live" if is_live else duration_text
-    draw.text((BAR_X + BAR_TOTAL_LEN - (90 if is_live else 60), BAR_Y + 15), end_text, fill="red" if is_live else "black", font=regular_font)
+        draw.text((TITLE_X, TITLE_Y), trim_to_width(title, title_font, MAX_TITLE_WIDTH), fill="black", font=title_font)
+        draw.text((META_X, META_Y), f"YouTube | {views}", fill="black", font=regular_font)
 
-    # Icons
-    icons_path = "SHUKLAMUSIC/assets/assets/play_icons.png"
-    if os.path.isfile(icons_path):
-        ic = Image.open(icons_path).resize((ICONS_W, ICONS_H)).convert("RGBA")
-        r, g, b, a = ic.split()
-        black_ic = Image.merge("RGBA", (r.point(lambda *_: 0), g.point(lambda *_: 0), b.point(lambda *_: 0), a))
-        bg.paste(black_ic, (ICONS_X, ICONS_Y), black_ic)
+        # Progress bar
+        draw.line([(BAR_X, BAR_Y), (BAR_X + BAR_RED_LEN, BAR_Y)], fill="red", width=6)
+        draw.line([(BAR_X + BAR_RED_LEN, BAR_Y), (BAR_X + BAR_TOTAL_LEN, BAR_Y)], fill="gray", width=5)
+        draw.ellipse([(BAR_X + BAR_RED_LEN - 7, BAR_Y - 7), (BAR_X + BAR_RED_LEN + 7, BAR_Y + 7)], fill="red")
 
-    # Cleanup and save
-    try:
-        os.remove(thumb_path)
-    except OSError:
-        pass
+        draw.text((BAR_X, BAR_Y + 15), "00:00", fill="black", font=regular_font)
+        end_text = "Live" if is_live else duration_text
+        draw.text((BAR_X + BAR_TOTAL_LEN - (90 if is_live else 60), BAR_Y + 15), end_text, fill="red" if is_live else "black", font=regular_font)
 
-    bg.save(cache_path)
-    return cache_path
+        # Icons
+        icons_path = "SHUKLAMUSIC/assets/assets/play_icons.png"
+        if os.path.isfile(icons_path):
+            ic = Image.open(icons_path).resize((ICONS_W, ICONS_H)).convert("RGBA")
+            r, g, b, a = ic.split()
+            black_ic = Image.merge("RGBA", (r.point(lambda *_: 0), g.point(lambda *_: 0), b.point(lambda *_: 0), a))
+            bg.paste(black_ic, (ICONS_X, ICONS_Y), black_ic)
+
+        bg.save(cache_path)
+        result_path = cache_path
+    except Exception:
+        # Styled panel failed — just ship the plain YouTube thumbnail
+        # instead of returning nothing.
+        result_path = thumb_path if os.path.exists(thumb_path) else YOUTUBE_IMG_URL
+
+    # Cleanup
+    if result_path != thumb_path:
+        try:
+            os.remove(thumb_path)
+        except OSError:
+            pass
+
+    return result_path
     
