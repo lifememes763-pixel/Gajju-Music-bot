@@ -85,9 +85,6 @@ async def stream(
                 except Exception:
                     raise AssistantErr(_["play_14"])
 
-                if not file_path:
-                    raise AssistantErr(_["play_14"])
-
                 await SHUKLA.join_call(
                     chat_id,
                     original_chat_id,
@@ -159,9 +156,6 @@ async def stream(
                 vidid, mystic, videoid=True, video=status
             )
         except Exception:
-            raise AssistantErr(_["play_14"])
-
-        if not file_path:
             raise AssistantErr(_["play_14"])
 
         if await is_active_chat(chat_id):
@@ -524,4 +518,4 @@ async def stream(
                 pass
 
 
-                
+        
