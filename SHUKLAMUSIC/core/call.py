@@ -496,6 +496,14 @@ class Call(PyTgCalls):
                         except Exception:
                             file_path = None
 
+                        rel_duration_min = "Unknown"
+                        try:
+                            _, rel_duration_min, _, _, _ = await YouTube.details(
+                                rel_vidid, videoid=True,
+                            )
+                        except Exception:
+                            rel_duration_min = "Unknown"
+
                         if file_path:
                             original_chat_id = popped.get("chat_id", chat_id)
                             language = await get_lang(chat_id)
@@ -507,7 +515,7 @@ class Call(PyTgCalls):
                                 original_chat_id,
                                 file_path if direct else f"vid_{rel_vidid}",
                                 rel_title,
-                                "Autoplay",
+                                rel_duration_min,
                                 "🎧 Autoplay",
                                 rel_vidid,
                                 0,
@@ -538,7 +546,7 @@ class Call(PyTgCalls):
                                 caption=_["stream_1"].format(
                                     f"https://t.me/{app.username}?start=info_{rel_vidid}",
                                     rel_title[:23],
-                                    "Autoplay",
+                                    rel_duration_min,
                                     "🎧 Autoplay",
                                 ),
                                 reply_markup=InlineKeyboardMarkup(button),
