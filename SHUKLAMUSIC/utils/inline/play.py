@@ -110,7 +110,7 @@ def stream_markup(_, chat_id):
                 style=ButtonStyle.SUCCESS,
             ),
         ],
-        [InlineKeyboardButton(text=" ᴄʟᴏsᴇ ▣", callback_data="close", style=ButtonStyle.DANGER, icon_custom_emoji_id=5408832111773757273)],
+        [InlineKeyboardButton(text=" ⌯ ᴄʟσsє ⌯", callback_data="close", style=ButtonStyle.DANGER, icon_custom_emoji_id=5408832111773757273)],
     ]
     return buttons
 
