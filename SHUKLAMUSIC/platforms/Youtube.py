@@ -252,6 +252,60 @@ class YouTubeAPI:
         thumbnail = result[query_type]["thumbnails"][0]["url"].split("?")[0]
         return title, duration_min, thumbnail, vidid
 
+    async def related(self, vidid: str, exclude: list = None):
+        """
+        Autoplay ke liye: diye gaye vidid ki YouTube 'Radio/Mix' playlist
+        (RD<vidid>) se ek similar/related video dhoondta hai.
+        `exclude` list me jo vidid already play ho chuke hain wo diya jaye,
+        taaki wahi gaana repeat na ho.
+        Returns: (related_vidid, related_title) ya None agar kuch na mile.
+        """
+        exclude_set = set(exclude or [])
+        exclude_set.add(vidid)
+
+        loop = asyncio.get_event_loop()
+
+        def _fetch():
+            opts = {
+                "quiet": True,
+                "no_warnings": True,
+                "skip_download": True,
+                "extract_flat": True,
+                "playlistend": 20,
+            }
+            url = f"{self.base}{vidid}&list=RD{vidid}"
+            with yt_dlp.YoutubeDL(opts) as ydl:
+                return ydl.extract_info(url, download=False) or {}
+
+        try:
+            info = await loop.run_in_executor(None, _fetch)
+        except Exception:
+            info = {}
+
+        entries = info.get("entries") or []
+        for entry in entries:
+            if not entry:
+                continue
+            vid = entry.get("id")
+            if not vid or vid in exclude_set:
+                continue
+            title = entry.get("title") or "Unknown Title"
+            return vid, title
+
+        # Fallback: agar Mix/Radio na mile to same title se search karke
+        # koi aur video try karo taaki autoplay kabhi bilkul khaali haath na aaye.
+        try:
+            results = VideosSearch(vidid, limit=5)
+            for result in (await results.next())["result"]:
+                vid = result.get("id")
+                if not vid or vid in exclude_set:
+                    continue
+                return vid, result.get("title") or "Unknown Title"
+        except Exception:
+            pass
+
+        return None
+
     async def download(
         self,
         link: str,
