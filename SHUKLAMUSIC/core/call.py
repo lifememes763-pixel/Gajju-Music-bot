@@ -703,7 +703,11 @@ class Call(PyTgCalls):
             )
 
             try:
-                img = await get_thumb(videoid)
+                img = await get_thumb(
+                    videoid,
+                    fallback_title=title,
+                    fallback_thumbnail=f"https://i.ytimg.com/vi/{videoid}/hqdefault.jpg",
+                )
                 run = await app.send_photo(
                     original_chat_id,
                     photo=img,
@@ -814,7 +818,11 @@ class Call(PyTgCalls):
                 )
 
                 try:
-                    img = await get_thumb(videoid)
+                    img = await get_thumb(
+                    videoid,
+                    fallback_title=title,
+                    fallback_thumbnail=f"https://i.ytimg.com/vi/{videoid}/hqdefault.jpg",
+                )
                     run = await app.send_photo(
                         original_chat_id,
                         photo=img,
