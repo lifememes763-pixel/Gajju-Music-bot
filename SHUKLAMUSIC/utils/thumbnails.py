@@ -58,7 +58,7 @@ def trim_to_width(text: str, font: ImageFont.FreeTypeFont, max_w: int) -> str:
             return text[:i] + ellipsis
     return ellipsis
 
-async def get_thumb(videoid: str) -> str:
+async def get_thumb(videoid: str, fallback_title: str = None, fallback_thumbnail: str = None) -> str:
     cache_path = os.path.join(CACHE_DIR, f"{videoid}_v4.png")
     if os.path.exists(cache_path):
         return cache_path
@@ -97,7 +97,9 @@ async def get_thumb(videoid: str) -> str:
         else:
             views = f"{vc} views" if vc else "Unknown Views"
     except Exception:
-        title, thumbnail, duration, views = "Unsupported Title", YOUTUBE_IMG_URL, None, "Unknown Views"
+        title = fallback_title or "Unsupported Title"
+        thumbnail = fallback_thumbnail or YOUTUBE_IMG_URL
+        duration, views = None, "Unknown Views"
 
     is_live = not duration or str(duration).strip().lower() in {"", "live", "live now"}
     duration_text = "Live" if is_live else duration or "Unknown Mins"
@@ -181,4 +183,5 @@ async def get_thumb(videoid: str) -> str:
             pass
 
     return result_path
+
     
