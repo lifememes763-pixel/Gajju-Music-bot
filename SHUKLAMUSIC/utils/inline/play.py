@@ -12,7 +12,6 @@
 # ❤️ Made with dedication and love by ItzShukla
 # -------------------------------------
 
-import math
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from SHUKLAMUSIC import app
 import config
@@ -45,29 +44,15 @@ def track_markup(_, videoid, user_id, channel, fplay):
 def stream_markup_timer(_, chat_id, played, dur):
     played_sec = time_to_seconds(played)
     duration_sec = time_to_seconds(dur)
-    percentage = (played_sec / duration_sec) * 100
-    
-    umm = math.floor(percentage)
-    if 0 < umm <= 10:
-        bar = "▣—————————"
-    elif 10 < umm < 20:
-        bar = "—▣————————"
-    elif 20 <= umm < 30:
-        bar = "—▣———————"
-    elif 30 <= umm < 40:
-        bar = "——▣——————"
-    elif 40 <= umm < 50:
-        bar = "———▣—————"
-    elif 50 <= umm < 60:
-        bar = "————▣————"
-    elif 60 <= umm < 70:
-        bar = "—————▣———"
-    elif 70 <= umm < 80:
-        bar = "——————▣——"
-    elif 80 <= umm < 95:
-        bar = "———————▣—"
+    percentage = (played_sec / duration_sec) * 100 if duration_sec else 0
+
+    total_blocks = 15
+    if percentage <= 0:
+        filled_blocks = 0
     else:
-        bar = "————————▣"
+        filled_blocks = min(total_blocks, max(1, round((percentage / 100) * total_blocks)))
+    empty_blocks = total_blocks - filled_blocks
+    bar = ("▰" * filled_blocks) + ("▱" * empty_blocks)
     buttons = [
         [
             InlineKeyboardButton(
