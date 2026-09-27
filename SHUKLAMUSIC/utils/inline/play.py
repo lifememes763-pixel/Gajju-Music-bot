@@ -46,7 +46,7 @@ def stream_markup_timer(_, chat_id, played, dur):
     duration_sec = time_to_seconds(dur)
     percentage = (played_sec / duration_sec) * 100 if duration_sec else 0
 
-    total_blocks = 15
+    total_blocks = 10
     if percentage <= 0:
         filled_blocks = 0
     else:
@@ -83,7 +83,7 @@ def stream_markup_timer(_, chat_id, played, dur):
             ),
         ],
 
-        [InlineKeyboardButton(text=" ⌯ ᴄʟσsє ⌯", callback_data="close", style=ButtonStyle.DANGER, icon_custom_emoji_id=5408832111773757273)],
+        [InlineKeyboardButton(text=" ᴄʟᴏsᴇ ▣", callback_data="close", style=ButtonStyle.DANGER, icon_custom_emoji_id=5408832111773757273)],
     ]
     return buttons
 
