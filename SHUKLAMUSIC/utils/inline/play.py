@@ -46,13 +46,13 @@ def stream_markup_timer(_, chat_id, played, dur):
     duration_sec = time_to_seconds(dur)
     percentage = (played_sec / duration_sec) * 100 if duration_sec else 0
 
-    total_blocks = 8
+    total_blocks = 9
     if percentage <= 0:
         filled_blocks = 0
     else:
         filled_blocks = min(total_blocks, max(1, round((percentage / 100) * total_blocks)))
     empty_blocks = total_blocks - filled_blocks
-    bar = ("▪" * filled_blocks) + ("▫" * empty_blocks)
+    bar = ("▰" * filled_blocks) + ("▱" * empty_blocks)
     buttons = [
         [
             InlineKeyboardButton(
@@ -83,7 +83,7 @@ def stream_markup_timer(_, chat_id, played, dur):
             ),
         ],
 
-        [InlineKeyboardButton(text="  ⌯ ᴄʟσsє ⌯", callback_data="close", style=ButtonStyle.DANGER, icon_custom_emoji_id=5408832111773757273)],
+        [InlineKeyboardButton(text=" ⌯ ᴄʟσsє ⌯", callback_data="close", style=ButtonStyle.DANGER, icon_custom_emoji_id=5408832111773757273)],
     ]
     return buttons
 
@@ -110,7 +110,7 @@ def stream_markup(_, chat_id):
                 style=ButtonStyle.SUCCESS,
             ),
         ],
-        [InlineKeyboardButton(text="  ⌯ ᴄʟσsє ⌯", callback_data="close", style=ButtonStyle.DANGER, icon_custom_emoji_id=5408832111773757273)],
+        [InlineKeyboardButton(text=" ⌯ ᴄʟσsє ⌯", callback_data="close", style=ButtonStyle.DANGER, icon_custom_emoji_id=5408832111773757273)],
     ]
     return buttons
 
@@ -183,4 +183,4 @@ def slider_markup(_, videoid, user_id, query, query_type, channel, fplay):
         ],
     ]
     return buttons
-        
+    
