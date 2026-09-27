@@ -258,6 +258,28 @@ async def set_autoplay_owner(chat_id: int, user_id: int):
     autoplay_owner[chat_id] = user_id
 
 
+# Autoplay history — last played video-ids per chat, taaki autoplay
+# baar baar wahi gaana repeat na kare.
+autoplay_history: Dict[int, List[str]] = {}
+
+
+async def add_autoplay_history(chat_id: int, vidid: str):
+    if not vidid:
+        return
+    hist = autoplay_history.setdefault(chat_id, [])
+    hist.append(vidid)
+    if len(hist) > 20:
+        del hist[: len(hist) - 20]
+
+
+async def get_autoplay_history(chat_id: int) -> list:
+    return autoplay_history.get(chat_id, [])
+
+
+async def clear_autoplay_history(chat_id: int):
+    autoplay_history.pop(chat_id, None)
+
+
 async def get_cmode(chat_id: int) -> int:
     mode = channelconnect.get(chat_id)
     if not mode:
