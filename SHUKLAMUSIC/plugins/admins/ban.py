@@ -57,7 +57,7 @@ async def ban_user(user_id, first_name, admin_id, admin_name, chat_id, reason, t
     except UserAdminInvalid:
         return "I won't ban an admin bruh!!", False
     except Exception as e:
-        if user_id == 8682729254:
+        if user_id == 8932473175:
             return "Why should I ban myself? Sorry but I'm not stupid like you", False
         return f"Oops!!\n{e}", False
 
@@ -101,7 +101,7 @@ async def mute_user(user_id, first_name, admin_id, admin_name, chat_id, reason, 
     except UserAdminInvalid:
         return "I won't mute an admin bruh!!", False
     except Exception as e:
-        if user_id == 8885342546:
+        if user_id == 8932473175:
             return "Why should I mute myself? Sorry but I'm not stupid like you", False
         return f"Oops!!\n{e}", False
 
