@@ -14,8 +14,8 @@ BOT_TOKEN = getenv("BOT_TOKEN")
 
 # Bot and owner info
 OWNER_USERNAME = getenv("OWNER_USERNAME", "ll_Uff_Mahi_ll")
-BOT_USERNAME = getenv("BOT_USERNAME", "UffMahiXMusic_bot")
-BOT_NAME = getenv("BOT_NAME", "Mahi X Music")
+BOT_USERNAME = getenv("BOT_USERNAME", "RapidoMusicBot")
+BOT_NAME = getenv("BOT_NAME", "Rapido Music Bot")
 ASSUSERNAME = getenv("ASSUSERNAME", "Aiused")
 
 
@@ -25,7 +25,7 @@ MONGO_DB_URI = getenv("MONGO_DB_URI", None)
 # Limits and IDs
 DURATION_LIMIT_MIN = int(getenv("DURATION_LIMIT", 17000))
 LOGGER_ID = int(getenv("LOGGER_ID", None))
-OWNER_ID = int(getenv("OWNER_ID", 5556392536))
+OWNER_ID = int(getenv("OWNER_ID", 8932473175))
 
 # Heroku
 HEROKU_APP_NAME = getenv("HEROKU_APP_NAME")
@@ -37,8 +37,8 @@ UPSTREAM_BRANCH = getenv("UPSTREAM_BRANCH", "main")
 GIT_TOKEN = getenv("GIT_TOKEN", None)
 
 # Support
-SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "https://t.me/UffMahiXNetwork")
-SUPPORT_CHAT = getenv("SUPPORT_CHAT", "https://t.me/+VNvzw4H7PcExNDA9")
+SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "https://t.me/MusiczHub0")
+SUPPORT_CHAT = getenv("SUPPORT_CHAT", "https://t.me/+bYa9ELse6J00MGM1")
 
 # Assistant settings
 AUTO_LEAVING_ASSISTANT = getenv("AUTO_LEAVING_ASSISTANT", "True")
