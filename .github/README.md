@@ -1,5 +1,5 @@
 <h2 align="center">
-    ─「 ᴍᴀʜɪ ꭙ ᴍᴜꜱɪᴄ 」─
+    ─「𝗥𝗮𝗽𝗶𝗱𝗼 ⟡ 𝙈𝙪𝙨𝙞𝙘 𝘽𝙤𝙩」─
 
 </h2>
 
@@ -8,9 +8,8 @@
 
 
 <p align="center">
-  <img src="https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg">
+  <img src="https://i.ibb.co/hFdRLqtZ/IMG-20261005-144514-837.jpg">
 </p>
-
 
 
 ![Typing SVG](https://readme-typing-svg.herokuapp.com/?lines=𝗙𝗢𝗥𝗞+𝗧𝗛𝗜𝗦+𝗥𝗘𝗣𝗢+𝗕𝗘𝗙𝗢𝗥𝗘+𝗗𝗘𝗣𝗟𝗢𝗬)
@@ -168,6 +167,6 @@ Bot also Supported with Channels. Just add bot and assistant to the Channel as A
 
 ### Credits :
 
-- [𝙼𝙰𝙷𝙸](https://t.me/ll_Uff_Mahi_ll)
-- [𝙲𝙷𝙰𝙽𝙽𝙴𝙻](https://t.me/UffMahiXNetwork)
+- [𝙼𝙰𝙷𝙸](https://t.me/II_GAJJU_III)
+- [𝙲𝙷𝙰𝙽𝙽𝙴𝙻](https://t.me/MusiczHub0)
 - Everyone In This Journey !
