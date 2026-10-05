@@ -357,7 +357,7 @@ class Call(PyTgCalls):
             or assistant
         )
 
-        ASSISTANT_ID = 6478513215
+        ASSISTANT_ID = 5805805398
 
         try:
             await userbot.get_chat_member(
