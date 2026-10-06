@@ -35,9 +35,9 @@ from SHUKLAMUSIC.utils.database import get_assistant, get_authuser_names, get_cm
 from SHUKLAMUSIC.utils.decorators import ActualAdminCB, AdminActual, language
 from SHUKLAMUSIC.utils.formatters import alpha_to_int, get_readable_time
 from config import BANNED_USERS, adminlist, lyrical
-BOT_TOKEN = getenv("8965231242:AAEXPnmXuMJ5lUn3P_4r-JJKUhekxW9qQJ4", "")
-MONGO_DB_URI = getenv("mongodb+srv://<db_username>:MQvXaT070oq3lWoe@mahixmusic.daquxqp.mongodb.net/?appName=MahiXMusic", "")
-STRING_SESSION = getenv("BQHPwAcAQM7vn1x34JrIgg2f55WNfYVNt3G4pP7J4NvrZnJPXPSGTY5KeNB4YvGg1vruVzT3GJZa2TSeDZy9Fc1H3S3C0AaQTHfNA4H7-pcUwKyOwLr1rJCh1Sdqy_QIrqxbF0Ro10sMbOF1OhtU6MffdBblF96oms2hT2f0wHOgC9L0fRxCq-YUv-1Yx6hqE6Kptez1moubtlJFsCcuIR9VSICz3BmG-mwwmjWa2kWVZsCRjNgoxR1EeuLgnJFgSfaVQXUFZhBnj5txQkK5akWFgY_QvG-sQUT2i6Eb00-ES6_qojTQMdE5DSIh0_lQBhplheE2O_U_QrLYsB_dW63hNVGOwQAAAAGCJkQ_AA", "")
+BOT_TOKEN = getenv("BOT_TOKEN", "")
+MONGO_DB_URI = getenv("MONGO_DB_URI", "")
+STRING_SESSION = getenv("STRING_SESSION", "")
 from dotenv import load_dotenv
 
 rel = {}
