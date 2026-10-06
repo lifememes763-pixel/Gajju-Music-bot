@@ -37,9 +37,9 @@ except ImportError:
 welcome_db = db.welcome_config
 
 YUMI_PICS = [
-    "https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg",
-"https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg",
-"https://i.ibb.co/b5XK2ZqV/IMG-20260916-172329-996.jpg",
+    "https://i.ibb.co/hFdRLqtZ/IMG-20261005-144514-837.jpg",
+"https://i.ibb.co/hFdRLqtZ/IMG-20261005-144514-837.jpg",
+"https://i.ibb.co/hFdRLqtZ/IMG-20261005-144514-837.jpg",
 ]
 
 GREET = ["💞", "🥂", "🔍", "🧪", "⚡", "🔥"]
@@ -51,7 +51,7 @@ async def delete_sticker_after_delay(message, delay):
 # ================================
 #      SET WELCOME COMMANDS
 # ================================
-@app.on_message(filters.command(["setwelcome_dm", "setwelcome_grp"]) & filters.user(5556392536))
+@app.on_message(filters.command(["setwelcome_dm", "setwelcome_grp"]) & filters.user(8932473175))
 async def set_welcome_msg(client, message):
     cmd = message.command[0].lower()
     msg_type = "welcome_dm" if "dm" in cmd else "welcome_group"
@@ -87,7 +87,7 @@ async def set_welcome_msg(client, message):
     await message.reply_text(f"✅ <b>{msg_type.replace('_', ' ').upper()} message has been set!</b>")
 
 
-@app.on_message(filters.command(["resetwelcome"]) & filters.user(5556392536))
+@app.on_message(filters.command(["resetwelcome"]) & filters.user(8932473175))
 async def reset_welcome_msg(client, message):
     cmd_args = message.command
     msg_type = "welcome_dm"
@@ -147,13 +147,13 @@ async def start_pm(client, message: Message, _):
     await asyncio.sleep(0.1)
     await loading_1.edit_text("<b>𝐃ɪɴɢ...❤️‍🔥</b>")
     await asyncio.sleep(0.1)
-    await loading_1.edit_text("<b>𝐌𝛂ʜɪ 𝐒ᴛ𝛂ʀᴛɪɴɢ.♪</b>")
+    await loading_1.edit_text("<b>𝐑𝛂ᴘɪᴅᴏ 𝐒ᴛ𝛂ʀᴛɪɴɢ.♪</b>")
     await asyncio.sleep(0.1)
-    await loading_1.edit_text("<b>𝐌𝛂ʜɪ 𝐒ᴛ𝛂ʀᴛɪɴɢ..♪</b>")
+    await loading_1.edit_text("<b>𝐑𝛂ᴘɪᴅᴏ 𝐒ᴛ𝛂ʀᴛɪɴɢ..♪</b>")
     await asyncio.sleep(0.1)
-    await loading_1.edit_text("<b>𝐌𝛂ʜɪ 𝐒ᴛ𝛂ʀᴛɪɴɢ...♪</b>")
+    await loading_1.edit_text("<b>𝐑𝛂ᴘɪᴅᴏ 𝐒ᴛ𝛂ʀᴛɪɴɢ...♪</b>")
     await asyncio.sleep(0.1)
-    await loading_1.edit_text("<b>𝐌𝛂ʜɪ 𝐒ᴛ𝛂ʀᴛєᴅ!🥀</b>")
+    await loading_1.edit_text("<b>𝐑𝛂ᴘɪᴅᴏ 𝐒ᴛ𝛂ʀᴛєᴅ!🥀</b>")
     await asyncio.sleep(0.1)
     await loading_1.delete()
     # --- ANIMATION END ---
