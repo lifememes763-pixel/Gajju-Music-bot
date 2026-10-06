@@ -233,7 +233,7 @@ async def append_chat_history(
 
 
 # =========================================================
-# Mahi AI Engine
+# Rapido AI Engine
 # =========================================================
 
 async def process_mahi_request(
@@ -783,7 +783,7 @@ async def chatbot_auto_reply(
     # Detect Rapido
     # =====================================================
 
-    has_Rapido = (
+    has_rapido = (
         "rapido" in text_lower
     )
 
