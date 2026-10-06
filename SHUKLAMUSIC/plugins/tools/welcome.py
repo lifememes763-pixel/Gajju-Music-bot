@@ -191,7 +191,7 @@ async def greet_new_member(_, member: ChatMemberUpdated):
                 photo=welcomeimg,
                 caption=(
                     "<blockquote>"
-                    "╭━━━〔 <emoji id=5348511817247257109>🌸</emoji> 𝐌ᴀʜɪ ✦ 𝐌ᴜsɪᴄ 〕━━━╮\n"
+                    "╭━━━〔 <emoji id=5348511817247257109>🌸</emoji> 𝗥𝗮𝗽𝗶𝗱𝗼 ⟡ 𝙈𝙪𝙨𝙞𝙘 〕━━━╮\n"
                     "┃\n"
                     "┃ <emoji id=5298635178082581273>🎉</emoji> <b>ɴᴇᴡ ᴍᴇᴍʙᴇʀ ᴡᴇʟᴄᴏᴍᴇ!</b>\n"
                     "┃\n"
@@ -200,7 +200,7 @@ async def greet_new_member(_, member: ChatMemberUpdated):
                     f"┃ <emoji id=6105016735310547954>🔗</emoji> <b>ᴜsᴇʀɴᴀᴍᴇ:</b> @{user.username if user.username else 'ɴᴏɴᴇ'}\n"
                     f"┃ <emoji id=6334381440754517833>🎊</emoji> <b>ᴍᴇᴍʙᴇʀs:</b> {count}\n"
                     "┃\n"
-                    "┃ <emoji id=6104728985386622758>🎵</emoji> <i>ᴇɴᴊᴏʏ ᴛʜᴇ ᴍᴜsɪᴄ ᴡɪᴛʜ 𝐌ᴀʜɪ ✦ 𝐌ᴜsɪᴄ!</i>\n"
+                    "┃ <emoji id=6104728985386622758>🎵</emoji> <i>ᴇɴᴊᴏʏ ᴛʜᴇ ᴍᴜsɪᴄ ᴡɪᴛʜ 𝗥𝗮𝗽𝗶𝗱𝗼 ⟡ 𝙈𝙪𝙨𝙞𝙘!</i>\n"
                     "┃\n"
                     "╰━━━━━━━━━━━━━━━━━━━━━━╯"
                     "</blockquote>"
