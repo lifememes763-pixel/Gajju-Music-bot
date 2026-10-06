@@ -24,7 +24,7 @@ RANDOM_SONGS = [
 async def send_queue_empty_msg(chat_id: int):
     """Sends stylized blockquote message when queue ends."""
     
-    bot_mention = f"<a href='tg://user?id={app.id}'>𝐀ʟɪsᴀ</a>"
+    bot_mention = f"<a href='tg://user?id={app.id}'>𝗥𝗮𝗽𝗶𝗱𝗼</a>"
     
     empty_text = (
         f"<blockquote>"
