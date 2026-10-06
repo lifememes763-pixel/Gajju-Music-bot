@@ -577,7 +577,7 @@ Your job here is conversation, helpful answers and coding assistance.
             )
 
             file_bytes.name = (
-                "mahi_advanced_module.py"
+                "rapido_advanced_module.py"
             )
 
 
