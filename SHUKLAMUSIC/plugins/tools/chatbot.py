@@ -31,7 +31,7 @@ chat_history_db = mongodb.chatbot_history
 # Gemini API
 # =========================================================
 
-GEMINI_API_KEY = "AQ.Ab8RN6Jl1A4lJ-b5VsNCGdp2qvStPbh42FPQulhx_Qzp_DAJdw"
+GEMINI_API_KEY = "AQ.Ab8RN6Lym_B5aH8w76th9rm8wBMEwL3Nokph2DYcGq7_rQvxqw"
 
 client_ai = genai.Client(
     api_key=GEMINI_API_KEY
@@ -56,7 +56,7 @@ def e(eid, fb=""):
 # =========================================================
 
 CB_HELP = f"""
-{e(_E_LEARN, '💐')} <b>Mahi AI Assistant</b>
+{e(_E_LEARN, '💐')} <b>Rapido AI Assistant</b>
 
 <b>Features:</b>
 • Cute & natural group chatting
@@ -68,12 +68,12 @@ CB_HELP = f"""
 
 <b>Commands:</b>
 
-• <code>/chatbot on</code> — Enable Mahi AI
-• <code>/chatbot off</code> — Disable Mahi AI
+• <code>/chatbot on</code> — Enable Rapido AI
+• <code>/chatbot off</code> — Disable Rapido AI
 • <code>/chatbot</code> — Check current status
 
 <b>Note:</b>
-Only group admins and the owner can enable or disable Mahi.
+Only group admins and the owner can enable or disable Rapido.
 """
 
 
@@ -254,7 +254,7 @@ async def process_mahi_request(
 
 
     # =====================================================
-    # Advanced Mahi Personality
+    # Advanced Rapido Personality
     # =====================================================
 
     system_instruction = """
@@ -300,7 +300,7 @@ User: kaisi ho
 Mahi: Bilkul mast 🥰 aap kaise ho?
 
 User: bore ho rha
-Mahi: Acha ji 😭 phir Mahi ko bula liya?
+Mahi: Acha ji 😭 phir Rapido ko bula liya?
 
 User: kya scene
 Mahi: Kuch khaas nahi 😂 tum batao?
@@ -392,8 +392,8 @@ Only discuss coding when the user explicitly asks about:
 - development
 
 OWNER: 
-YOUR OWNER IS @ll_Uff_Mahi_ll. IF SOMEONE ASK U WHO IS YOUR OWNER U JUST 
-SAY Meri Owner Aur Developer Meri Cute  Si 🌿꙰⃝꯭꯭⃟🦋꯭𝗨𝖋𝖋⍣꯭𝄄𝄀꯭𝄄꯭𝐌𝐀𝐇𝐈 🥀 Hai USERNAME @ll_Uff_Mahi_ll.
+YOUR OWNER IS @II_GAJJU_III. IF SOMEONE ASK U WHO IS YOUR OWNER U JUST 
+SAY Meri Owner Aur Developer Meri Pyaari Si Cute  Si 🌿꙰⃝꯭꯭⃟🦋꯭𝗨𝖋𝖋⍣꯭𝄄𝄀꯭𝄄꯭𝐌𝐀𝐇𝐈 🥀 Hai USERNAME @ll_Uff_Mahi_ll.
 
 When coding is requested:
 
@@ -430,7 +430,7 @@ NATURAL BEHAVIOUR:
 - Do not force a conversation when the user has not asked anything.
 - Match the user's energy.
 
-Your identity is Mahi.
+Your identity is Rapido.
 Your job here is conversation, helpful answers and coding assistance.
 """
 
@@ -494,7 +494,7 @@ Your job here is conversation, helpful answers and coding assistance.
         if not response or not response.text:
 
             await message.reply_text(
-                "Hmm 😭 Mahi thoda confuse ho gayi."
+                "Hmm 😭 Rapido thoda confuse ho gayi."
             )
             return
 
@@ -585,7 +585,7 @@ Your job here is conversation, helpful answers and coding assistance.
                 document=file_bytes,
                 caption=(
                     "<blockquote>"
-                    "✨ <b>Mahi Code Engine</b>\n\n"
+                    "✨ <b>Rapido Code Engine</b>\n\n"
                     "Your custom module is ready!"
                     "</blockquote>"
                 )
@@ -621,7 +621,7 @@ Your job here is conversation, helpful answers and coding assistance.
     except Exception:
 
         await message.reply_text(
-            "Oops 😭 Mahi se abhi reply nahi ho paya."
+            "Oops 😭 Rapido se abhi reply nahi ho paya."
         )
 
 
@@ -698,7 +698,7 @@ async def chatbot_toggle_cmd(
 
         return await message.reply_text(
             f"{e(_E_LEARN, '💐')} "
-            f"<b>Mahi ChatBot:</b> {status}\n\n"
+            f"<b>Rapido ChatBot:</b> {status}\n\n"
             f"Usage:\n"
             f"<code>/chatbot on</code>\n"
             f"<code>/chatbot off</code>"
@@ -724,21 +724,21 @@ async def chatbot_toggle_cmd(
 
         await message.reply_text(
             f"{e(_E_ON, '🥰')} "
-            "<b>Mahi AI enabled!</b>\n\n"
-            "Ab Mahi ko tag karke baat kar sakte ho 🌸"
+            "<b>Rapido AI enabled!</b>\n\n"
+            "Ab Rapido ko tag karke baat kar sakte ho 🌸"
         )
 
     else:
 
         await message.reply_text(
             f"{e(_E_OFF, '🐈')} "
-            "<b>Mahi AI disabled</b> "
+            "<b>Rapido AI disabled</b> "
             "for this chat."
         )
 
 
 # =========================================================
-# Automatic Mahi Reply
+# Automatic Rapido Reply
 # =========================================================
 
 @app.on_message(
@@ -780,11 +780,11 @@ async def chatbot_auto_reply(
 
 
     # =====================================================
-    # Detect Mahi
+    # Detect Rapido
     # =====================================================
 
-    has_mahi = (
-        "mahi" in text_lower
+    has_Rapido = (
+        "rapido" in text_lower
     )
 
 
@@ -807,7 +807,7 @@ async def chatbot_auto_reply(
 
 
     if not (
-        has_mahi
+        has_rapido
         or is_tagged
         or is_reply_to_bot
     ):
@@ -836,9 +836,9 @@ async def chatbot_auto_reply(
         prompt = prompt.strip()
 
 
-    # Remove "Mahi" from beginning
+    # Remove "Rapido" from beginning
     if prompt.lower().startswith(
-        "mahi"
+        "rapido"
     ):
 
         prompt = (
@@ -856,7 +856,7 @@ async def chatbot_auto_reply(
     # Process
     # =====================================================
 
-    await process_mahi_request(
+    await process_rapido_request(
         client,
         message,
         prompt
