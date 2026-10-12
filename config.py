@@ -90,7 +90,6 @@ DEBUG_IGNORE_LOG = getenv("DEBUG_IGNORE_LOG", "False").lower() == "true"
 LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", getenv("LOGGER_ID", "0")))
 SUPPORT_GROUP = getenv("SUPPORT_GROUP", SUPPORT_CHAT)
 
-
 # Image URLs
 SHASHANK_IMG = getenv("SHASHANK_IMG", "https://i.ibb.co/hFdRLqtZ/IMG-20261005-144514-837.jpg").split(",") if "," in getenv("SHASHANK_IMG", "") else [getenv("SHASHANK_IMG", "https://i.ibb.co/hFdRLqtZ/IMG-20261005-144514-837.jpg")]
 
@@ -106,7 +105,6 @@ YOUTUBE_IMG_URL = getenv("YOUTUBE_IMG_URL", "https://telegra.ph/file/6298d377ad3
 SPOTIFY_ARTIST_IMG_URL = "https://i.ibb.co/hFdRLqtZ/IMG-20261005-144514-837.jpg"
 SPOTIFY_ALBUM_IMG_URL = "https://i.ibb.co/hFdRLqtZ/IMG-20261005-144514-837.jpg"
 SPOTIFY_PLAYLIST_IMG_URL = "https://i.ibb.co/hFdRLqtZ/IMG-20261005-144514-837.jpg"
-
 
 # Helper function
 def time_to_seconds(time: str) -> int:
