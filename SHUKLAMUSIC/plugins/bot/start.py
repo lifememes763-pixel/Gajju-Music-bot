@@ -158,7 +158,7 @@ async def start_pm(client, message: Message, _):
     await loading_1.delete()
     # --- ANIMATION END ---
 
-    if len(message.text.split()) > 1:
+    if len(message.text.split()) > 1 and not message.text.split()[1].startswith("ref_"):
         name = message.text.split(None, 1)[1]
         if name[0:4] == "help":
             keyboard = help_pannel(_)
