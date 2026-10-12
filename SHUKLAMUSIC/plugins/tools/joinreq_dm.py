@@ -16,7 +16,7 @@ import config
 from SHUKLAMUSIC import app
 
 # ================== SETTINGS ==================
-PHOTO = "https://i.ibb.co/zTrFdTNC/file-00000000038881fb8887d7fd41cf47b6.png"
+PHOTO = "https://i.ibb.co/hFdRLqtZ/IMG-20261005-144514-837.jpg"
 
 # {name} = user ka naam, {chat} = group/channel ka naam, {bot} = bot ka naam
 CAPTION = (
