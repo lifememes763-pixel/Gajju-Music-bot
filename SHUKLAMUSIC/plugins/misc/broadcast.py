@@ -15,6 +15,7 @@ import asyncio
 from pyrogram import filters
 from pyrogram.enums import ChatMembersFilter
 from pyrogram.errors import FloodWait
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from SHUKLAMUSIC import app
 from SHUKLAMUSIC.misc import SUDOERS
 from SHUKLAMUSIC.utils.database import (
@@ -29,6 +30,17 @@ from SHUKLAMUSIC.utils.formatters import alpha_to_int
 from config import adminlist
 
 IS_BROADCASTING = False
+
+# ===== Har broadcast ke neeche ye button lagega =====
+ADD_BTN_TEXT = "ADD ME BABY"
+
+
+def add_button():
+    link = (
+        f"https://t.me/{app.username}?startgroup=true"
+        "&admin=delete_messages+invite_users+pin_messages+manage_video_chats"
+    )
+    return InlineKeyboardMarkup([[InlineKeyboardButton(ADD_BTN_TEXT, url=link)]])
 
 
 @app.on_message(filters.command("broadcast") & SUDOERS)
@@ -68,9 +80,9 @@ async def braodcast_message(client, message, _):
         for i in chats:
             try:
                 m = (
-                    await app.forward_messages(i, y, x)
+                    await app.copy_message(i, y, x, reply_markup=add_button())
                     if message.reply_to_message
-                    else await app.send_message(i, text=query)
+                    else await app.send_message(i, text=query, reply_markup=add_button())
                 )
                 if "-pin" in message.text:
                     try:
@@ -107,9 +119,9 @@ async def braodcast_message(client, message, _):
         for i in served_users:
             try:
                 m = (
-                    await app.forward_messages(i, y, x)
+                    await app.copy_message(i, y, x, reply_markup=add_button())
                     if message.reply_to_message
-                    else await app.send_message(i, text=query)
+                    else await app.send_message(i, text=query, reply_markup=add_button())
                 )
                 susr += 1
                 await asyncio.sleep(0.2)
@@ -178,3 +190,4 @@ async def auto_clean():
 
 
 asyncio.create_task(auto_clean())
+            
