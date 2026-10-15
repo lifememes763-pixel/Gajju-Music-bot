@@ -12,6 +12,7 @@
 # ❤️ Made with dedication and love by ItzShukla
 # -----------------------------------------------
 import asyncio
+import re
 from pyrogram import filters
 from pyrogram.enums import ChatMembersFilter
 from pyrogram.errors import FloodWait
@@ -29,10 +30,21 @@ from SHUKLAMUSIC.utils.decorators.language import language
 from SHUKLAMUSIC.utils.formatters import alpha_to_int
 from config import adminlist
 
+try:
+    from SHUKLAMUSIC.core.mongo import mongodb as _db
+except ImportError:
+    from SHUKLAMUSIC.utils.database import mongodb as _db
+
 IS_BROADCASTING = False
 
-# ===== Har broadcast ke neeche ye button lagega =====
+# ===== "ADD ME BABY" button (on/off tumhare haath me) =====
 ADD_BTN_TEXT = "ADD ME BABY"
+_settings = _db.broadcast_settings
+
+
+async def addbtn_is_on() -> bool:
+    doc = await _settings.find_one({"_id": "addbtn"})
+    return bool(doc and doc.get("on"))  # default: OFF
 
 
 def add_button():
@@ -41,6 +53,36 @@ def add_button():
         "&admin=delete_messages+invite_users+pin_messages+manage_video_chats"
     )
     return InlineKeyboardMarkup([[InlineKeyboardButton(ADD_BTN_TEXT, url=link)]])
+
+
+async def want_button(text: str) -> bool:
+    """-btn  -> is broadcast me button lagao
+    -nobtn -> is broadcast me button mat lagao
+    kuch nahi likha -> /addbtn ki saved setting (default OFF)"""
+    if re.search(r"(?<!\S)-nobtn\b", text):
+        return False
+    if re.search(r"(?<!\S)-btn\b", text):
+        return True
+    return await addbtn_is_on()
+
+
+@app.on_message(filters.command("addbtn") & SUDOERS)
+async def addbtn_cmd(client, message):
+    arg = message.command[1].lower() if len(message.command) > 1 else "status"
+    if arg in ("on", "off"):
+        await _settings.update_one(
+            {"_id": "addbtn"}, {"$set": {"on": arg == "on"}}, upsert=True
+        )
+    elif arg != "status":
+        return await message.reply_text("Usage: /addbtn on | off | status")
+    on = await addbtn_is_on()
+    await message.reply_text(
+        f"🔘 <b>Add Me button:</b> {'ON ✅' if on else 'OFF ❌'}\n\n"
+        "<code>/addbtn on</code> — har broadcast me button\n"
+        "<code>/addbtn off</code> — kisi me nahi (default)\n"
+        "<code>/broadcast ... -btn</code> — sirf is broadcast me button\n"
+        "<code>/broadcast ... -nobtn</code> — sirf is broadcast me button nahi"
+    )
 
 
 @app.on_message(filters.command("broadcast") & SUDOERS)
@@ -64,11 +106,17 @@ async def braodcast_message(client, message, _):
             query = query.replace("-assistant", "")
         if "-user" in query:
             query = query.replace("-user", "")
+        query = re.sub(r"(?<!\S)-(?:nobtn|btn)\b", "", query).strip()
         if query == "":
             return await message.reply_text(_["broad_8"])
 
+    use_btn = await want_button(message.text)
+    markup = add_button() if use_btn else None
+
     IS_BROADCASTING = True
-    await message.reply_text(_["broad_1"])
+    await message.reply_text(
+        _["broad_1"] + f"\n\n🔘 Add Me button: {'ON ✅' if use_btn else 'OFF ❌'}"
+    )
 
     if "-nobot" not in message.text:
         sent = 0
@@ -80,9 +128,9 @@ async def braodcast_message(client, message, _):
         for i in chats:
             try:
                 m = (
-                    await app.copy_message(i, y, x, reply_markup=add_button())
+                    await app.copy_message(i, y, x, reply_markup=markup)
                     if message.reply_to_message
-                    else await app.send_message(i, text=query, reply_markup=add_button())
+                    else await app.send_message(i, text=query, reply_markup=markup)
                 )
                 if "-pin" in message.text:
                     try:
@@ -119,9 +167,9 @@ async def braodcast_message(client, message, _):
         for i in served_users:
             try:
                 m = (
-                    await app.copy_message(i, y, x, reply_markup=add_button())
+                    await app.copy_message(i, y, x, reply_markup=markup)
                     if message.reply_to_message
-                    else await app.send_message(i, text=query, reply_markup=add_button())
+                    else await app.send_message(i, text=query, reply_markup=markup)
                 )
                 susr += 1
                 await asyncio.sleep(0.2)
@@ -190,4 +238,4 @@ async def auto_clean():
 
 
 asyncio.create_task(auto_clean())
-            
+        
