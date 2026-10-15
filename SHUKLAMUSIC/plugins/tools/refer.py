@@ -3,7 +3,10 @@
 # Path: SHUKLAMUSIC/plugins/tools/refer.py
 #
 # USER COMMANDS
-#   /refer  (/balance, /earn)  -> link, balance, rank, withdraw + promotion info
+#   /refer  (/earn)            -> refer link, refers, balance, global rank + promotion info
+#   /balance                   -> balance, earned, recent activity
+#   /pay <id|@user> <amt>      -> transfer balance (or reply: /pay <amt>)
+#   daily bonus                -> roz /start karne par balance me bonus
 #   /leaderboard (/reftop)     -> Top earners
 #   /withdraw upi_id amount    -> UPI withdrawal request (top rankers only)
 #   /broadcast  (reply to your content, in bot PM) -> paid promotion
@@ -76,6 +79,7 @@ DEFAULTS = {
     "top_withdraw": 3,      # only top N earners can withdraw
     "promo_fee": 50,
     "top_size": 5,          # leaderboard size
+    "daily_bonus": 1,       # Rs daily bonus (balance only, rank pe asar nahi). 0 = off
     "promo_approval": True, # owner approves promotions first
     "promo_target": "users",  # users | chats | both
 }
@@ -133,8 +137,9 @@ async def ensure_user(uid: int):
 
 
 async def get_rank(uid: int):
+    """Global rank (total earnings se). Sabke liye hota hai, 0 earning wale ke liye bhi."""
     u = await users.find_one({"_id": uid})
-    if not u or float(u.get("earned", 0)) <= 0:
+    if not u:
         return None
     better = await users.count_documents(
         {
@@ -178,10 +183,15 @@ async def debit(uid: int, amount: float, kind: str, note: str = "") -> bool:
     return True
 
 
-async def refund(uid: int, amount: float, note: str = ""):
+async def add_balance(uid: int, amount: float, kind: str, note: str = ""):
+    """sirf balance badhata hai (total earned / rank nahi)."""
     await ensure_user(uid)
     await users.update_one({"_id": uid}, {"$inc": {"balance": amount}})
-    await txs.insert_one({"user": uid, "type": "refund", "amount": amount, "note": note, "ts": now()})
+    await txs.insert_one({"user": uid, "type": kind, "amount": amount, "note": note, "ts": now()})
+
+
+async def refund(uid: int, amount: float, note: str = ""):
+    await add_balance(uid, amount, "refund", note)
 
 
 async def uinfo(uid: int):
@@ -282,58 +292,159 @@ async def ref_capture(client, message: Message):
 
 
 # ================= 2) /refer =================
-@app.on_message(filters.command(["refer", "referral", "myref", "balance", "earn"]) & ~BANNED_USERS)
+def promo_info_text(bal: float, cfg) -> str:
+    fee = float(cfg["promo_fee"])
+    status = "✅ You have enough balance!" if bal >= fee else f"❌ Need {rs(fee - bal)} more for promotion"
+    return (
+        "📢 <b>How to Promote Your Content:</b>\n\n"
+        "1️⃣ Send your promotional content here (text/photo/video)\n"
+        "2️⃣ Reply to that message with /broadcast\n\n"
+        f"💰 Promotion Fee: {rs(fee)}\n"
+        f"💳 Your Balance: {rs(bal)}\n"
+        f"{status}\n\n"
+        "👉 Check leaderboard: /leaderboard"
+    )
+
+
+@app.on_message(filters.command(["refer", "referral", "myref", "earn"]) & ~BANNED_USERS)
 async def refer_cmd(client, message: Message):
     uid = message.from_user.id
     cfg = await get_cfg()
     u = await ensure_user(uid)
     rank = await get_rank(uid)
-    not_counted = await clicks.count_documents({"referrer": uid, "status": "old"})
-    link = f"https://t.me/{app.username}?start=ref_{uid}"
-
     bal = float(u["balance"])
-    if rank is not None and rank <= cfg["top_withdraw"] and bal >= cfg["min_withdraw"]:
-        wd_status = "✅ <b>You can withdraw now!</b>"
-    elif rank is None or rank > cfg["top_withdraw"]:
-        wd_status = f"❌ Withdrawal locked: reach top {cfg['top_withdraw']} (your rank: {('#' + str(rank)) if rank else '—'})"
-    else:
-        wd_status = f"❌ Need {rs(cfg['min_withdraw'] - bal)} more to withdraw"
-
-    if bal >= cfg["promo_fee"]:
-        promo_status = "✅ You have enough balance!"
-    else:
-        promo_status = f"❌ Need {rs(cfg['promo_fee'] - bal)} more for promotion"
+    link = f"t.me/{app.username}?start=ref_{uid}"
 
     text = (
-        "💸 <b>REFER & EARN</b>\n\n"
-        f"Earn <b>{rs(cfg['reward'])}</b> for every new user who joins with your link!\n\n"
-        f"🔗 <b>Your link:</b>\n<code>{link}</code>\n\n"
-        "📊 <b>Your stats</b>\n"
-        f"💳 Balance: <b>{rs(bal)}</b>\n"
+        "📥 <b>Your Refer Link</b> 👇👇\n\n"
+        f"➥ [ <code>{link}</code> ]\n\n"
+        f"👥 <b>Total Refers:</b> {u['refers']}\n"
+        f"💰 <b>Total Balance:</b> ₹ {fm(bal)}\n"
+        f"👤 <b>Global Rank:</b> #{rank}\n\n"
+        f"🤑 You'll earn <b>+{fm(cfg['reward'])} Rupees</b> for every user 🎉\n\n"
+        "🎁 <b>Start the bot daily to get daily bonus</b>\n\n"
+        f"🎯 You can start promotion in <b>₹ {fm(cfg['promo_fee'])}</b> 🔥\n\n"
+        "➲ Check your balance: /balance\n\n"
+        "➲ Transfer your balance: /pay\n\n"
+        "➲ Withdraw your balance: /withdraw\n\n"
+        "➲ Check to users leaderboard: /leaderboard"
+    )
+    share = f"https://t.me/share/url?url={quote('https://' + link)}&text={quote('🎵 Best music bot! Join using my link')}"
+    kb = InlineKeyboardMarkup([[InlineKeyboardButton("🔗 Share Refer Link", url=share)]])
+    await message.reply_text(text, parse_mode=H, reply_markup=kb)
+    await message.reply_text(promo_info_text(bal, cfg), parse_mode=H)
+
+
+TX_LABEL = {
+    "referral": "👥 Referral", "daily": "🎁 Daily bonus", "withdraw": "🏦 Withdraw", "promo": "📢 Promotion",
+    "refund": "↩️ Refund", "pay_out": "➡️ Sent", "pay_in": "⬅️ Received", "admin add": "➕ Admin", "admin cut": "➖ Admin",
+}
+
+
+@app.on_message(filters.command("balance") & ~BANNED_USERS)
+async def balance_cmd(client, message: Message):
+    uid = message.from_user.id
+    u = await ensure_user(uid)
+    rank = await get_rank(uid)
+    not_counted = await clicks.count_documents({"referrer": uid, "status": "old"})
+    recent = await txs.find({"user": uid}).sort("ts", -1).limit(5).to_list(5)
+    text = (
+        "💳 <b>YOUR BALANCE</b>\n\n"
+        f"💰 Balance: <b>{rs(u['balance'])}</b>\n"
         f"📈 Total Earned: <b>{rs(u['earned'])}</b>\n"
         f"👥 Total Refers: <b>{u['refers']}</b>\n"
         f"⚠️ Not counted (already bot users): <b>{not_counted}</b>\n"
-        f"🏅 Your Rank: <b>{('#' + str(rank)) if rank else '—'}</b>\n\n"
-        f"{LINE}\n"
-        "🏦 <b>WITHDRAW MONEY IN BANK/UPI</b>\n\n"
-        "📋 <b>Correct Format:</b>\n• <code>/withdraw upi_id amount</code>\n\n"
-        "Example:\n<code>/withdraw name@upi 500</code>\n\n"
-        f"• ✅ Minimum withdrawal: <b>{rs(cfg['min_withdraw'])}</b>\n"
-        f"• 🏆 Only top <b>{cfg['top_withdraw']}</b> rankers can withdraw\n"
-        "• 📊 Rank is based on total earnings\n\n"
-        f"{wd_status}\n"
-        f"{LINE}\n"
-        "📢 <b>How to Promote Your Content:</b>\n\n"
-        "1️⃣ Send your promotional content here (text/photo/video)\n"
-        "2️⃣ Reply to that message with /broadcast\n\n"
-        f"💰 Promotion Fee: <b>{rs(cfg['promo_fee'])}</b>\n"
-        f"💳 Your Balance: <b>{rs(bal)}</b>\n"
-        f"{promo_status}\n\n"
-        "👉 Check leaderboard: /leaderboard"
+        f"👤 Global Rank: <b>#{rank}</b>\n"
     )
-    share = f"https://t.me/share/url?url={quote(link)}&text={quote('🎵 Best music bot! Join using my link')}"
-    kb = InlineKeyboardMarkup([[InlineKeyboardButton("📤 Share Link", url=share)]])
-    await message.reply_text(text, parse_mode=H, reply_markup=kb)
+    if recent:
+        text += f"\n🧾 <b>Recent activity</b>\n"
+        for t in recent:
+            amt = float(t["amount"])
+            sign = "+" if amt >= 0 else "-"
+            ts = t["ts"]
+            if ts.tzinfo is None:
+                ts = ts.replace(tzinfo=timezone.utc)
+            text += f"{TX_LABEL.get(t['type'], t['type'])}: <b>{sign}{rs(abs(amt))}</b> — <i>{ts.astimezone(IST).strftime('%d %b, %I:%M %p')}</i>\n"
+    text += "\n➲ Withdraw: /withdraw\n➲ Transfer: /pay\n➲ Refer link: /refer"
+    await message.reply_text(text, parse_mode=H)
+
+
+# ---- daily bonus: roz /start karne par ----
+@app.on_message(filters.command("start") & filters.private & ~BANNED_USERS, group=-4)
+async def daily_bonus(client, message: Message):
+    user = message.from_user
+    if not user or user.is_bot:
+        return
+    cfg = await get_cfg()
+    bonus = float(cfg["daily_bonus"])
+    if bonus <= 0:
+        return
+    await ensure_user(user.id)
+    today = now().strftime("%Y-%m-%d")
+    got = await users.find_one_and_update(
+        {"_id": user.id, "last_bonus": {"$ne": today}},
+        {"$set": {"last_bonus": today}, "$inc": {"balance": bonus}},
+        return_document=ReturnDocument.AFTER,
+    )
+    if not got:
+        return
+    await txs.insert_one({"user": user.id, "type": "daily", "amount": bonus, "note": today, "ts": now()})
+    try:
+        await message.reply_text(
+            f"🎁 <b>Daily bonus!</b> +{rs(bonus)} added to your balance.\n💳 Balance: <b>{rs(got['balance'])}</b>\n"
+            "<i>Come back tomorrow for more!</i>",
+            parse_mode=H,
+        )
+    except Exception:
+        pass
+
+
+# ---- /pay : balance transfer ----
+@app.on_message(filters.command("pay") & ~BANNED_USERS)
+async def pay_cmd(client, message: Message):
+    uid = message.from_user.id
+    usage = (
+        "💸 <b>Transfer your balance</b>\n\n"
+        "<code>/pay user_id amount</code>\n<code>/pay @username amount</code>\n"
+        "ya kisi ke message pe reply karke: <code>/pay amount</code>"
+    )
+    args = message.command[1:]
+    target = None
+    try:
+        if message.reply_to_message and message.reply_to_message.from_user and len(args) == 1:
+            target, amt_s = message.reply_to_message.from_user.id, args[0]
+        elif len(args) == 2:
+            who, amt_s = args
+            if who.lstrip("-").isdigit():
+                target = int(who)
+            else:
+                target = (await client.get_users(who.lstrip("@"))).id
+        else:
+            return await message.reply_text(usage, parse_mode=H)
+        amount = round(float(amt_s.replace("₹", "")), 2)
+    except Exception:
+        return await message.reply_text("❌ User ya amount galat hai.\n\n" + usage, parse_mode=H)
+
+    if amount < 1:
+        return await message.reply_text("❌ Minimum transfer <b>₹1</b> hai.", parse_mode=H)
+    if target == uid:
+        return await message.reply_text("❌ Apne aap ko pay nahi kar sakte.")
+    if not await is_served_user(target):
+        return await message.reply_text("❌ Is user ne abhi tak bot start nahi kiya.")
+
+    await ensure_user(uid)
+    if not await debit(uid, amount, "pay_out", f"to:{target}"):
+        u = await ensure_user(uid)
+        return await message.reply_text(f"❌ Not enough balance. Your balance: <b>{rs(u['balance'])}</b>", parse_mode=H)
+    await add_balance(target, amount, "pay_in", f"from:{uid}")
+
+    me = await user_link(uid)
+    to = await user_link(target)
+    u = await ensure_user(uid)
+    await message.reply_text(
+        f"✅ <b>{rs(amount)}</b> sent to {to}.\n💳 Your balance: <b>{rs(u['balance'])}</b>", parse_mode=H
+    )
+    await notify(target, f"💰 <b>{rs(amount)}</b> received from {me}!\nCheck: /balance")
 
 
 # ================= 3) /leaderboard =================
@@ -401,6 +512,28 @@ async def withdraw_cmd(client, message: Message):
         "📋 <b>Correct Format:</b>\n<code>/withdraw upi_id amount</code>\n\n"
         "Example:\n<code>/withdraw name@upi 500</code>"
     )
+    if len(message.command) == 1:
+        u0 = await ensure_user(uid)
+        rank0 = await get_rank(uid)
+        bal0 = float(u0["balance"])
+        if rank0 is not None and rank0 <= int(cfg["top_withdraw"]) and float(u0["earned"]) > 0 and bal0 >= float(cfg["min_withdraw"]):
+            st = "✅ <b>You can withdraw now!</b>"
+        elif rank0 is None or rank0 > int(cfg["top_withdraw"]) or float(u0["earned"]) <= 0:
+            st = f"❌ Withdrawal locked: reach top {cfg['top_withdraw']} (your rank: #{rank0})"
+        else:
+            st = f"❌ Need {rs(float(cfg['min_withdraw']) - bal0)} more to withdraw"
+        return await message.reply_text(
+            "🏦 <b>WITHDRAW MONEY IN BANK/UPI</b>\n\n" + usage + "\n\n"
+            f"{LINE}\n"
+            f"• ✅ Minimum withdrawal: <b>{rs(cfg['min_withdraw'])}</b>\n"
+            f"• 🏆 Only top <b>{cfg['top_withdraw']}</b> rankers can withdraw\n"
+            "• 📊 Rank is based on total earnings\n"
+            f"{LINE}\n\n"
+            f"💳 Your Balance: <b>{rs(bal0)}</b>\n"
+            f"🏅 Your Rank: <b>#{rank0}</b>\n\n{st}\n\n"
+            "👉 Check leaderboard: /leaderboard",
+            parse_mode=H,
+        )
     if len(message.command) != 3:
         return await message.reply_text(usage, parse_mode=H)
     upi = message.command[1].strip()
@@ -415,10 +548,10 @@ async def withdraw_cmd(client, message: Message):
     rank = await get_rank(uid)
     if amount < float(cfg["min_withdraw"]):
         return await message.reply_text(f"❌ Minimum withdrawal is <b>{rs(cfg['min_withdraw'])}</b>.", parse_mode=H)
-    if rank is None or rank > int(cfg["top_withdraw"]):
+    if rank is None or rank > int(cfg["top_withdraw"]) or float(u["earned"]) <= 0:
         return await message.reply_text(
             f"🏆 Only top <b>{cfg['top_withdraw']}</b> rankers can withdraw.\n"
-            f"Your rank: <b>{('#' + str(rank)) if rank else '—'}</b>\n\nCheck: /leaderboard",
+            f"Your rank: <b>#{rank}</b>\n\nCheck: /leaderboard",
             parse_mode=H,
         )
     if float(u["balance"]) < amount:
@@ -486,14 +619,7 @@ async def promo_request(client, message: Message):
     fee = float(cfg["promo_fee"])
     u = await ensure_user(uid)
     if not message.reply_to_message:
-        return await message.reply_text(
-            "📢 <b>How to Promote Your Content:</b>\n\n"
-            "1️⃣ Send your promotional content here (text/photo/video)\n"
-            "2️⃣ Reply to that message with /broadcast\n\n"
-            f"💰 Promotion Fee: <b>{rs(fee)}</b>\n💳 Your Balance: <b>{rs(u['balance'])}</b>\n"
-            + ("✅ You have enough balance!" if float(u["balance"]) >= fee else f"❌ Need {rs(fee - float(u['balance']))} more."),
-            parse_mode=H,
-        )
+        return await message.reply_text(promo_info_text(float(u["balance"]), cfg), parse_mode=H)
     if float(u["balance"]) < fee:
         return await message.reply_text(
             f"❌ Not enough balance.\n💰 Fee: <b>{rs(fee)}</b>\n💳 Your balance: <b>{rs(u['balance'])}</b>", parse_mode=H
@@ -629,6 +755,7 @@ async def cfg_text() -> str:
         f"🏆 Top rankers who can withdraw: <b>{c['top_withdraw']}</b>\n"
         f"📢 Promotion fee: <b>{rs(c['promo_fee'])}</b>\n"
         f"📊 Leaderboard size: <b>{c['top_size']}</b>\n"
+        f"🎁 Daily bonus: <b>{rs(c['daily_bonus'])}</b> (0 = off)\n"
         f"🕒 Promotion approval: <b>{'ON' if c['promo_approval'] else 'OFF'}</b>\n"
         f"🎯 Promotion target: <b>{c['promo_target']}</b>\n\n"
         "<b>Commands</b>\n"
@@ -637,6 +764,7 @@ async def cfg_text() -> str:
         "<code>/settopwd 3</code> — top kitne log withdraw kar sakte\n"
         "<code>/setpromofee 50</code> — promotion fee\n"
         "<code>/settop 5</code> — leaderboard size (1-10)\n"
+        "<code>/setdaily 1</code> — daily bonus ₹ (0 = off)\n"
         "<code>/promoapproval on|off</code>\n"
         "<code>/promotarget users|chats|both</code>\n"
         "<code>/addbalance ID 50</code> | <code>/cutbalance ID 50</code>\n"
@@ -670,6 +798,7 @@ _num_setter("setminwd", "min_withdraw", "Minimum withdrawal", minimum=1)
 _num_setter("settopwd", "top_withdraw", "Top withdraw ranks", integer=True, minimum=1, maximum=100)
 _num_setter("setpromofee", "promo_fee", "Promotion fee", minimum=0)
 _num_setter("settop", "top_size", "Leaderboard size", integer=True, minimum=1, maximum=10)
+_num_setter("setdaily", "daily_bonus", "Daily bonus", minimum=0)
 
 
 @app.on_message(filters.command("promoapproval") & SUDOERS)
